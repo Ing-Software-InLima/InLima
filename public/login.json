@@ -1,10 +1,10 @@
 [
     {
-      "username": "admin",
-      "password": "ola" 
+      "correo": "admin",
+      "contraseña": "ola" 
     },
     {
-      "username": "curikitaca",
-      "password": "chao"
+      "correo": "curikitaca",
+      "contraseña": "chao"
     }
   ]

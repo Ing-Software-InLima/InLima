@@ -14,8 +14,8 @@ import { useRouter } from 'next/router';
 
 export default function LoginPage(){
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [correo, setCorreo] = useState("");
+  const [contraseña, setContraseña] = useState("");
 
 
   const handleSubmit = async (event) => {
@@ -27,7 +27,7 @@ export default function LoginPage(){
             throw new Error('Error fetching credentials');  
           }  
           const credentials = await response.json(); 
-          const validUser = credentials.find(user => user.username === username && user.password === password);
+          const validUser = credentials.find(user => user.correo === correo && user.contraseña === contraseña);
           if (validUser) {
             window.location.href = "/complaint"; 
           } else {
@@ -57,16 +57,16 @@ export default function LoginPage(){
       
     >
     <div class= "texto">
-      <TextField id="outlined-basic" label="Usuario" variant="outlined"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+      <TextField id="outlined-basic" label="Correo" variant="outlined"
+                value={correo}
+                onChange={(e) => setCorreo(e.target.value)}
                /></div>
 
     <div class= "texto">
       <TextField id="outlined-basic" label="Contraseña" variant="outlined" 
     type="password"
-    value={password}
-    onChange={(e) => setPassword(e.target.value)}
+    value={contraseña}
+    onChange={(e) => setContraseña(e.target.value)}
     /></div>
     </Box>
 
