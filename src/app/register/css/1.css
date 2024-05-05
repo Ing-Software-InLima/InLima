@@ -1,0 +1,56 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: montserrat;
+    background:linear-gradient(150deg, #BF2441,#F2F2F2);
+    height: 100vh;
+    }
+
+.formulario{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 400px;
+    background: white;
+    border-radius: 10px;
+}
+
+.textito{
+    text-align: center;
+    color:#BF2441;
+    padding: 20px 0 20px 0;
+    border-bottom:1px solid silver ;
+}
+
+.formulario h1{
+    text-align: center;
+    padding: 0 0 0 0;
+    border-bottom:1px solid silver ;
+}
+
+.formulario img{
+    position: relative;
+
+    left: 50%;
+    transform: translate(-50%,10%);
+}
+
+
+.recordar{
+    text-align: center;
+    color: #BF2441;
+    cursor: pointer;
+}
+
+.registrarse{
+    text-align: center;
+    margin: 20px 0;
+    font-size: 16px ;
+    color: black;
+}
+.registrarse a{
+    color: rgb(135, 140, 235);
+
+
+}
