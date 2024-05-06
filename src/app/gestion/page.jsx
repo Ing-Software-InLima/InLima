@@ -1,13 +1,13 @@
-import './css/1.css';
-import { useState } from "react"
-import Input from '@mui/material/Input';
-import { useRouter } from 'next/router';
-import { useSearchParams } from 'next/navigation';
+import './css/gestion.css';
+{/*
+import { useClient } from 'next/dist/shared/lib/router-context'; // Importa useClient
+import { useSearchParams } from 'next/navigation'; // Cambia la importación a next/navigation
+import { useState } from 'react';
+import { useRouter } from 'next/router';*/ }
 
 export default function GestionPage() {
-
-
-    const [cuenta, setCuenta] = useMiProvider()
+    {/*
+    useClient(); // Marca el componente padre como Client Component
 
     const searchParams = useSearchParams();
     const router = useRouter()
@@ -23,24 +23,19 @@ export default function GestionPage() {
         params.set('asunto', AsuntoQueja);
         params.set('ubicacion', Ubicacion);
         console.log(params.toString())
-        router.push(`/resultados?${params.toString()}`)
-    };
+        //router.push(`/resultados?${params.toString()}`)
+    };*/ }
 
     return (
         <>
             <div id="form">
-
-                <div class="bg-white p-6 rounded-md shadow-md w-12/12 h-full">
-                    <div class="flex justify-between gap-4 mb-4">
-                        <h1 class="text-2xl font-semibold">Búsqueda</h1>
-                        {cuenta.tipo == 'admin' && (
-                            <Link type="button" href="/agregarLibroAdm" class="px-4 py-2 hover:bg-blue-600 border rounded-full color_fondo_primario color_letra_blanco">Agregar un nuevo recurso</Link>
-                        )}
+                    <div className="border-b border-gray-300" id="titulo">
+                        <p className="pb-2"> Busqueda</p>
                     </div>
-                    <div class=" py-4 px-4 color_fondo_secundario">
-                        <form class="flex" onSubmit={(e) => { e.preventDefault() }}>
-
-                            <div class="w-1/2 mr-4 space-y-4 m-3 ">
+                    <div className=" py-4 px-4 ">
+                        <form className="flex" //onSubmit={(e) => { e.preventDefault() }}
+                        >
+                            <div className="w-1/2 mr-4 space-y-4 m-3 ">
 
                                 <div id="text_field">
                                     <div class="borde_text_field">
@@ -50,7 +45,8 @@ export default function GestionPage() {
                                                     <p>Ingresa el asunto de la queja</p>
                                                 </div>
                                                 <div id="input_text">
-                                                    <input type='text' placeholder='' id="inputAsunto" value={AsuntoQueja} onChange={(e) => setAsuntoQueja(e.target.value)} />
+                                                    <input type='text' placeholder='' id="inputAsunto" //value={AsuntoQueja} onChange={(e) => setAsuntoQueja(e.target.value)} 
+                                                    />
                                                 </div>
                                             </div>
                                         </div>
@@ -70,7 +66,8 @@ export default function GestionPage() {
                                                     <p>Ingrese Ubicación</p>
                                                 </div>
                                                 <div id="input_text">
-                                                    <input type='text' placeholder='' id="inputUbi" value={Ubicacion} onChange={(e) => setUbicacion(e.target.value)} />
+                                                    <input type='text' placeholder='' id="inputUbi" //value={Ubicacion} onChange={(e) => setUbicacion(e.target.value)} 
+                                                    />
                                                 </div>
                                             </div>
                                         </div>
@@ -85,24 +82,23 @@ export default function GestionPage() {
                             </div>
 
 
-                            <div class="w-1/2">
-                                <div class="mb-4">
+                            <div className="w-1/2">
+                                <div className="mb-4">
 
-                                    <div class="space-y-2">
-                                        
+                                    <div className="space-y-2">
+
                                     </div>
                                 </div>
                             </div>
-                            <div class="text-right space-x-2 ">
-                                <button type="reset" class="bg-purple-bg text-purple-primary px-4 py-2 hover:bg-blue-600 border rounded-full color_letra_primario">Limpiar</button>
-                                <button type="submit" onClick={handleSearch} class="bg-purple-primary text-purple-bg px-4 py-2 hover:bg-blue-600 border rounded-full color_fondo_primario color_letra_blanco" >Buscar</button>
+                            <div className="text-right space-x-2 ">
+                                <button type="reset" className="px-4 py-2 hover:text-inLima_red border rounded-full py-1">Limpiar</button>
+                                <button type="submit" //onClick={handleSearch} 
+                                    className="bg-inLima_beige px-4 py-2 hover:bg-inLima_red border rounded-full text-white py-1" >Buscar</button>
                             </div>
 
                         </form>
 
                     </div>
-
-                </div>
 
             </div>
 
