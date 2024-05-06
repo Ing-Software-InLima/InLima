@@ -8,6 +8,7 @@ export default function Layout({ children }) {
         <HeaderInLima/>
         <div className="flex h-screen">
             <Navbar/>
+            
             <div className="flex-grow p-6">
                 {children}
             </div>
