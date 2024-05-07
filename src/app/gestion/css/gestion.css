@@ -19,7 +19,7 @@
 
 #text_field{
     display: flex;
-    width: 291px;
+    width: 500px;
     flex-direction: column;
     align-items: flex-start;
     border-radius: 4px 4px 0px 0px;
@@ -37,9 +37,9 @@
     border: 2px solid #580C1F;
 }
 
-.state_layer{
+.state_layer{ /* nombre en la parte de arriba*/
     display: flex;
-    padding: 8px 0px 8px 16px;
+    padding: 8px 8px 8px 16px;
     align-items: center;
     align-self: stretch;
     border-radius: 4px 4px 0px 0px;
@@ -47,7 +47,7 @@
     font-family: 'Roboto, sans-serif';
 }
 
-.content{
+.content{ /* borde de la casilla*/
     display: flex;
     height: 40px;
     position: relative;
@@ -73,13 +73,16 @@
     line-height: 16px; /* 133.333% */
     width: auto;
     height: 20px;
-    left: -3%; /* Ajustar la posición horizontal según tus necesidades */
+    left: -1%; /* Ajustar la posición horizontal según tus necesidades */
     top: -48%; /* Ajustar la posición vertical según tus necesidades */
 }
 
 #input_text{
     display: flex;
     align-items: center;
+    border: none;
+    outline: none;
+    width: 100%;
 }
 
 
