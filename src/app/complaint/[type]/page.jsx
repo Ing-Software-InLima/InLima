@@ -6,18 +6,29 @@ import CameraIcon from '@/icons/camera';
 import Advise from '@/components/Advise';
 
 
-export default function complaint(props){
+async function page({params}){
+
+    const { type } = params;
     const [showAdvise, setShowAdvise] = useState(false);
 
     const handleEnviarClick = () => {
         setShowAdvise(true);
     };
 
+    const removeBarraBaja = (text) => {
+        var formattedText = text.replace(/_/g, ' ');
+        formattedText = formattedText.replace(/%C3%B3/g,'ó')
+        formattedText = formattedText.replace(/%C3%BA/g,'ú')
+        formattedText = formattedText.replace(/%C3%81/g,'Á')
+        formattedText = formattedText.replace(/%C3%AD/g,'í')
+        return formattedText;
+    };
+
     return (
         <div>
-            {props.TipoQueja !== "Otros" ? (
+            {type !== "Otros" ? (
                 <div className='p-4 mb-4 border-b border-black'>
-                    {props.TipoQueja}
+                    {removeBarraBaja(type)}
                 </div>
             ) : (
                 <>
@@ -86,3 +97,4 @@ export default function complaint(props){
     )
 
 }
+export default page
