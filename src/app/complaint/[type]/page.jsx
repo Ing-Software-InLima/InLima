@@ -6,34 +6,29 @@ import CameraIcon from '@/icons/camera';
 import Advise from '@/components/Advise';
 
 
-export default function complaint(props){
-    const [showAdvise, setShowAdvise] = useState(false);
-    const [nombreArchivo, setNombreArchivo] = useState("");
-    const [selectedImage, setSelectedImage] = useState(null);
+async function page({params}){
 
+    const { type } = params;
+    const [showAdvise, setShowAdvise] = useState(false);
 
     const handleEnviarClick = () => {
         setShowAdvise(true);
     };
 
-    const handleSubirFoto = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            setSelectedImage(file);
-            setNombreArchivo(file.name)
-        }
+    const removeBarraBaja = (text) => {
+        var formattedText = text.replace(/_/g, ' ');
+        formattedText = formattedText.replace(/%C3%B3/g,'ó')
+        formattedText = formattedText.replace(/%C3%BA/g,'ú')
+        formattedText = formattedText.replace(/%C3%81/g,'Á')
+        formattedText = formattedText.replace(/%C3%AD/g,'í')
+        return formattedText;
     };
-
-    const handleEliminarFoto = () => {
-        setSelectedImage(null);
-        setNombreArchivo("");
-    }
 
     return (
         <div>
-            {props.TipoQueja !== "Otros" ? (
+            {type !== "Otros" ? (
                 <div className='p-4 mb-4 border-b border-black'>
-                    {props.TipoQueja}
+                    {removeBarraBaja(type)}
                 </div>
             ) : (
                 <>
@@ -83,30 +78,12 @@ export default function complaint(props){
                 Adjuntar fotos (No es obligatorio)
             </div>
             <div>
-                <input
-                    type="file"
-                    accept="image/jpeg, image/png" // Acepta solo archivos JPEG y PNG
-                    onChange={handleSubirFoto} // Manejar el cambio del input
-                    style={{ display: 'none' }} // Estilo para ocultar el input
-                    id="upload-photo" // ID para asociarlo con el botón de la cámara
-                />
-                {/* Botón de la cámara */}
-                <label htmlFor="upload-photo" style={{cursor: 'pointer'}}>
-                    <CameraIcon className='bg-gray-300 rounded-lg pl-3 pr-3'/>
-                </label>
-                
-                {nombreArchivo !== "" ? (
-                <div className='center'>
-                    {nombreArchivo}
-                    <button className='rounded-2xl bg-gray-300 ml-2 mr-2 p-2' onClick={handleEliminarFoto} style={{cursor: 'pointer'}}>
-                        No adjuntar
-                    </button>
-                </div>
-                 ):(<></>)}
-                
+                <button className='bg-gray-300 rounded-lg pl-3 pr-3' >
+                    <CameraIcon/>
+                </button>
             </div>
             <div className='mt-4'>
-                <button className='rounded-2xl text-white bg-inLima_red p-4 pl-8 pr-8' onClick={handleEnviarClick} style={{cursor: 'pointer'}}>
+                <button className='rounded-2xl text-white bg-inLima_red p-4 pl-8 pr-8' onClick={handleEnviarClick}>
                     Enviar
                 </button>
             </div>
@@ -120,3 +97,4 @@ export default function complaint(props){
     )
 
 }
+export default page
