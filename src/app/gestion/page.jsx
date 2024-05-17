@@ -75,9 +75,9 @@ export default function GestionPage() {
                                         onChange={handleChange}
                                         label="Seleccionar Ubicación"
                                         >
-                                            <MenuItem value={"ate"}>ate</MenuItem>
-                                            <MenuItem value={"ahsdha"}>san isidro</MenuItem>
-                                            <MenuItem value={"sasda"}>Miraflores</MenuItem>
+                                            <MenuItem value={"Ate"}>Ate</MenuItem>
+                                            <MenuItem value={"San isidro"}>San isidro</MenuItem>
+                                            <MenuItem value={"Miraflores"}>Miraflores</MenuItem>
                                         </Select>
                                     </FormControl>
                                 </Box>
