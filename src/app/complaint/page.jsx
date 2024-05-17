@@ -4,6 +4,7 @@ import TextField from '@mui/material/TextField';
 import NoSsr from '@mui/material/NoSsr';
 import CameraIcon from '@/icons/camera';
 import Advise from '@/components/Advise';
+import Layout from '@/components/Layout';
 
 
 export default function complaint(props){
@@ -30,7 +31,7 @@ export default function complaint(props){
     }
 
     return (
-        <div>
+        <Layout>
             {props.TipoQueja !== "Otros" ? (
                 <div className='p-4 mb-4 border-b border-black'>
                     {props.TipoQueja}
@@ -115,7 +116,7 @@ export default function complaint(props){
                     <Advise Mensaje = "Se envió satisfactoriamente"/>
                 </div>
             )}
-        </div>
+        </Layout>
         
     )
 

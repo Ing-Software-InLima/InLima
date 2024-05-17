@@ -1,9 +1,10 @@
 
+import Layout from "@/components/Layout";
 import Link from "next/link";
 export default function MenuPage() {
 
     return (
-        <>
+        <Layout>
             <p className="mt-2 text-lg font-normal" style={{ fontFamily: 'Roboto, sans-serif', fontSize: '22px' }}>Cuentanos tus inquietudes</p>
             <img src="/divider.svg" alt="divider"   className="mt-3"/>
 
@@ -98,7 +99,7 @@ export default function MenuPage() {
                 
             </div>
             
-        </>
+        </Layout>
 
     );
 }

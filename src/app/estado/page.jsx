@@ -1,8 +1,9 @@
 'use client'
+import Layout from "@/components/Layout"
 import StatusCard from "@/components/StatusCard"
 export default function Estado(){
     return (
-        <>
+        <Layout>
         <div className="border-b border-gray-300">
             <p className="py-2 text-xl font-medium">Estado de tus quejas</p>
         </div>
@@ -13,8 +14,8 @@ export default function Estado(){
             <StatusCard asunto= "Rompemuelle sin pintar" id = "00000002" dni="8745612" estado="Solucionado"></StatusCard>
             <StatusCard asunto= "Rompemuelle sin pintar" id = "00000002" dni="8745612" estado="Solucionado"></StatusCard>
             <StatusCard asunto= "Rompemuelle sin pintar" id = "00000002" dni="8745612" estado="Solucionado"></StatusCard>
-            <StatusCard asunto= "Rompemuelle sin pintar" id = "00000002" dni="8745612" estado="Solucionado"></StatusCard>ß
+            <StatusCard asunto= "Rompemuelle sin pintar" id = "00000002" dni="8745612" estado="Solucionado"></StatusCard>
         </div>
-        </>
+        </Layout>
     )
 }

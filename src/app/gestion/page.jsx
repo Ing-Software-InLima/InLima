@@ -9,6 +9,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import Layout from '@/components/Layout';
 
 export default function GestionPage() {
 
@@ -34,7 +35,7 @@ export default function GestionPage() {
     };
 
     return (
-        <>
+        <Layout>
             <div id="form">
                 <div className="border-b border-gray-300" id="titulo">
                     <p className="pb-2"> Busqueda</p>
@@ -118,7 +119,7 @@ export default function GestionPage() {
 
             </div>
 
-        </>
+        </Layout>
 
     )
 }

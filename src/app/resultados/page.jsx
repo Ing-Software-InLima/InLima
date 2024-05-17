@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import StatusCard from "@/components/StatusCard";
+import Layout from '@/components/Layout';
 
 const ResultadosPage = () => {
     // quejas ejemplo
@@ -42,21 +43,23 @@ const ResultadosPage = () => {
     };
 
     return (
-        <div className="p-6">
-            {resultados.length === 0 ? (
-                <p>No se encontraron resultados para esta búsqueda</p>
-            ) : (
-                resultados.map((queja) => (
-                    <StatusCard
-                        key={queja.id}
-                        asunto={queja.asunto}
-                        id={queja.id}
-                        dni={queja.dni}
-                        estado={queja.estado}
-                    />
-                ))
-            )}
-        </div>
+        <Layout>
+            <div className="p-6">
+                {resultados.length === 0 ? (
+                    <p>No se encontraron resultados para esta búsqueda</p>
+                ) : (
+                    resultados.map((queja) => (
+                        <StatusCard
+                            key={queja.id}
+                            asunto={queja.asunto}
+                            id={queja.id}
+                            dni={queja.dni}
+                            estado={queja.estado}
+                        />
+                    ))
+                )}
+            </div>
+        </Layout>
     );
 };
 
