@@ -11,6 +11,9 @@ export default function Estado(){
             <StatusCard asunto= "Rompemuelle sin pintar" id = "00000002" dni="8745612" estado="Solucionado"></StatusCard>
             <StatusCard asunto= "Rompemuelle sin pintar" id = "00000002" dni="8745612" estado="Archivada"></StatusCard>
             <StatusCard asunto= "Rompemuelle sin pintar" id = "00000002" dni="8745612" estado="Solucionado"></StatusCard>
+            <StatusCard asunto= "Rompemuelle sin pintar" id = "00000002" dni="8745612" estado="Solucionado"></StatusCard>
+            <StatusCard asunto= "Rompemuelle sin pintar" id = "00000002" dni="8745612" estado="Solucionado"></StatusCard>
+            <StatusCard asunto= "Rompemuelle sin pintar" id = "00000002" dni="8745612" estado="Solucionado"></StatusCard>ß
         </div>
         </>
     )
