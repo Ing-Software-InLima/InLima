@@ -13,8 +13,10 @@ import Layout from '@/components/Layout';
 
 export default function GestionPage() {
 
+    
+
     const [asuntosSeleccionados, setAsuntosSeleccionados] = useState([]);
-    const [ubicacion, setUbicacion] = useState('');
+    const [municipalidad, setMunicipalidad] = useState('');
     const router = useRouter();
 
     const handleSeleccionarTodos = () => {
@@ -23,14 +25,18 @@ export default function GestionPage() {
         setAsuntosSeleccionados(todosLosAsuntos);
     };
 
-    const handleChange = (event) => {
-        setUbicacion(event.target.value);
+    const handleChange = (e) => {
+        setMunicipalidad(e.target.value);
     };
 
     const handleSearch = (e) => {
+        e.preventDefault();
         // Construye la URL de búsqueda con los parámetros de asunto y ubicación
-        const queryParams = new URLSearchParams({ asuntos: asuntosSeleccionados.join(','), ubicacion }).toString();
+        const queryParams = new URLSearchParams({ asuntos: asuntosSeleccionados.join(','), municipalidad }).toString();
         // Redirige a la página de resultados con los parámetros de búsqueda
+        console.log("Asuntos seleccionados:", asuntosSeleccionados);
+        console.log("Municipalidad seleccionada:", municipalidad);
+        console.log("Query Params:", queryParams);
         router.push(`/resultados?${queryParams}`);
     };
 
@@ -41,7 +47,7 @@ export default function GestionPage() {
                     <p className="pb-2"> Busqueda</p>
                 </div>
                 <div className=" py-4 px-4 ">
-                    <form className="flex" onSubmit={(e) => { e.preventDefault() }}>
+                    <form className="flex" onSubmit={handleSearch}>
                         <div className="mr-4 space-y-4 m-3 ">
                             <div>
                                 <Autocomplete
@@ -55,11 +61,16 @@ export default function GestionPage() {
                                         if (newValue.includes("Seleccionar todos")) {
                                             handleSeleccionarTodos();
                                         } else {
-                                            setAsuntosSeleccionados(newValue);
+                                            setAsuntosSeleccionados(newValue.filter(option => option !== "Seleccionar todos"));
                                         }
                                     }}
+                                    value={asuntosSeleccionados}
                                     renderInput={(params) => (
-                                        <TextField {...params} variant="outlined" label="Seleccionar Asuntos" placeholder="Asuntos" sx={{ '& .MuiOutlinedInput-root': { borderColor: 'inLima_red !important' } }} />
+                                        <TextField {...params} 
+                                        variant="outlined" 
+                                        label="Seleccionar Asuntos"
+                                         placeholder="Asuntos" 
+                                         sx={{ '& .MuiOutlinedInput-root': { borderColor: 'inLima_red !important' } }} />
                                     )}
                                 />
 
@@ -69,10 +80,10 @@ export default function GestionPage() {
                             <div>
                                 <Box sx={{ minWidth: 500 }}>
                                     <FormControl fullWidth>
-                                    <InputLabel id="ubicacion-label">Seleccionar Ubicación</InputLabel>
+                                    <InputLabel id="municipalidad-label">Seleccionar Ubicación</InputLabel>
                                         <Select
-                                        labelId="ubicacion-label"
-                                        value={ubicacion}
+                                        labelId="municipalidad-label"
+                                        value={municipalidad}
                                         onChange={handleChange}
                                         label="Seleccionar Ubicación"
                                         >
@@ -84,32 +95,9 @@ export default function GestionPage() {
                                 </Box>
                             </div>
 
-                            {/*
-                                <div id="text_field">
-                                <div class="borde_text_field">
-                                    <div class="state_layer">
-                                        <div class="content">
-                                            <div id="text_type">
-                                                <p>Ingrese Ubicación</p>
-                                            </div>
-                                            <div id="input_text">
-                                                <input type='text' placeholder='' id="input_text" value={ubicacion} onChange={(e) => setUbicacion(e.target.value)} />
-                                                            </div>
-                                                        </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="supporting-text">
-                                        <p></p>
-                                    </div>
-
-                                </div>*/}
-
                             <div className="text-left space-x-2 ">
-                                <button type="submit" onClick={handleSearch} className="bg-inLima_beige px-4 py-2 hover:bg-inLima_red hover:text-white border rounded-full text-inLima_red  py-1">Buscar</button>
+                                <button type="submit" className="bg-inLima_beige px-4 py-2 hover:bg-inLima_red hover:text-white border rounded-full text-inLima_red  py-1">Buscar</button>
                             </div>
-
-
 
                         </div>
 
