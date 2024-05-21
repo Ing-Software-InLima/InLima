@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const URI = 'https://inlima-2024-sw2-as-api.azurewebsites.net'
+const URI = 'http://localhost:3001'
 
 const get = async (endpoint) => {
     try {

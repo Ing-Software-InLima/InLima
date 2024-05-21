@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 import Link from 'next/link'
 import { useState } from "react"
 import Input from '@mui/material/Input';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import db_users from '@/api/usuario';
 
 
@@ -16,7 +16,7 @@ export default function LoginPage() {
 
   const [correo, setCorreo] = useState("");
   const [contraseña, setContraseña] = useState("");
-
+  const router = useRouter();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -27,15 +27,24 @@ export default function LoginPage() {
     try {
       const response = await db_users.iniciarSesion(User);
       console.log("singin: ", response)
+      if(response.status == 200){
+        router.push('/home')
+      }
+      else{
+        console.log("NO")
+      }
+      
+      
     } catch (error) {
       console.error('Error:', error.message);
       alert('Error al conectar');
     }
   };
 
-  return <body >
+  return (
+  <div className="loquequieras">
     <form onSubmit={handleSubmit}>
-      <div class="formulario"  >
+      <div className="formulario"  >
 
         <img src="/inlima.png" alt="InLima " style={{ width: "110px", height: "auto" }} />
         <Box
@@ -50,7 +59,7 @@ export default function LoginPage() {
           autoComplete="off"
 
         >
-          <div class="texto">
+          <div className="texto">
             <TextField id="outlined-basic" label="Correo" variant="outlined"
               value={correo}
               onChange={(e) => setCorreo(e.target.value)}
@@ -64,7 +73,7 @@ export default function LoginPage() {
             /></div>
         </Box>
 
-        <div class="recordar"> <a href="/reset">¿Olvidaste tu contraseña?</a></div>
+        <div className="recordar"> <a href="/reset">¿Olvidaste tu contraseña?</a></div>
 
         <Button type='submit'
           sx={{
@@ -80,11 +89,11 @@ export default function LoginPage() {
             }
           }}>Iniciar sesión</Button>
 
-        <div class="registrarse">¿No tienes una cuenta? <a href='/register'>Regístrate</a></div>
+        <div className="registrarse">¿No tienes una cuenta? <a href='/register'>Regístrate</a></div>
       </div>
     </form>
-  </body>
-
+  </div>
+  )
 
 
 }
