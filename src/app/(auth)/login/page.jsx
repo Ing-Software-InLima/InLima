@@ -58,7 +58,7 @@ export default function LoginPage() {
         <Box
 
           sx={{
-            '& .MuiTextField-root': { m: 1, width: '30ch' },
+            '& .MuiTextField-root': { m: 1, width: '38ch' },
             ml: 5,
             mt: 2,
             mb: 2,
@@ -81,8 +81,9 @@ export default function LoginPage() {
             /></div>
         </Box>
 
+<div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20}}>
         <GoogleOAuthProvider clientId="118418831653-bk8f8eb2pjpjj0n3u2eri4kb76gutu8v.apps.googleusercontent.com">
-        <GoogleLogin
+        <GoogleLogin 
               onSuccess={credentialResponse => {
               console.log(credentialResponse)
               var credentialResponseDecoded = jwtDecode(credentialResponse.credential)
@@ -93,7 +94,8 @@ export default function LoginPage() {
                }}
           />
         </GoogleOAuthProvider>  
-        
+        </div>     
+
         <div className="recordar"> <a href="/reset">¿Olvidaste tu contraseña?</a></div>
 
         <Button type='submit'
