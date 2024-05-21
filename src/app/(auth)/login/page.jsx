@@ -10,14 +10,22 @@ import { useState } from "react"
 import Input from '@mui/material/Input';
 import { useRouter } from 'next/navigation';
 import db_users from '@/api/usuario';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { useEffect } from 'react';
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
 
 
 export default function LoginPage() {
-
+  
   const [correo, setCorreo] = useState("");
   const [contraseña, setContraseña] = useState("");
   const router = useRouter();
+  
+  const ClientId= "118418831653-bk8f8eb2pjpjj0n3u2eri4kb76gutu8v.apps.googleusercontent.com";
 
+
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
     const User = {
@@ -73,6 +81,19 @@ export default function LoginPage() {
             /></div>
         </Box>
 
+        <GoogleOAuthProvider clientId="118418831653-bk8f8eb2pjpjj0n3u2eri4kb76gutu8v.apps.googleusercontent.com">
+        <GoogleLogin
+              onSuccess={credentialResponse => {
+              console.log(credentialResponse)
+              var credentialResponseDecoded = jwtDecode(credentialResponse.credential)
+              console.log(credentialResponseDecoded)
+              }}    
+              onError={() => {
+               console.log('Login Failed')
+               }}
+          />
+        </GoogleOAuthProvider>  
+        
         <div className="recordar"> <a href="/reset">¿Olvidaste tu contraseña?</a></div>
 
         <Button type='submit'
