@@ -9,6 +9,8 @@ const create = async (payload) => await base.post(endpoint, payload)
 
 const iniciarSesion = async (payload) => await base.post(loginEndPoint, payload)
 
-const api = { findAll, create, iniciarSesion}
+const cerrarSesion = async () => await base.get('/usuario/logout')
+
+const api = { findAll, create, iniciarSesion, cerrarSesion }
 
 export default api;

@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 const URI = 'http://localhost:3001'
+axios.defaults.withCredentials = true
 
 const get = async (endpoint) => {
     try {
