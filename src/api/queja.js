@@ -6,6 +6,8 @@ const findAll = async () => await base.get(endpoint);
 
 const create = async (payload) => await base.post(endpoint, payload);
 
+//const verQueja = async()
+
 const api = { findAll, create }
 
 export default api;
