@@ -2,7 +2,6 @@
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import React from 'react';
-import './css/1.css';
 import Box from '@mui/material/Box';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -56,22 +55,22 @@ export default function RegisterPage() {
 
 
   return (
-  <div className='General'>
+  <div class="General bg-gradient-to-br from-[#BF2441] to-[#F2F2F2] h-screen m-0 p-0">
     <form onSubmit={handleSubmit}>
-      <div className="formulario">
-        <img src="/inlima.png" alt="InLima " style={{ width: "110px", height: "auto" }} />
+      <div class="formulario absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 bg-white rounded-lg">
+        <img src="/inlima.png" class="relative left-1/2 transform -translate-x-1/2 translate-y-2.5" alt="InLima " style={{ width: "110px", height: "auto" }} />
 
-        <div className="textito">Regístrate para realizar quejas y sugerencias</div>
+        <div class="textito text-center text-[#BF2441] py-5 border-b border-silver">Regístrate para realizar quejas y sugerencias</div>
         <Box
           sx={{
             '& .MuiTextField-root': { m: 1, width: '14.5ch' },
-            ml: 5,
+            ml: 0,
             mt: 2,
           }}
           noValidate
           autoComplete="off"
         >
-          <div className="texto"><TextField id="outlined-basic" label="Nombre" variant="outlined" value={nombre}
+          <div class="text-center p-0 "><TextField id="outlined-basic" label="Nombre" variant="outlined" value={nombre}
             onChange={(e) => setNombre(e.target.value)} />
             <TextField id="outlined-basic" label="Apellido" variant="outlined" value={apellido}
               onChange={(e) => setApellido(e.target.value)} /></div>
@@ -80,18 +79,18 @@ export default function RegisterPage() {
         <Box
           sx={{
             '& .MuiTextField-root': { m: 1, width: '30.6ch' },
-            ml: 5,
+            ml: 0,
           }}
           noValidate
           autoComplete="off"
         >
-          <div className="texto"><TextField id="outlined-basic" label="Correo electrónico" variant="outlined" value={correo}
+          <div class="text-center p-0 "><TextField id="outlined-basic" label="Correo electrónico" variant="outlined" value={correo}
             onChange={(e) => setCorreo(e.target.value)} /></div>
-          <div className="texto"><TextField id="outlined-basic" label="Contraseña" variant="outlined" type="password"
+          <div class="text-center p-0 " ><TextField id="outlined-basic" label="Contraseña" variant="outlined" type="password"
             value={contraseña}
             onChange={(e) => setContraseña(e.target.value)} /></div>
 
-          <FormControl style={{ marginLeft: '10px', marginTop: '10px' }}>
+          <FormControl style={{ marginLeft: '50px', marginTop: '10px' }}>
             <FormLabel id="demo-row-radio-buttons-group-label" >Sexo</FormLabel>
             <RadioGroup
               row
@@ -120,7 +119,7 @@ export default function RegisterPage() {
               color: 'white',
             }
           }}>Regístrate</Button>
-        <div className="registrarse">¿Ya tienes una cuenta? <a href='/login'>Inicia sesión</a></div>
+        <div class="registrarse text-center my-5 text-lg text-black">¿Ya tienes una cuenta? <a href='/login' class="text-[#878ceb]">Inicia sesión</a></div>
 
       </div>
     </form>
