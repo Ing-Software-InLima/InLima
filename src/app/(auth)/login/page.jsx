@@ -3,7 +3,6 @@ import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import React from 'react';
-import './css/1.css';
 import Box from '@mui/material/Box';
 import Link from 'next/link'
 import { useState } from "react"
@@ -50,30 +49,30 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="loquequieras">
+    <div class="loquequieras bg-gradient-to-br from-[#BF2441] to-[#F2F2F2] h-screen m-0 p-0 font-montserrat">
       <form onSubmit={handleSubmit}>
-        <div className="formulario"  >
+        <div class="formulario absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 bg-white rounded-lg"  >
 
-          <img src="/inlima.png" alt="InLima " style={{ width: "110px", height: "auto" }} />
+          <img src="/inlima.png" class="relative left-1/2 transform -translate-x-1/2 translate-y-2.5" alt="InLima " style={{ width: "110px", height: "auto" }} />
           <Box
 
             sx={{
-              '& .MuiTextField-root': { m: 1, width: '38ch' },
-              ml: 5,
-              mt: 2,
+              '& .MuiTextField-root': { m: 1, width: '30ch' },
+              ml: 1,
+              mt: 3,
               mb: 2,
             }}
             noValidate
             autoComplete="off"
 
           >
-            <div className="texto">
+            <div class="text-center pb-3 pt-3 border-t border-silver">
               <TextField id="outlined-basic" label="Correo" variant="outlined"
                 value={correo}
                 onChange={(e) => setCorreo(e.target.value)}
               /></div>
 
-            <div className="texto">
+            <div class="text-center pb-3 ">
               <TextField id="outlined-basic" label="Contraseña" variant="outlined"
                 type="password"
                 value={contraseña}
@@ -81,22 +80,9 @@ export default function LoginPage() {
               /></div>
           </Box>
 
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
-            <GoogleOAuthProvider clientId="118418831653-bk8f8eb2pjpjj0n3u2eri4kb76gutu8v.apps.googleusercontent.com">
-              <GoogleLogin
-                onSuccess={credentialResponse => {
-                  console.log(credentialResponse)
-                  var credentialResponseDecoded = jwtDecode(credentialResponse.credential)
-                  console.log(credentialResponseDecoded)
-                }}
-                onError={() => {
-                  console.log('Login Failed')
-                }}
-              />
-            </GoogleOAuthProvider>
-          </div>
 
-          <div className="recordar"> <a href="/reset">¿Olvidaste tu contraseña?</a></div>
+
+          <div class="recordar text-center text-[#BF2441] cursor-pointer"> <a href="/reset">¿Olvidaste tu contraseña?</a></div>
 
           <Button type='submit'
             sx={{
@@ -112,7 +98,7 @@ export default function LoginPage() {
               }
             }}>Iniciar sesión</Button>
 
-          <div className="registrarse">¿No tienes una cuenta? <a href='/register'>Regístrate</a></div>
+          <div class="registrarse text-center my-5 text-lg text-black">¿No tienes una cuenta? <a href='/register' class="text-[#878ceb]">Regístrate</a></div>
         </div>
       </form>
     </div>
