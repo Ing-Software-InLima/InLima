@@ -1,6 +1,11 @@
 import Image from "next/image"
 import StatusColor from "./StatusColor"
 export default function StatusCard({asunto, id, dni, estado}) {
+
+    const handleViewDetail = () => {
+        router.push(`/detalle/${id}`);
+    };
+
     return (
         <div className="border border-gray-300 rounded-xl p-5 mt-8 w-96">
             <div className="flex gap-3 items-center mb-6">
@@ -16,8 +21,8 @@ export default function StatusCard({asunto, id, dni, estado}) {
                 <StatusColor estado={estado}></StatusColor>
             </div>
             <div className="flex justify-center">
-                <button className="rounded-full text-white bg-inLima_red p-4 pl-8 pr-8 hover:bg-inLima_darkRed transition-colors duration-300">
-                    Olvidar
+                <button onClick={handleViewDetail} className="rounded-full text-white bg-inLima_red p-4 pl-8 pr-8 hover:bg-inLima_darkRed transition-colors duration-300">
+                    Ver detalle
                 </button>
             </div>
         </div>

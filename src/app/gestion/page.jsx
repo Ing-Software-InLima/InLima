@@ -1,5 +1,4 @@
 "use client";
-import './css/gestion.css';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -42,7 +41,7 @@ export default function GestionPage() {
 
     return (
         <Layout>
-            <div id="form">
+            <div class="flex flex-col w-[1088px] h-[510px] flex-shrink-0 bg-transparent">
                 <div className="border-b border-gray-300" id="titulo">
                     <p className="pb-2"> Busqueda</p>
                 </div>

@@ -17,8 +17,11 @@ const obtenerQuejasFiltradas = async (asuntos, municipalidad) => {
     });
 };
 
+
+const findOne = async (id) => await base.get(`${endpoint}/${id}`);
+
 //const verQueja = async()
 
-const api = { findAll, create, quejasUsuario , obtenerQuejasFiltradas }
+const api = { findAll, create, quejasUsuario , obtenerQuejasFiltradas , findOne}
 
 export default api;

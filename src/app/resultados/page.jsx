@@ -31,14 +31,18 @@ export default function ResultadosPage() {
         fetchQuejas();
     }, [router.isReady, searchParams]);
 
+    const handleVolverBuscar = () => {
+        router.push('/gestion');
+    };
+
 
     return (
         <Layout>
             <div>
-                <div className="border-b border-gray-300" id="titulo">
+                <div className="border-b border-gray-300 flex justify-between items-center" id="titulo">
                     <p className="pb-2">Resultados</p>
-                    <div className="text-left space-x-2 ">
-                        <button type="submit" className="bg-inLima_beige hover:bg-inLima_red hover:text-white border rounded-full text-inLima_red  py-1">Volver a buscar</button>
+                    <div className="text-center">
+                        <button type="button" onClick={handleVolverBuscar} className="bg-inLima_beige hover:bg-inLima_red hover:text-white border rounded-full text-inLima_red py-2 px-4 text-sm">Volver a buscar</button>
                     </div>
                 </div>
                 {resultados.length === 0 ? (
