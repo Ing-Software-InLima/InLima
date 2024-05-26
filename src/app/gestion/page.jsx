@@ -95,7 +95,7 @@ export default function GestionPage() {
                             </div>
 
                             <div className="text-left space-x-2 ">
-                                <button type="submit" className="bg-inLima_beige px-4 py-2 hover:bg-inLima_red hover:text-white border rounded-full text-inLima_red  py-1">Buscar</button>
+                                <button type="submit" className="bg-inLima_beige px-4 py-2 hover:bg-inLima_red hover:text-white border rounded-full text-inLima_red">Buscar</button>
                             </div>
 
                         </div>

@@ -15,7 +15,8 @@ module.exports = {
       colors: {
         //COLORES PERSONALIZADOS DE INLIMA
         inLima_beige: '#D6D5C9',
-        inLima_red:  '#C52233'
+        inLima_red:  '#C52233',
+        inLima_lightred: '#FBDFE6'
       }
     },
   },

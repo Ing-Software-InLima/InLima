@@ -34,13 +34,13 @@ export default function DetallePage() {
 
     return (
         <Layout>
-            <div className="border-b border-gray-300 flex justify-between items-center">
+            <div className="border-b border-gray-300 flex">
                     <p className="pb-2">Detalle de la Queja</p>
                     <div className="text-center">
                         <button type="button" onClick={() => router.back()} className="bg-inLima_beige hover:bg-inLima_red hover:text-white border rounded-full text-inLima_red py-2 px-4 text-sm">Volver a resultados</button>
                     </div>
-                </div>
-            <div>
+            </div>
+            <div class="flex flex-col w-[1088px] h-[410px] flex-shrink-0 bg-inLima_lightred ">
                 <p>Asunto: {queja.asunto}</p>
                 <p>Descripción: {queja.descripcion}</p>
                 <p>Ubicación: {queja.ubicacion_descripcion}</p>
