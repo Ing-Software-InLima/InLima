@@ -40,8 +40,6 @@ export default function LoginPage() {
       else {
         console.log("NO")
       }
-
-
     } catch (error) {
       console.error('Error:', error.message);
       alert('Error al conectar');
@@ -49,11 +47,11 @@ export default function LoginPage() {
   };
 
   return (
-    <div class="loquequieras bg-gradient-to-br from-[#BF2441] to-[#F2F2F2] h-screen m-0 p-0 font-montserrat">
+    <div className="loquequieras bg-gradient-to-br from-[#BF2441] to-[#F2F2F2] h-screen m-0 p-0 font-montserrat">
       <form onSubmit={handleSubmit}>
-        <div class="formulario absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 bg-white rounded-lg"  >
+        <div className="formulario absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 bg-white rounded-lg"  >
 
-          <img src="/inlima.png" class="relative left-1/2 transform -translate-x-1/2 translate-y-2.5" alt="InLima " style={{ width: "110px", height: "auto" }} />
+          <img src="/inlima.png" className="relative left-1/2 transform -translate-x-1/2 translate-y-2.5" alt="InLima " style={{ width: "110px", height: "auto" }} />
           <Box
 
             sx={{
@@ -66,13 +64,13 @@ export default function LoginPage() {
             autoComplete="off"
 
           >
-            <div class="text-center pb-3 pt-3 border-t border-silver">
+            <div className="text-center pb-3 pt-3 border-t border-silver">
               <TextField id="outlined-basic" label="Correo" variant="outlined"
                 value={correo}
                 onChange={(e) => setCorreo(e.target.value)}
               /></div>
 
-            <div class="text-center pb-3 ">
+            <div className="text-center pb-3 ">
               <TextField id="outlined-basic" label="Contraseña" variant="outlined"
                 type="password"
                 value={contraseña}
@@ -82,7 +80,7 @@ export default function LoginPage() {
 
 
 
-          <div class="recordar text-center text-[#BF2441] cursor-pointer"> <a href="/reset">¿Olvidaste tu contraseña?</a></div>
+          <div className="recordar text-center text-[#BF2441] cursor-pointer"> <a href="/reset">¿Olvidaste tu contraseña?</a></div>
 
           <Button type='submit'
             sx={{
@@ -98,7 +96,7 @@ export default function LoginPage() {
               }
             }}>Iniciar sesión</Button>
 
-          <div class="registrarse text-center my-5 text-lg text-black">¿No tienes una cuenta? <a href='/register' class="text-[#878ceb]">Regístrate</a></div>
+          <div className="registrarse text-center my-5 text-lg text-black">¿No tienes una cuenta? <a href='/register' className="text-[#878ceb]">Regístrate</a></div>
         </div>
       </form>
     </div>
