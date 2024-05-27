@@ -11,8 +11,30 @@ async function page({ params }) {
     const { type } = params;
     const [showAdvise, setShowAdvise] = useState(false);
 
+    const [asunto, setAsunto] = useState("");
+    const [descripcion, setDescripcion] = useState("");
+    const [nombreFoto, setNombreFoto] = useState("");
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [ubicacion, setUbicacion] = useState("");
+    const [latitud, setLatutid] = useState(0.0);
+    const [longitud, setLongitud] = useState(0.0);
+    const [municipalidad, setMunicipalidad] = useState(0);
+
     const handleEnviarClick = () => {
         setShowAdvise(true);
+    };
+
+    const handleSubirFoto = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            setSelectedImage(file);
+            setNombreFoto(file.name)
+        }
+    };
+
+    const handleEliminarFoto = () => {
+        setSelectedImage(null);
+        setNombreArchivo("");
     };
 
     const removeBarraBaja = (text) => {
@@ -42,6 +64,7 @@ async function page({ params }) {
                         <div>
                             <NoSsr>
                                 <TextField
+                                    onChange={setAsunto}
                                     sx={{ width: '90%' }}
                                 />
                             </NoSsr>
@@ -59,6 +82,7 @@ async function page({ params }) {
                         maxRows={4} // Puedes ajustar esto según lo que necesites
                         fullWidth
                         variant="outlined"
+                        onChange={setDescripcion}
                         sx={{ width: '90%' }}
                     />
                 </NoSsr>
@@ -68,20 +92,46 @@ async function page({ params }) {
                 <div>
                     <NoSsr>
                         <TextField
+                            onChange={setUbicacion}
                             sx={{ width: '90%' }}
                         />
                     </NoSsr>
                 </div>
-                <div className='m-4'>
-                    Mapa
+                <div className='pt-4 pb-4'>
+                    Seleccione la municipalidad destino:
+                </div>
+                <div>
+                    <NoSsr>
+                        <TextField
+                            onChange={setUbicacion}
+                            sx={{ width: '90%' }}
+                        />
+                    </NoSsr>
                 </div>
                 <div className='pt-4 pb-4'>
                     Adjuntar fotos (No es obligatorio)
                 </div>
                 <div>
-                    <button className='bg-gray-300 rounded-lg pl-3 pr-3' >
-                        <CameraIcon />
-                    </button>
+                    <input
+                        type="file"
+                        accept="image/jpeg, image/png" // Acepta solo archivos JPEG y PNG
+                        onChange={handleSubirFoto} // Manejar el cambio del input
+                        style={{ display: 'none' }} // Estilo para ocultar el input
+                        id="upload-photo" // ID para asociarlo con el botón de la cámara
+                    />
+                    {/* Botón de la cámara */}
+                    <label htmlFor="upload-photo" style={{cursor: 'pointer'}}>
+                        <CameraIcon className='bg-gray-300 rounded-lg pl-3 pr-3'/>
+                    </label>
+                    
+                    {nombreFoto !== "" ? (
+                    <div className='center'>
+                        {nombreFoto}
+                        <button className='rounded-2xl bg-gray-300 ml-2 mr-2 p-2' onClick={handleEliminarFoto} style={{cursor: 'pointer'}}>
+                            No adjuntar
+                        </button>
+                    </div>
+                    ):(<></>)}
                 </div>
                 <div className='mt-4'>
                     <button className='rounded-2xl text-white bg-inLima_red p-4 pl-8 pr-8' onClick={handleEnviarClick}>
