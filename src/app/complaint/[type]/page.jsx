@@ -5,8 +5,16 @@ import NoSsr from '@mui/material/NoSsr';
 import CameraIcon from '@/icons/camera';
 import Advise from '@/components/Advise';
 import Layout from '@/components/Layout';
+import municipalidadApi from '@/api/municipalidad';
+import quejaApi from '@/api/queja';
 
-async function page({ params }) {
+import MenuItem from '@mui/material/MenuItem';
+import Box from '@mui/material/Box';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+
+function page({ params }) {
 
     const { type } = params;
     const [showAdvise, setShowAdvise] = useState(false);
@@ -18,10 +26,34 @@ async function page({ params }) {
     const [ubicacion, setUbicacion] = useState("");
     const [latitud, setLatutid] = useState(0.0);
     const [longitud, setLongitud] = useState(0.0);
+    const [municipalidades, setMunicipalidades] = useState([]);
     const [municipalidad, setMunicipalidad] = useState(0);
 
-    const handleEnviarClick = () => {
-        setShowAdvise(true);
+
+
+    const handleEnviarClick = async () => {
+        try{
+            const queja = {
+                asunto: asunto,
+                descripcion: descripcion,
+                foto: selectedImage,
+                ubicacion_descripcion: ubicacion,
+                latitud: latitud,
+                longitud: longitud,
+                municipalidad: municipalidad
+            }
+
+            const resp = await quejaApi.agregarQueja(queja);
+            if (resp)
+                console.log("Queja guardada.");
+                
+            else
+                alert("Error al guardar.");
+                setShowAdvise(true);
+        }catch(error){
+            console.error("Error en el registro de queja:", error); 
+        }
+        
     };
 
     const handleSubirFoto = (event) => {
@@ -30,6 +62,11 @@ async function page({ params }) {
             setSelectedImage(file);
             setNombreFoto(file.name)
         }
+    };
+
+    const handleChange = (e) => {
+        const selectedMunicipalidad = municipalidades.find(muni => muni.id === parseInt(e.target.value, 10));
+        setMunicipalidad(selectedMunicipalidad);
     };
 
     const handleEliminarFoto = () => {
@@ -45,6 +82,19 @@ async function page({ params }) {
         formattedText = formattedText.replace(/%C3%AD/g, 'í')
         return formattedText;
     };
+
+    useEffect(() => {
+        const fetchMunicipalidades = async () => {
+            try {
+                const response = await municipalidadApi.findAll();
+                setMunicipalidades(response.data);
+            } catch (error) {
+                console.error('Error al obtener las municipalidades:', error);
+            }
+        };
+
+        fetchMunicipalidades();
+    }, []);
 
     return (
         <Layout>
@@ -101,12 +151,23 @@ async function page({ params }) {
                     Seleccione la municipalidad destino:
                 </div>
                 <div>
-                    <NoSsr>
-                        <TextField
-                            onChange={setUbicacion}
-                            sx={{ width: '90%' }}
-                        />
-                    </NoSsr>
+                    <Box sx={{ minWidth: 500 }}>
+                        <FormControl fullWidth>
+                            <InputLabel id="municipalidad-label">Seleccionar Ubicación</InputLabel>
+                                <Select
+                                    labelId="municipalidad-label"
+                                    value={municipalidad ? municipalidad.id : ''}
+                                    onChange={handleChange}
+                                    label="Seleccionar Ubicación"
+                                        >
+                                    {municipalidades.map((muni) => (
+                                    <MenuItem key={muni.id} value={muni.id}>
+                                        {muni.nombre}
+                                    </MenuItem>
+                                    ))}
+                                </Select>
+                        </FormControl>
+                    </Box>
                 </div>
                 <div className='pt-4 pb-4'>
                     Adjuntar fotos (No es obligatorio)
