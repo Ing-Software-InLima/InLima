@@ -12,16 +12,16 @@ export default function ResultadosPage() {
     const [resultados, setResultados] = useState([]);
 
     useEffect(() => {
-        if (!router.isReady) return;
-
         const fetchQuejas = async () => {
             const params = new URLSearchParams(searchParams.toString());
             const asuntos = params.get('asuntos') ? params.get('asuntos').split(',') : [];
-            const municipalidad = params.get('municipalidad') || '';
+            const municipalidad = parseInt(params.get('municipalidad'), 10) || 0;
+
+            console.log("Parámetros de búsqueda:", { asuntos, municipalidad });
 
             try {
                 const response = await api.obtenerQuejasFiltradas(asuntos, municipalidad);
-                console.log("Quejas recibidas:", response.data); // Impresión de consola para verificar los datos
+                console.log("Quejas recibidas:", response.data);
                 setResultados(response.data);
             } catch (error) {
                 console.error('Error al obtener las quejas:', error);
@@ -29,7 +29,7 @@ export default function ResultadosPage() {
         };
 
         fetchQuejas();
-    }, [router.isReady, searchParams]);
+    }, [searchParams]);
 
     const handleVolverBuscar = () => {
         router.push('/gestion');
