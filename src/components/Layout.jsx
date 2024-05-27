@@ -11,7 +11,7 @@ export default function Layout({ children }) {
     return (
         <>
         <HeaderInLima toggleNav = {toggleNav} Nav = {Nav}/>
-        <div className="flex h-screen">
+        <div className="flex h-fit">
             {Nav && <Navbar/>}
             <div className="flex-grow p-6">
                 {children}
