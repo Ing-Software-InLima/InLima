@@ -3,7 +3,7 @@ import base from './base.js';
 
 const endpoint = '/notificador';
 
-const notificacion = async (email, estado) => await base.post(`${endpoint}/send`, { email, estado });
+const notificacion = async (payload) => await base.post(`${endpoint}/send`, payload);
 
 const api = { notificacion };
 

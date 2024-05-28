@@ -12,6 +12,8 @@ const cerrarSesion = async () => await base.get('/usuario/logout')
 
 const obtenerRol = async () => await base.get('/usuario/getrol')
 
-const api = { findAll, create, iniciarSesion, cerrarSesion , obtenerRol}
+const encontrarUsuario = async () => await base.get('/usuario/encontrarCiudadano')
+
+const api = { findAll, create, iniciarSesion, cerrarSesion , obtenerRol, encontrarUsuario}
 
 export default api;
