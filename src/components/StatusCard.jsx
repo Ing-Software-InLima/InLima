@@ -1,6 +1,11 @@
+"use client";
 import Image from "next/image"
 import StatusColor from "./StatusColor"
+import { useRouter } from 'next/navigation';
+
 export default function StatusCard({asunto, id, dni, estado}) {
+
+    const router=useRouter();
 
     const handleViewDetail = () => {
         router.push(`/detalle/${id}`);
