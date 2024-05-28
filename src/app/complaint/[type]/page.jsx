@@ -29,28 +29,15 @@ function page({ params }) {
     const [municipalidades, setMunicipalidades] = useState([]);
     const [municipalidad, setMunicipalidad] = useState(0);
 
-    const convertToBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
-        });
-    };
-
     const handleEnviarClick = async () => {
         try {
-            let photoBase64 = "";
-            if (selectedImage) {
-                photoBase64 = await convertToBase64(selectedImage);
-                console.log(photoBase64);
-            }
+            console.log(selectedImage)
 
             console.log(municipalidad)
             const queja = {
                 asunto: asunto,
                 descripcion: descripcion,
-                foto: '',
+                foto: selectedImage,
                 ubicacion_descripcion: ubicacion,
                 latitud: latitud,
                 longitud: longitud,
@@ -65,13 +52,19 @@ function page({ params }) {
         }
     };
 
-    const handleSubirFoto = (event) => {
-        const file = event.target.files[0];
+    const handleSubirFoto = (e) => {
+        const file = e.target.files[0];
+        setNombreFoto(file.name);
         if (file) {
-            setSelectedImage(file);
-            setNombreFoto(file.name)
+            const reader = new FileReader();
+            reader.onload =  (event) => {
+                setSelectedImage(event.target.result);
+            };
+            reader.readAsDataURL(file);
         }
     };
+
+
 
     const handleChange = (e) => {
         const selectedMunicipalidad = municipalidades.find(muni => muni.id === parseInt(e.target.value, 10));
@@ -79,7 +72,8 @@ function page({ params }) {
     };
 
     const handleEliminarFoto = () => {
-        setSelectedImage(null);
+        //console.log(selectedImage)
+        setSelectedImage('');
         setNombreFoto("");
     };
 
