@@ -207,7 +207,7 @@ function page({ params }) {
                 </div>
                 {showAdvise && (
                     <div className='fixed inset-0 flex justify-center items-center bg-black bg-opacity-50'>
-                        <Advise Mensaje="Se envió satisfactoriamente" />
+                        <Advise Mensaje="Se envió satisfactoriamente" URL="/estado"/>
                     </div>
                 )}
             </div>
