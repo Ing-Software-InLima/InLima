@@ -12,7 +12,7 @@ const cerrarSesion = async () => await base.get('/usuario/logout')
 
 const obtenerRol = async () => await base.get('/usuario/getrol')
 
-const encontrarUsuario = async () => await base.get('/usuario/encontrarCiudadano')
+const encontrarUsuario = async (payload) => await base.post('/usuario/encontrarCiudadano',payload)
 
 const api = { findAll, create, iniciarSesion, cerrarSesion , obtenerRol, encontrarUsuario}
 
