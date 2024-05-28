@@ -9,61 +9,64 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { useState } from "react"
-import db_users from '@/api/usuario'
+import db_users from '@/api/ciudadano'
 import { useRouter } from 'next/navigation';
 
+
 export default function RegisterPage() {
+  const [email, setEmail] = useState('');
   const [nombre, setNombre] = useState('');
-  const [apellido, setApellido] = useState('');
-  const [correo, setCorreo] = useState('');
-  const [contraseña, setContraseña] = useState('');
+  const [password, setPassword] = useState('');
+  const [apellido_paterno, setApellidoP] = useState('');
+  const [apellido_materno, setApellidoM] = useState('');
+  const [dni, setDni] = useState('');
   const [sexo, setSexo] = useState('');
+  const [foto, setFoto] = useState('');
+  const [numero, setNumero] = useState('');
   const router = useRouter();
+
+
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    const User = {
+      email: email,
+      password: password,
+      nombre: nombre,
+      apellido_materno: apellido_materno,
+      apellido_paterno: apellido_paterno,
+      dni: dni,
+      numero:numero,
+      sexo: sexo,
+      foto: "",
+      
+    };
     try {
-      console.log("Iniciando fetching users")
-      const response = await db_users.findAll();
-      if (response.status != 200) {
-        throw new Error('Error fetching users');
+      const response = await db_users.create(User);
+      if (response.status == 200) {
+        router.push('/home')
       }
-      const existingUser = response.data.find(user => user.email === correo);
-      if (existingUser) {
-        alert('El correo electrónico ya existe', { variant: 'error' });
-        return
-      }
-
-      const newUser = {
-        nombre,
-        email: correo,
-        password: contraseña,
-        foto: null,
-        rol_id: 1,
-        sexo_id: sexo
-      };
-      const res = await db_users.create(newUser)
-      if (res.status == 200){
-        router.push('/login')
+      else {
+        console.log("NO")
       }
 
     } catch (error) {
-      console.error('Error:', error.message);
-      alert('Error durante el registro', { variant: 'error' });
-    }
+        console.error('Error:', error.message);
+        alert('Error al conectar');
+      }
   };
 
 
   return (
-  <div class="General bg-gradient-to-br from-[#BF2441] to-[#F2F2F2] h-screen m-0 p-0">
+  <div class="General bg-gradient-to-br from-[#BF2441] to-[#F2F2F2] w-screen h-screen m-0 p-0">
     <form onSubmit={handleSubmit}>
-      <div class="formulario absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 bg-white rounded-lg">
+      <div class="formulario absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 bg-white rounded-lg">
         <img src="/inlima.png" class="relative left-1/2 transform -translate-x-1/2 translate-y-2.5" alt="InLima " style={{ width: "110px", height: "auto" }} />
 
         <div class="textito text-center text-[#BF2441] py-5 border-b border-silver">Regístrate para realizar quejas y sugerencias</div>
         <Box
           sx={{
-            '& .MuiTextField-root': { m: 1, width: '14.5ch' },
+            '& .MuiTextField-root': { m: 1, width: '20ch' },
             ml: 0,
             mt: 2,
           }}
@@ -72,25 +75,45 @@ export default function RegisterPage() {
         >
           <div class="text-center p-0 "><TextField id="outlined-basic" label="Nombre" variant="outlined" value={nombre}
             onChange={(e) => setNombre(e.target.value)} />
-            <TextField id="outlined-basic" label="Apellido" variant="outlined" value={apellido}
-              onChange={(e) => setApellido(e.target.value)} /></div>
+            <TextField id="outlined-basic" label="Correo electrónico" variant="outlined" value={email}
+            onChange={(e) => setEmail(e.target.value)} /></div>
         </Box>
 
         <Box
           sx={{
-            '& .MuiTextField-root': { m: 1, width: '30.6ch' },
+            '& .MuiTextField-root': { m: 1, width: '20ch' },
+            ml: 0,
+            mt: 0,
+          }}
+          noValidate
+          autoComplete="off"
+        >
+           <div class="text-center p-0 "> <TextField id="outlined-basic" label="Apellido Paterno" variant="outlined" value={apellido_paterno}
+              onChange={(e) => setApellidoP(e.target.value)} />
+              <TextField id="outlined-basic" label="Apellido Materno" variant="outlined" value={apellido_materno}
+              onChange={(e) => setApellidoM(e.target.value)} /> </div>
+        </Box>
+
+        <Box
+          sx={{
+            '& .MuiTextField-root': { m: 1, width: '20ch' },
             ml: 0,
           }}
           noValidate
           autoComplete="off"
         >
-          <div class="text-center p-0 "><TextField id="outlined-basic" label="Correo electrónico" variant="outlined" value={correo}
-            onChange={(e) => setCorreo(e.target.value)} /></div>
-          <div class="text-center p-0 " ><TextField id="outlined-basic" label="Contraseña" variant="outlined" type="password"
-            value={contraseña}
-            onChange={(e) => setContraseña(e.target.value)} /></div>
+          <div class="text-center p-0 " ><TextField id="outlined-basic" label="Contraseña" variant="outlined" 
+            value={password}
+            onChange={(e) => setPassword(e.target.value)} />
+             <TextField id="outlined-basic" label="Número Telefonico" variant="outlined" type="int"
+            value={numero}
+            onChange={(e) => setNumero(e.target.value)} /></div>
+           
+            <div class="text-center p-0 " ><TextField id="outlined-basic" label="Dni" variant="outlined" type="dni"
+            value={dni}
+            onChange={(e) => setDni(e.target.value)} /></div>
 
-          <FormControl style={{ marginLeft: '50px', marginTop: '10px' }}>
+          <FormControl style={{ marginLeft: '150px', marginTop: '10px' }}>
             <FormLabel id="demo-row-radio-buttons-group-label" >Sexo</FormLabel>
             <RadioGroup
               row
@@ -110,7 +133,7 @@ export default function RegisterPage() {
         <Button type='submit'
           sx={{
             width: '35ch',
-            ml: 8,
+            ml: 15,
             mt: 2,
             mb: 2
             , backgroundColor: '#BF2441', color: 'white', borderRadius: '26px',
