@@ -74,10 +74,11 @@ export default function DetallePage() {
     const handleGuardar = async () => {
         try {
             await api.updateEstado(id, { estado_id: estadoSeleccionado.id });
-
+            alert('Estado actualizado con éxito');
+            const response = await api.findOne(id); // Obtener los datos más recientes de la queja
+            setQueja(response.data);
             const payload = {
                 queja_id: id,
-                email: ciudadano.email,
                 estado_id: estadoSeleccionado.id
             };
             await regHistorial.registrarCambio(payload);
@@ -140,7 +141,7 @@ export default function DetallePage() {
                                         value={estadoSeleccionado ? estadoSeleccionado.id : ''}
                                         onChange={handleChangeEstado}
                                         label="Estado"
-                                    >
+                                        >
                                         {estados.map((estado) => (
                                             <MenuItem key={estado.id} value={estado.id}>
                                                 {estado.nombre}
