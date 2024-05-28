@@ -1,16 +1,23 @@
 'use client'
 import Layout from "@/components/Layout"
 import StatusCard from "@/components/StatusCard"
-import { useEffect } from "react"
-import api_queja from '@/api/queja.js'
+import { useEffect, useState } from "react"
+import queja from '@/api/queja.js'
 
 export default function Estado() {
+    const [quejas, setQuejas] = useState([]);
+    const [loading, setLoading] = useState(true);
+
     const obtenerQuejas = async () => {
         try {
-            const response = await api_queja.quejasUsuario();
-            console.log("quejas",response)
+            const response = await queja.quejasUsuario();
+            if(response.status == 200) {
+                setQuejas(response?.data);
+            }
         } catch (error) {
             alert("Error al conectar")
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -24,13 +31,19 @@ export default function Estado() {
                 <p className="py-2 text-xl font-medium">Estado de tus quejas</p>
             </div>
             <div className="flex flex-wrap gap-8 w-auto">
-                <StatusCard asunto="Semaforo malogrado" id="00000001" dni="8745612" estado="En proceso"></StatusCard>
-                <StatusCard asunto="Rompemuelle sin pintar" id="00000002" dni="8745612" estado="Solucionado"></StatusCard>
-                <StatusCard asunto="Rompemuelle sin pintar" id="00000002" dni="8745612" estado="Archivada"></StatusCard>
-                <StatusCard asunto="Rompemuelle sin pintar" id="00000002" dni="8745612" estado="Solucionado"></StatusCard>
-                <StatusCard asunto="Rompemuelle sin pintar" id="00000002" dni="8745612" estado="Solucionado"></StatusCard>
-                <StatusCard asunto="Rompemuelle sin pintar" id="00000002" dni="8745612" estado="Solucionado"></StatusCard>
-                <StatusCard asunto="Rompemuelle sin pintar" id="00000002" dni="8745612" estado="Solucionado"></StatusCard>
+            {quejas.length === 0 ? (
+                loading? (<p className="flex justify-center items-center text-xl p-5">Cargando ...</p>) : (<p>No se encontraron quejas realizadas</p>)
+                ) : (
+                    quejas.map((queja) => (
+                        <StatusCard
+                            key={queja.id}
+                            asunto={queja.asunto}
+                            id={queja.id}   
+                            dni={queja.ciudadano.dni}   
+                            estado={queja.estado}
+                        />
+                    ))
+                )}
             </div>
         </Layout>
     )
