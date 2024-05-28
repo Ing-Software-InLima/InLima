@@ -10,6 +10,8 @@ const iniciarSesion = async (payload) => await base.post('/usuario/login', paylo
 
 const cerrarSesion = async () => await base.get('/usuario/logout')
 
-const api = { findAll, create, iniciarSesion, cerrarSesion }
+const obtenerRol = async () => await base.get('/usuario/getrol')
+
+const api = { findAll, create, iniciarSesion, cerrarSesion , obtenerRol}
 
 export default api;
