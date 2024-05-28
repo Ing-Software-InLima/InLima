@@ -13,7 +13,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { useEffect } from 'react';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
-import { getUserRole } from '../../../utils/auth';
+
 
 
 
@@ -40,10 +40,10 @@ export default function LoginPage() {
       const response = await db_users.iniciarSesion(User);
       console.log("singin: ", response)
       if (response.status == 200) {
-        const role = getUserRole();
-        setRole(role);
-        console.log("el rol es: "+role)
-        if(role == 1){
+        const role = await db_users.obtenerRol();
+        setRole(role.data.rol);
+        console.log("el rol es: "+role.data.rol)
+        if(role.data.rol == 1){
           router.push('/home')
         }
         else{

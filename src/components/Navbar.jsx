@@ -1,15 +1,24 @@
 import Link from "next/link"
 import { useEffect, useState } from 'react';
-import { getUserRole } from '../utils/auth';
+//import { getUserRole } from '../utils/auth';
+import apirol from '@/api/usuario';
 
 export default function Navbar() {
     const [role, setRole] = useState(null);
 
     useEffect(() => {
-        const role = getUserRole();
-        setRole(role);
-    }, []);
-
+        // Llama a obtenerRol para obtener el rol del usuario cuando el componente se monta
+        const fetchUserRole = async () => {
+          try {
+            const response = await apirol.obtenerRol();
+            setRole(response.data.rol);
+          } catch (error) {
+            console.error('Error obteniendo el rol del usuario:', error);
+          }
+        };
+    
+        fetchUserRole();
+      }, []);
 
     return (
         <nav className="bg-inLima_beige px-8 py-9">
