@@ -1,12 +1,13 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import { useParams, useRouter } from 'next/navigation';
 import api from '@/api/queja';
 import Layout from '@/components/Layout';
 
 export default function DetallePage() {
     const router = useRouter();
-    const { id } = router.query;
+    const { id } = useParams();
+    console.log("mi id es: "+id)
     const [queja, setQueja] = useState(null);
 
     useEffect(() => {
