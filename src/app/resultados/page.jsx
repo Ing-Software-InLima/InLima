@@ -50,6 +50,7 @@ export default function ResultadosPage() {
                         <button type="button" onClick={handleVolverBuscar} className="bg-inLima_beige hover:bg-inLima_red hover:text-white border rounded-full text-inLima_red py-2 px-4 text-sm">Volver a buscar</button>
                     </div>
                 </div>
+                <div className="flex flex-wrap gap-8 w-auto">
                 {resultados && resultados.length === 0 ? (
                     <p>No se encontraron resultados para esta búsqueda</p>
                 ) : (
@@ -63,7 +64,7 @@ export default function ResultadosPage() {
                         />
                     ))
                 )}
-
+                </div>
             </div>
         </Layout>
     );

@@ -9,6 +9,7 @@ import Layout from '@/components/Layout';
 import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import apirol from '@/api/usuario';
 import apiestado from '@/api/estado';
+import Advise from '@/components/Advise';
 
 
 export default function DetallePage() {
@@ -19,6 +20,7 @@ export default function DetallePage() {
     const [estadoSeleccionado, setEstadoSeleccionado] = useState(null);
     const [role, setRole] = useState(null);
     const [ciudadano, setCiudadano] = useState(null);
+    const [showAdvise, setShowAdvise] = useState(false);
 
     useEffect(() => {
         const fetchQueja = async () => {
@@ -83,7 +85,7 @@ export default function DetallePage() {
     const handleGuardar = async () => {
         try {
             await api.updateEstado(id, { estado_id: estadoSeleccionado.id });
-            alert('Estado actualizado con éxito');
+            setShowAdvise(true);
 
             const response = await api.findOne(id); // Obtener los datos más recientes de la queja
             setQueja(response.data);
@@ -167,6 +169,11 @@ export default function DetallePage() {
                     </div>
                 </div>
             </div>
+            {showAdvise && (
+                <div className='fixed inset-0 flex justify-center items-center bg-black bg-opacity-50'>
+                    <Advise Mensaje = "Se envió un correo confirmando cambio de estado" onClose={() => setShowAdvise(false)}/>
+                </div>
+            )}
         </Layout>
     );
 }
