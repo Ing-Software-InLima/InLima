@@ -77,7 +77,6 @@ export default function DetallePage() {
 
             const payload = {
                 queja_id: id,
-                email: ciudadano.email,
                 estado_id: estadoSeleccionado.id
             };
             await regHistorial.registrarCambio(payload);
