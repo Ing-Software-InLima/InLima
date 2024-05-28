@@ -19,41 +19,50 @@ function page({ params }) {
     const { type } = params;
     const [showAdvise, setShowAdvise] = useState(false);
 
-    const [asunto, setAsunto] = useState("");
+    const [asunto, setAsunto] = useState(type);
     const [descripcion, setDescripcion] = useState("");
     const [nombreFoto, setNombreFoto] = useState("");
-    const [selectedImage, setSelectedImage] = useState(null);
+    const [selectedImage, setSelectedImage] = useState("");
     const [ubicacion, setUbicacion] = useState("");
     const [latitud, setLatutid] = useState(0.0);
     const [longitud, setLongitud] = useState(0.0);
     const [municipalidades, setMunicipalidades] = useState([]);
     const [municipalidad, setMunicipalidad] = useState(0);
 
-
+    const convertToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+    };
 
     const handleEnviarClick = async () => {
-        try{
+        try {
+            let photoBase64 = "";
+            if (selectedImage) {
+                photoBase64 = await convertToBase64(selectedImage);
+                console.log(photoBase64);
+            }
+
+            console.log(municipalidad)
             const queja = {
                 asunto: asunto,
                 descripcion: descripcion,
-                foto: selectedImage,
+                foto: '',
                 ubicacion_descripcion: ubicacion,
                 latitud: latitud,
                 longitud: longitud,
-                municipalidad: municipalidad
-            }
-
+                municipalidad: municipalidad?.id
+            };
             const resp = await quejaApi.agregarQueja(queja);
-            if (resp)
-                console.log("Queja guardada.");
-                
-            else
-                alert("Error al guardar.");
-                setShowAdvise(true);
-        }catch(error){
-            console.error("Error en el registro de queja:", error); 
+            console.log("Queja guardada.");
+            setShowAdvise(true);
+        } catch (error) {
+            alert("Error al guardar.");
+            console.error("Error en el registro de queja:", error);
         }
-        
     };
 
     const handleSubirFoto = (event) => {
@@ -71,7 +80,7 @@ function page({ params }) {
 
     const handleEliminarFoto = () => {
         setSelectedImage(null);
-        setNombreArchivo("");
+        setNombreFoto("");
     };
 
     const removeBarraBaja = (text) => {
@@ -114,7 +123,8 @@ function page({ params }) {
                         <div>
                             <NoSsr>
                                 <TextField
-                                    onChange={setAsunto}
+                                    value={asunto}
+                                    onChange={(e) => setAsunto(e.target.value)}
                                     sx={{ width: '90%' }}
                                 />
                             </NoSsr>
@@ -132,7 +142,8 @@ function page({ params }) {
                         maxRows={4} // Puedes ajustar esto según lo que necesites
                         fullWidth
                         variant="outlined"
-                        onChange={setDescripcion}
+                        value={descripcion}
+                        onChange={(e) => setDescripcion(e.target.value)}
                         sx={{ width: '90%' }}
                     />
                 </NoSsr>
@@ -142,7 +153,8 @@ function page({ params }) {
                 <div>
                     <NoSsr>
                         <TextField
-                            onChange={setUbicacion}
+                            value={ubicacion}
+                            onChange={(e) => setUbicacion(e.target.value)}
                             sx={{ width: '90%' }}
                         />
                     </NoSsr>
@@ -154,18 +166,18 @@ function page({ params }) {
                     <Box sx={{ minWidth: 500 }}>
                         <FormControl fullWidth>
                             <InputLabel id="municipalidad-label">Seleccionar Ubicación</InputLabel>
-                                <Select
-                                    labelId="municipalidad-label"
-                                    value={municipalidad ? municipalidad.id : ''}
-                                    onChange={handleChange}
-                                    label="Seleccionar Ubicación"
-                                        >
-                                    {municipalidades.map((muni) => (
+                            <Select
+                                labelId="municipalidad-label"
+                                value={municipalidad ? municipalidad.id : ''}
+                                onChange={handleChange}
+                                label="Seleccionar Ubicación"
+                            >
+                                {municipalidades.map((muni) => (
                                     <MenuItem key={muni.id} value={muni.id}>
                                         {muni.nombre}
                                     </MenuItem>
-                                    ))}
-                                </Select>
+                                ))}
+                            </Select>
                         </FormControl>
                     </Box>
                 </div>
@@ -181,18 +193,18 @@ function page({ params }) {
                         id="upload-photo" // ID para asociarlo con el botón de la cámara
                     />
                     {/* Botón de la cámara */}
-                    <label htmlFor="upload-photo" style={{cursor: 'pointer'}}>
-                        <CameraIcon className='bg-gray-300 rounded-lg pl-3 pr-3'/>
+                    <label htmlFor="upload-photo" style={{ cursor: 'pointer' }}>
+                        <CameraIcon className='bg-gray-300 rounded-lg pl-3 pr-3' />
                     </label>
-                    
+
                     {nombreFoto !== "" ? (
-                    <div className='center'>
-                        {nombreFoto}
-                        <button className='rounded-2xl bg-gray-300 ml-2 mr-2 p-2' onClick={handleEliminarFoto} style={{cursor: 'pointer'}}>
-                            No adjuntar
-                        </button>
-                    </div>
-                    ):(<></>)}
+                        <div className='center'>
+                            {nombreFoto}
+                            <button className='rounded-2xl bg-gray-300 ml-2 mr-2 p-2' onClick={handleEliminarFoto} style={{ cursor: 'pointer' }}>
+                                No adjuntar
+                            </button>
+                        </div>
+                    ) : (<></>)}
                 </div>
                 <div className='mt-4'>
                     <button className='rounded-2xl text-white bg-inLima_red p-4 pl-8 pr-8' onClick={handleEnviarClick}>
