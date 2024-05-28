@@ -48,23 +48,32 @@ export default function DetallePage() {
                 console.error('Error obteniendo el rol del usuario:', error);
             }
         };
-        const ciudadanoQueja = async () => {
-            try {
-                const response = await apirol.encontrarUsuario(queja.ciudadano_id);
-                setCiudadano(response.data)
-            } catch (error) {
-                console.error('Error obteniendo al ciudadano de la queja:', error);
-            }
-        }
-
-
+        
         if (id) {
             fetchQueja();
             fetchEstados();
             fetchUserRole();
-            ciudadanoQueja();
         }
     }, [id]);
+
+    useEffect(()=>{
+        const ciudadanoQueja = async () => {
+            try {
+                const ciudadanoid = {
+                    id_ciudadano: queja.ciudadano_id
+                }
+                const response = await apirol.encontrarUsuario(ciudadanoid);
+                setCiudadano(response.data.usuarioEncontrado)
+
+            } catch (error) {
+                console.error('Error obteniendo al ciudadano de la queja:', error);
+            }
+        };
+        if(queja){
+            ciudadanoQueja();
+        }
+        
+    },[queja]);
 
     const handleChangeEstado = (event) => {
         const selectedEstado = estados.find(estado => estado.id === event.target.value);
@@ -75,19 +84,20 @@ export default function DetallePage() {
         try {
             await api.updateEstado(id, { estado_id: estadoSeleccionado.id });
             alert('Estado actualizado con éxito');
+
             const response = await api.findOne(id); // Obtener los datos más recientes de la queja
             setQueja(response.data);
             const payload = {
-                queja_id: id,
+                queja_id: queja.id,
                 estado_id: estadoSeleccionado.id
             };
             await regHistorial.registrarCambio(payload);
+            
             const payload2 = {
                 email: ciudadano.email,
                 estado: estadoSeleccionado.nombre
             }
             await notificador.notificacion(payload2)
-            alert('Estado actualizado con éxito');
         } catch (error) {
             console.error('Error al actualizar el estado:', error);
         }
