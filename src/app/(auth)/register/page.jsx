@@ -38,7 +38,7 @@ export default function RegisterPage() {
       dni: dni,
       numero:numero,
       sexo: sexo,
-      foto: "",
+      foto: null,
       
     };
     try {
@@ -102,7 +102,7 @@ export default function RegisterPage() {
           noValidate
           autoComplete="off"
         >
-          <div class="text-center p-0 " ><TextField id="outlined-basic" label="Contraseña" variant="outlined" 
+          <div class="text-center p-0 " ><TextField id="outlined-basic" label="Contraseña" variant="outlined"  type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)} />
              <TextField id="outlined-basic" label="Número Telefonico" variant="outlined" type="int"
