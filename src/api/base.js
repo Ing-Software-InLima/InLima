@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 //https://inlima-2024-sw2-as-api.azurewebsites.net/
+//const URI = 'https://inlima-backend.azurewebsites.net'
 const URI = 'http://localhost:3001'
 axios.defaults.withCredentials = true
 
@@ -18,7 +19,7 @@ const get = async (endpoint) => {
 const post = async (endpoint, payload) => {
     try {
         const url = URI.concat(endpoint);
-
+        console.log(url)
         return await axios.post(url, payload);
     } catch(err) {
         console.error(err);

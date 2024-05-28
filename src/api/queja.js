@@ -2,8 +2,10 @@ import base from './base.js'
 
 const endpoint = '/queja';
 
-const agregarQueja = async(payload) => await base.post(endpoint + '/create', payload);
-
+const agregarQueja = async(payload) => {
+    console.log("agregar queja post")
+    await base.post('/queja/create',payload);
+}
 const quejasUsuario = async() => await base.get(endpoint + '/getall')
 
 const findAll = async () => await base.get(endpoint);
