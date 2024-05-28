@@ -5,23 +5,64 @@ import NoSsr from '@mui/material/NoSsr';
 import CameraIcon from '@/icons/camera';
 import Advise from '@/components/Advise';
 import Layout from '@/components/Layout';
+import municipalidadApi from '@/api/municipalidad';
+import quejaApi from '@/api/queja';
 
-async function page({ params }) {
+import MenuItem from '@mui/material/MenuItem';
+import Box from '@mui/material/Box';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+
+function page({ params }) {
 
     const { type } = params;
     const [showAdvise, setShowAdvise] = useState(false);
 
-    const [asunto, setAsunto] = useState("");
+    const [asunto, setAsunto] = useState(type);
     const [descripcion, setDescripcion] = useState("");
     const [nombreFoto, setNombreFoto] = useState("");
-    const [selectedImage, setSelectedImage] = useState(null);
+    const [selectedImage, setSelectedImage] = useState("");
     const [ubicacion, setUbicacion] = useState("");
     const [latitud, setLatutid] = useState(0.0);
     const [longitud, setLongitud] = useState(0.0);
+    const [municipalidades, setMunicipalidades] = useState([]);
     const [municipalidad, setMunicipalidad] = useState(0);
 
-    const handleEnviarClick = () => {
-        setShowAdvise(true);
+    const convertToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+    };
+
+    const handleEnviarClick = async () => {
+        try {
+            let photoBase64 = "";
+            if (selectedImage) {
+                photoBase64 = await convertToBase64(selectedImage);
+                console.log(photoBase64);
+            }
+
+            console.log(municipalidad)
+            const queja = {
+                asunto: asunto,
+                descripcion: descripcion,
+                foto: '',
+                ubicacion_descripcion: ubicacion,
+                latitud: latitud,
+                longitud: longitud,
+                municipalidad: municipalidad?.id
+            };
+            const resp = await quejaApi.agregarQueja(queja);
+            console.log("Queja guardada.");
+            setShowAdvise(true);
+        } catch (error) {
+            alert("Error al guardar.");
+            console.error("Error en el registro de queja:", error);
+        }
     };
 
     const handleSubirFoto = (event) => {
@@ -32,9 +73,14 @@ async function page({ params }) {
         }
     };
 
+    const handleChange = (e) => {
+        const selectedMunicipalidad = municipalidades.find(muni => muni.id === parseInt(e.target.value, 10));
+        setMunicipalidad(selectedMunicipalidad);
+    };
+
     const handleEliminarFoto = () => {
         setSelectedImage(null);
-        setNombreArchivo("");
+        setNombreFoto("");
     };
 
     const removeBarraBaja = (text) => {
@@ -45,6 +91,19 @@ async function page({ params }) {
         formattedText = formattedText.replace(/%C3%AD/g, 'í')
         return formattedText;
     };
+
+    useEffect(() => {
+        const fetchMunicipalidades = async () => {
+            try {
+                const response = await municipalidadApi.findAll();
+                setMunicipalidades(response.data);
+            } catch (error) {
+                console.error('Error al obtener las municipalidades:', error);
+            }
+        };
+
+        fetchMunicipalidades();
+    }, []);
 
     return (
         <Layout>
@@ -64,7 +123,8 @@ async function page({ params }) {
                         <div>
                             <NoSsr>
                                 <TextField
-                                    onChange={setAsunto}
+                                    value={asunto}
+                                    onChange={(e) => setAsunto(e.target.value)}
                                     sx={{ width: '90%' }}
                                 />
                             </NoSsr>
@@ -82,7 +142,8 @@ async function page({ params }) {
                         maxRows={4} // Puedes ajustar esto según lo que necesites
                         fullWidth
                         variant="outlined"
-                        onChange={setDescripcion}
+                        value={descripcion}
+                        onChange={(e) => setDescripcion(e.target.value)}
                         sx={{ width: '90%' }}
                     />
                 </NoSsr>
@@ -92,7 +153,8 @@ async function page({ params }) {
                 <div>
                     <NoSsr>
                         <TextField
-                            onChange={setUbicacion}
+                            value={ubicacion}
+                            onChange={(e) => setUbicacion(e.target.value)}
                             sx={{ width: '90%' }}
                         />
                     </NoSsr>
@@ -101,12 +163,23 @@ async function page({ params }) {
                     Seleccione la municipalidad destino:
                 </div>
                 <div>
-                    <NoSsr>
-                        <TextField
-                            onChange={setUbicacion}
-                            sx={{ width: '90%' }}
-                        />
-                    </NoSsr>
+                    <Box sx={{ minWidth: 500 }}>
+                        <FormControl fullWidth>
+                            <InputLabel id="municipalidad-label">Seleccionar Ubicación</InputLabel>
+                            <Select
+                                labelId="municipalidad-label"
+                                value={municipalidad ? municipalidad.id : ''}
+                                onChange={handleChange}
+                                label="Seleccionar Ubicación"
+                            >
+                                {municipalidades.map((muni) => (
+                                    <MenuItem key={muni.id} value={muni.id}>
+                                        {muni.nombre}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Box>
                 </div>
                 <div className='pt-4 pb-4'>
                     Adjuntar fotos (No es obligatorio)
@@ -120,18 +193,18 @@ async function page({ params }) {
                         id="upload-photo" // ID para asociarlo con el botón de la cámara
                     />
                     {/* Botón de la cámara */}
-                    <label htmlFor="upload-photo" style={{cursor: 'pointer'}}>
-                        <CameraIcon className='bg-gray-300 rounded-lg pl-3 pr-3'/>
+                    <label htmlFor="upload-photo" style={{ cursor: 'pointer' }}>
+                        <CameraIcon className='bg-gray-300 rounded-lg pl-3 pr-3' />
                     </label>
-                    
+
                     {nombreFoto !== "" ? (
-                    <div className='center'>
-                        {nombreFoto}
-                        <button className='rounded-2xl bg-gray-300 ml-2 mr-2 p-2' onClick={handleEliminarFoto} style={{cursor: 'pointer'}}>
-                            No adjuntar
-                        </button>
-                    </div>
-                    ):(<></>)}
+                        <div className='center'>
+                            {nombreFoto}
+                            <button className='rounded-2xl bg-gray-300 ml-2 mr-2 p-2' onClick={handleEliminarFoto} style={{ cursor: 'pointer' }}>
+                                No adjuntar
+                            </button>
+                        </div>
+                    ) : (<></>)}
                 </div>
                 <div className='mt-4'>
                     <button className='rounded-2xl text-white bg-inLima_red p-4 pl-8 pr-8' onClick={handleEnviarClick}>
