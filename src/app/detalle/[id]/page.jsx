@@ -1,7 +1,9 @@
+// src/app/detalle/[id]/page.jsx
 "use client";
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import api from '@/api/queja';
+import notificador from '@/api/notificador';
 import Layout from '@/components/Layout';
 
 export default function DetallePage() {
