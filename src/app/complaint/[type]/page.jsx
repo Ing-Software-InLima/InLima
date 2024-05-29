@@ -28,6 +28,7 @@ function page({ params }) {
     const [longitud, setLongitud] = useState(0.0);
     const [municipalidades, setMunicipalidades] = useState([]);
     const [municipalidad, setMunicipalidad] = useState(0);
+    const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
     const fileInputRef = useRef(null);
 
@@ -106,6 +107,14 @@ function page({ params }) {
 
         fetchMunicipalidades();
     }, [type]);
+
+    useEffect(() => {
+        if (asunto && descripcion && municipalidad) {
+            setIsButtonDisabled(false);
+        } else {
+            setIsButtonDisabled(true);
+        }
+    }, [asunto, descripcion, municipalidad]);
 
     return (
         <Layout>
@@ -209,7 +218,7 @@ function page({ params }) {
                     ) : (<></>)}
                 </div>
                 <div className='mt-4'>
-                    <button className='rounded-2xl text-white bg-inLima_red p-4 pl-8 pr-8' onClick={handleEnviarClick}>
+                    <button className='rounded-2xl text-white bg-inLima_red p-4 pl-8 pr-8' onClick={handleEnviarClick} disabled={isButtonDisabled} title={isButtonDisabled ? "Complete todos los datos" : ""}>
                         Enviar
                     </button>
                 </div>
