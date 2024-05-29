@@ -56,6 +56,9 @@ export default function RegisterPage() {
       }
   };
 
+  const isFormValid = () => {
+    return email && nombre && password && apellido_paterno && apellido_materno && dni && sexo && numero;
+  };
 
   return (
   <div class="General bg-gradient-to-br from-[#BF2441] to-[#F2F2F2] w-screen h-screen m-0 p-0">
@@ -131,17 +134,23 @@ export default function RegisterPage() {
         </Box>
 
         <Button type='submit'
-          sx={{
-            width: '35ch',
-            ml: 15,
-            mt: 2,
-            mb: 2
-            , backgroundColor: '#BF2441', color: 'white', borderRadius: '26px',
-            '&:hover': {
+        sx={{
+          width: '35ch',
+          ml: 15,
+          mt: 2,
+          mb: 2,
+          borderRadius: '26px',
+          color: isFormValid ? 'white' : 'gray', 
+          backgroundColor: isFormValid ? '#BF2441' : '#cccccc',
+
+          '&:hover': {
               backgroundColor: '#a52039',
-              color: 'white',
-            }
-          }}>Regístrate</Button>
+              color: 'white'
+          }
+      }}
+        disabled={!isFormValid()}
+        
+        >Regístrate</Button>
         <div class="registrarse text-center my-5 text-lg text-black">¿Ya tienes una cuenta? <a href='/login' class="text-[#878ceb]">Inicia sesión</a></div>
 
       </div>
