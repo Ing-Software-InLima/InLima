@@ -11,9 +11,10 @@ import FormLabel from '@mui/material/FormLabel';
 import { useState } from "react"
 import db_users from '@/api/ciudadano'
 import { useRouter } from 'next/navigation';
-
+import Advise from '@/components/Advise';
 
 export default function RegisterPage() {
+  const [showAdvise, setShowAdvise] = useState(false);
   const [email, setEmail] = useState('');
   const [nombre, setNombre] = useState('');
   const [password, setPassword] = useState('');
@@ -25,8 +26,6 @@ export default function RegisterPage() {
   const [numero, setNumero] = useState('');
   const router = useRouter();
 
-
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     const User = {
@@ -36,24 +35,25 @@ export default function RegisterPage() {
       apellido_materno: apellido_materno,
       apellido_paterno: apellido_paterno,
       dni: dni,
-      numero:numero,
+      numero: numero,
       sexo: sexo,
       foto: " ",
-      
+
     };
     try {
       const response = await db_users.create(User);
       if (response.status == 200) {
-        router.push('/home')
+        //window.location.href='/login'
+        setShowAdvise(true);
       }
       else {
         console.log("NO")
       }
 
     } catch (error) {
-        console.error('Error:', error.message);
-        alert('Error al conectar');
-      }
+      console.error('Error:', error.message);
+      alert('Error al conectar');
+    }
   };
 
   const isFormValid = () => {
@@ -61,101 +61,106 @@ export default function RegisterPage() {
   };
 
   return (
-  <div class="General bg-gradient-to-br from-[#BF2441] to-[#F2F2F2] w-screen h-screen m-0 p-0">
-    <form onSubmit={handleSubmit}>
-      <div class="formulario absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 bg-white rounded-lg">
-        <img src="/inlima.png" class="relative left-1/2 transform -translate-x-1/2 translate-y-2.5" alt="InLima " style={{ width: "110px", height: "auto" }} />
+    <div class="General bg-gradient-to-br from-[#BF2441] to-[#F2F2F2] w-screen h-screen m-0 p-0">
+      <form onSubmit={handleSubmit}>
+        <div class="formulario absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 bg-white rounded-lg">
+          <img src="/inlima.png" class="relative left-1/2 transform -translate-x-1/2 translate-y-2.5" alt="InLima " style={{ width: "110px", height: "auto" }} />
 
-        <div class="textito text-center text-[#BF2441] py-5 border-b border-silver">Regístrate para realizar quejas y sugerencias</div>
-        <Box
-          sx={{
-            '& .MuiTextField-root': { m: 1, width: '20ch' },
-            ml: 0,
-            mt: 2,
-          }}
-          noValidate
-          autoComplete="off"
-        >
-          <div class="text-center p-0 "><TextField id="outlined-basic" label="Nombre" variant="outlined" value={nombre}
-            onChange={(e) => setNombre(e.target.value)} />
-            <TextField id="outlined-basic" label="Correo electrónico" variant="outlined" value={email}
-            onChange={(e) => setEmail(e.target.value)} /></div>
-        </Box>
+          <div class="textito text-center text-[#BF2441] py-5 border-b border-silver">Regístrate para realizar quejas y sugerencias</div>
+          <Box
+            sx={{
+              '& .MuiTextField-root': { m: 1, width: '20ch' },
+              ml: 0,
+              mt: 2,
+            }}
+            noValidate
+            autoComplete="off"
+          >
+            <div class="text-center p-0 "><TextField id="outlined-basic" label="Nombre" variant="outlined" value={nombre}
+              onChange={(e) => setNombre(e.target.value)} />
+              <TextField id="outlined-basic" label="Correo electrónico" variant="outlined" value={email}
+                onChange={(e) => setEmail(e.target.value)} /></div>
+          </Box>
 
-        <Box
-          sx={{
-            '& .MuiTextField-root': { m: 1, width: '20ch' },
-            ml: 0,
-            mt: 0,
-          }}
-          noValidate
-          autoComplete="off"
-        >
-           <div class="text-center p-0 "> <TextField id="outlined-basic" label="Apellido Paterno" variant="outlined" value={apellido_paterno}
+          <Box
+            sx={{
+              '& .MuiTextField-root': { m: 1, width: '20ch' },
+              ml: 0,
+              mt: 0,
+            }}
+            noValidate
+            autoComplete="off"
+          >
+            <div class="text-center p-0 "> <TextField id="outlined-basic" label="Apellido Paterno" variant="outlined" value={apellido_paterno}
               onChange={(e) => setApellidoP(e.target.value)} />
               <TextField id="outlined-basic" label="Apellido Materno" variant="outlined" value={apellido_materno}
-              onChange={(e) => setApellidoM(e.target.value)} /> </div>
-        </Box>
+                onChange={(e) => setApellidoM(e.target.value)} /> </div>
+          </Box>
 
-        <Box
-          sx={{
-            '& .MuiTextField-root': { m: 1, width: '20ch' },
-            ml: 0,
-          }}
-          noValidate
-          autoComplete="off"
-        >
-          <div class="text-center p-0 " ><TextField id="outlined-basic" label="Contraseña" variant="outlined"  type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)} />
-             <TextField id="outlined-basic" label="Número Telefonico" variant="outlined" type="int"
-            value={numero}
-            onChange={(e) => setNumero(e.target.value)} /></div>
-           
+          <Box
+            sx={{
+              '& .MuiTextField-root': { m: 1, width: '20ch' },
+              ml: 0,
+            }}
+            noValidate
+            autoComplete="off"
+          >
+            <div class="text-center p-0 " ><TextField id="outlined-basic" label="Contraseña" variant="outlined" type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)} />
+              <TextField id="outlined-basic" label="Número Telefonico" variant="outlined" type="int"
+                value={numero}
+                onChange={(e) => setNumero(e.target.value)} /></div>
+
             <div class="text-center p-0 " ><TextField id="outlined-basic" label="Dni" variant="outlined" type="dni"
-            value={dni}
-            onChange={(e) => setDni(e.target.value)} /></div>
+              value={dni}
+              onChange={(e) => setDni(e.target.value)} /></div>
 
-          <FormControl style={{ marginLeft: '150px', marginTop: '10px' }}>
-            <FormLabel id="demo-row-radio-buttons-group-label" >Sexo</FormLabel>
-            <RadioGroup
-              row
-              aria-labelledby="demo-row-radio-buttons-group-label"
-              name="row-radio-buttons-group"
-              style={{ marginLeft: '20px' }}
-              value={sexo}
-              onChange={(event) => setSexo(event.target.value)}
-            >
-              <FormControlLabel value="1" control={<Radio />} label="Mujer" />
-              <FormControlLabel value="2" control={<Radio />} label="Hombre" />
-            </RadioGroup>
-          </FormControl>
+            <FormControl style={{ marginLeft: '150px', marginTop: '10px' }}>
+              <FormLabel id="demo-row-radio-buttons-group-label" >Sexo</FormLabel>
+              <RadioGroup
+                row
+                aria-labelledby="demo-row-radio-buttons-group-label"
+                name="row-radio-buttons-group"
+                style={{ marginLeft: '20px' }}
+                value={sexo}
+                onChange={(event) => setSexo(event.target.value)}
+              >
+                <FormControlLabel value="1" control={<Radio />} label="Mujer" />
+                <FormControlLabel value="2" control={<Radio />} label="Hombre" />
+              </RadioGroup>
+            </FormControl>
 
-        </Box>
+          </Box>
 
-        <Button type='submit'
-        sx={{
-          width: '35ch',
-          ml: 15,
-          mt: 2,
-          mb: 2,
-          borderRadius: '26px',
-          color: isFormValid ? 'white' : 'gray', 
-          backgroundColor: isFormValid ? '#BF2441' : '#cccccc',
+          <Button type='submit'
+            sx={{
+              width: '35ch',
+              ml: 15,
+              mt: 2,
+              mb: 2,
+              borderRadius: '26px',
+              color: isFormValid ? 'white' : 'gray',
+              backgroundColor: isFormValid ? '#BF2441' : '#cccccc',
 
-          '&:hover': {
-              backgroundColor: '#a52039',
-              color: 'white'
-          }
-      }}
-        disabled={!isFormValid()}
-        
-        >Regístrate</Button>
-        <div class="registrarse text-center my-5 text-lg text-black">¿Ya tienes una cuenta? <a href='/login' class="text-[#878ceb]">Inicia sesión</a></div>
+              '&:hover': {
+                backgroundColor: '#a52039',
+                color: 'white'
+              }
+            }}
+            disabled={!isFormValid()}
 
-      </div>
-    </form>
-  </div>
+          >Regístrate</Button>
+          <div class="registrarse text-center my-5 text-lg text-black">¿Ya tienes una cuenta? <a href='/login' class="text-[#878ceb]">Inicia sesión</a></div>
+
+        </div>
+      </form>
+      {showAdvise && (
+        <div className='fixed inset-0 flex justify-center items-center bg-black bg-opacity-50'>
+          <Advise Mensaje="¡Usuario creado con exito!" URL="/login" />
+        </div>
+      )}
+    </div>
   )
 
 

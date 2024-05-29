@@ -4,8 +4,6 @@ const endpoint = '/estado';
 
 const findAll = async () => await base.get(endpoint);
 
-const create = async (payload) => await base.post(endpoint, payload)
-
-const api = { findAll, create }
+const api = { findAll }
 
 export default api;

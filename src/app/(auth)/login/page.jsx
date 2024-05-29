@@ -9,10 +9,10 @@ import { useState } from "react"
 import Input from '@mui/material/Input';
 import { useRouter } from 'next/navigation';
 import db_users from '@/api/usuario';
-import { GoogleOAuthProvider } from '@react-oauth/google';
+//import { GoogleOAuthProvider } from '@react-oauth/google';
 import { useEffect } from 'react';
-import { GoogleLogin } from '@react-oauth/google';
-import { jwtDecode } from "jwt-decode";
+//import { GoogleLogin } from '@react-oauth/google';
+//import { jwtDecode } from "jwt-decode";
 
 
 
@@ -27,8 +27,6 @@ export default function LoginPage() {
   const router = useRouter();
 
   const ClientId = "118418831653-bk8f8eb2pjpjj0n3u2eri4kb76gutu8v.apps.googleusercontent.com";
-
-
 
   const handleSubmit = async (event) => {
     event.preventDefault();
