@@ -6,13 +6,13 @@ import Box from '@mui/material/Box';
 
 export default function LoginPage(){
 
-    return <div class="Cuerpo m-0 p-0 font-montserrat bg-gradient-to-br from-[#BF2441] to-[#F2F2F2] h-screen">
-    <div class="logo absolute pt-5 pl-24"><img src="/inlima2.png" alt="InLima " style={{width: "110px", height: "auto"}}/></div>
-    <div class="formulario absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 bg-white rounded-lg">
+    return <div className="Cuerpo m-0 p-0 font-montserrat bg-gradient-to-br from-[#BF2441] to-[#F2F2F2] h-screen">
+    <div className="logo absolute pt-5 pl-24"><img src="/inlima2.png" alt="InLima " style={{width: "110px", height: "auto"}}/></div>
+    <div className="formulario absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 bg-white rounded-lg">
     <img src="/candado.png" class="relative left-1/2 transform -translate-x-1/2 translate-y-2.5" alt="InLima " style={{width: "110px", height: "auto", marginBottom: "20px"}}/>
     
-    <div class="textito text-center text-[#BF2441] pt-5 font-bold">¿Tienes problemas para iniciar sesión?</div>
-    <div class="textito2 text-center text-black py-5 px-8 border-b border-silver">Ingresa tu correo electrónico y te enviaremos un enlace para que recuperes el acceso a tu cuenta.</div>
+    <div className="textito text-center text-[#BF2441] pt-5 font-bold">¿Tienes problemas para iniciar sesión?</div>
+    <div className="textito2 text-center text-black py-5 px-8 border-b border-silver">Ingresa tu correo electrónico y te enviaremos un enlace para que recuperes el acceso a tu cuenta.</div>
  
    <Box
       component="form"
@@ -24,7 +24,7 @@ export default function LoginPage(){
       noValidate
       autoComplete="off"
     >
-    <div class="text-center p-0 "><TextField id="outlined-basic" label="Correo electrónico" variant="outlined" /></div>
+    <div className="text-center p-0 "><TextField id="outlined-basic" label="Correo electrónico" variant="outlined" /></div>
   
     </Box>
     

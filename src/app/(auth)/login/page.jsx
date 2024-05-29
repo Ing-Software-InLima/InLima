@@ -36,11 +36,9 @@ export default function LoginPage() {
     };
     try {
       const response = await db_users.iniciarSesion(User);
-      console.log("singin: ", response)
-      if (response.status == 200) {
+      if (response?.status == 200) {
         const role = await db_users.obtenerRol();
         setRole(role.data.rol);
-        console.log("el rol es: "+role.data.rol)
         if(role.data.rol == 1){
           router.push('/home')
         }
@@ -49,7 +47,7 @@ export default function LoginPage() {
         }
       }
       else {
-        console.log("NO")
+        alert("Credenciales incorrectas")
       }
     } catch (error) {
       console.error('Error:', error.message);

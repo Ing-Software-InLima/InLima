@@ -61,12 +61,12 @@ export default function RegisterPage() {
   };
 
   return (
-    <div class="General bg-gradient-to-br from-[#BF2441] to-[#F2F2F2] w-screen h-screen m-0 p-0">
+    <div className="General bg-gradient-to-br from-[#BF2441] to-[#F2F2F2] w-screen h-screen m-0 p-0">
       <form onSubmit={handleSubmit}>
-        <div class="formulario absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 bg-white rounded-lg">
-          <img src="/inlima.png" class="relative left-1/2 transform -translate-x-1/2 translate-y-2.5" alt="InLima " style={{ width: "110px", height: "auto" }} />
+        <div className="formulario absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 bg-white rounded-lg">
+          <img src="/inlima.png" className="relative left-1/2 transform -translate-x-1/2 translate-y-2.5" alt="InLima " style={{ width: "110px", height: "auto" }} />
 
-          <div class="textito text-center text-[#BF2441] py-5 border-b border-silver">Regístrate para realizar quejas y sugerencias</div>
+          <div className="textito text-center text-[#BF2441] py-5 border-b border-silver">Regístrate para realizar quejas y sugerencias</div>
           <Box
             sx={{
               '& .MuiTextField-root': { m: 1, width: '20ch' },
@@ -76,7 +76,7 @@ export default function RegisterPage() {
             noValidate
             autoComplete="off"
           >
-            <div class="text-center p-0 "><TextField id="outlined-basic" label="Nombre" variant="outlined" value={nombre}
+            <div className="text-center p-0 "><TextField id="outlined-basic" label="Nombre" variant="outlined" value={nombre}
               onChange={(e) => setNombre(e.target.value)} />
               <TextField id="outlined-basic" label="Correo electrónico" variant="outlined" value={email}
                 onChange={(e) => setEmail(e.target.value)} /></div>
@@ -91,7 +91,7 @@ export default function RegisterPage() {
             noValidate
             autoComplete="off"
           >
-            <div class="text-center p-0 "> <TextField id="outlined-basic" label="Apellido Paterno" variant="outlined" value={apellido_paterno}
+            <div className="text-center p-0 "> <TextField id="outlined-basic" label="Apellido Paterno" variant="outlined" value={apellido_paterno}
               onChange={(e) => setApellidoP(e.target.value)} />
               <TextField id="outlined-basic" label="Apellido Materno" variant="outlined" value={apellido_materno}
                 onChange={(e) => setApellidoM(e.target.value)} /> </div>
@@ -105,14 +105,14 @@ export default function RegisterPage() {
             noValidate
             autoComplete="off"
           >
-            <div class="text-center p-0 " ><TextField id="outlined-basic" label="Contraseña" variant="outlined" type="password"
+            <div className="text-center p-0 " ><TextField id="outlined-basic" label="Contraseña" variant="outlined" type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)} />
               <TextField id="outlined-basic" label="Número Telefonico" variant="outlined" type="int"
                 value={numero}
                 onChange={(e) => setNumero(e.target.value)} /></div>
 
-            <div class="text-center p-0 " ><TextField id="outlined-basic" label="Dni" variant="outlined" type="dni"
+            <div className="text-center p-0 " ><TextField id="outlined-basic" label="Dni" variant="outlined" type="dni"
               value={dni}
               onChange={(e) => setDni(e.target.value)} /></div>
 
@@ -151,7 +151,7 @@ export default function RegisterPage() {
             disabled={!isFormValid()}
 
           >Regístrate</Button>
-          <div class="registrarse text-center my-5 text-lg text-black">¿Ya tienes una cuenta? <a href='/login' class="text-[#878ceb]">Inicia sesión</a></div>
+          <div className="registrarse text-center my-5 text-lg text-black">¿Ya tienes una cuenta? <a href='/login' className="text-[#878ceb]">Inicia sesión</a></div>
 
         </div>
       </form>

@@ -50,7 +50,7 @@ export default function DetallePage() {
                 console.error('Error obteniendo el rol del usuario:', error);
             }
         };
-        
+
         if (id) {
             fetchQueja();
             fetchEstados();
@@ -58,7 +58,7 @@ export default function DetallePage() {
         }
     }, [id]);
 
-    useEffect(()=>{
+    useEffect(() => {
         const ciudadanoQueja = async () => {
             try {
                 const ciudadanoid = {
@@ -71,11 +71,11 @@ export default function DetallePage() {
                 console.error('Error obteniendo al ciudadano de la queja:', error);
             }
         };
-        if(queja){
+        if (queja) {
             ciudadanoQueja();
         }
-        
-    },[queja]);
+
+    }, [queja]);
 
     const handleChangeEstado = (event) => {
         const selectedEstado = estados.find(estado => estado.id === event.target.value);
@@ -94,7 +94,7 @@ export default function DetallePage() {
                 estado_id: estadoSeleccionado.id
             };
             await regHistorial.registrarCambio(payload);
-            
+
             const payload2 = {
                 email: ciudadano.email,
                 estado: estadoSeleccionado.nombre
@@ -139,11 +139,11 @@ export default function DetallePage() {
                     <div className="flex-1 pl-10 ">
                         {role === 1 ? (
                             <>
-                                <p className='pb-5 max-w-fit'>Estado: {estadoActual ? (<StatusColor estado={estadoActual}/>) : 'Cargando...'}</p>
+                                <div className='pb-5 max-w-fit'>Estado: {estadoActual ? (<StatusColor estado={estadoActual} />) : 'Cargando...'}</div>
                             </>
                         ) : role === 2 ? (
                             <>
-                                <p className='pb-5'>Estado: {estadoActual ? (<StatusColor estado={estadoActual}/>) : 'Cargando...'}</p>
+                                <div className='pb-5'>Estado: {estadoActual ? (<StatusColor estado={estadoActual} />) : 'Cargando...'}</div>
                                 <FormControl fullWidth variant="outlined" className="mb-4">
                                     <InputLabel id="estado-select-label">Estado</InputLabel>
                                     <Select
@@ -151,7 +151,7 @@ export default function DetallePage() {
                                         value={estadoSeleccionado ? estadoSeleccionado.id : ''}
                                         onChange={handleChangeEstado}
                                         label="Estado"
-                                        >
+                                    >
                                         {estados.map((estado) => (
                                             <MenuItem key={estado.id} value={estado.id}>
                                                 {estado.nombre}
@@ -169,7 +169,7 @@ export default function DetallePage() {
             </div>
             {showAdvise && (
                 <div className='fixed inset-0 flex justify-center items-center bg-black bg-opacity-50'>
-                    <Advise Mensaje = "Se envió un correo confirmando cambio de estado" onClose={() => setShowAdvise(false)}/>
+                    <Advise Mensaje="Se envió un correo confirmando cambio de estado" onClose={() => setShowAdvise(false)} />
                 </div>
             )}
         </Layout>
