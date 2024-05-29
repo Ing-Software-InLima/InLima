@@ -19,7 +19,7 @@ function page({ params }) {
     const { type } = params;
     const [showAdvise, setShowAdvise] = useState(false);
 
-    const [asunto, setAsunto] = useState(type);
+    const [asunto, setAsunto] = useState("");
     const [descripcion, setDescripcion] = useState("");
     const [nombreFoto, setNombreFoto] = useState("");
     const [selectedImage, setSelectedImage] = useState("");
@@ -92,6 +92,9 @@ function page({ params }) {
     };
 
     useEffect(() => {
+        const formattedType = removeBarraBaja(type);
+        setAsunto(formattedType);
+
         const fetchMunicipalidades = async () => {
             try {
                 const response = await municipalidadApi.findAll();
@@ -102,7 +105,7 @@ function page({ params }) {
         };
 
         fetchMunicipalidades();
-    }, []);
+    }, [type]);
 
     return (
         <Layout>
