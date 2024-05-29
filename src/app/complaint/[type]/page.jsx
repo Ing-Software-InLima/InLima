@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import TextField from '@mui/material/TextField';
 import NoSsr from '@mui/material/NoSsr';
 import CameraIcon from '@/icons/camera';
@@ -28,6 +28,8 @@ function page({ params }) {
     const [longitud, setLongitud] = useState(0.0);
     const [municipalidades, setMunicipalidades] = useState([]);
     const [municipalidad, setMunicipalidad] = useState(0);
+
+    const fileInputRef = useRef(null);
 
     const handleEnviarClick = async () => {
         try {
@@ -75,6 +77,9 @@ function page({ params }) {
         //console.log(selectedImage)
         setSelectedImage('');
         setNombreFoto("");
+        if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+        }
     };
 
     const removeBarraBaja = (text) => {
@@ -159,12 +164,12 @@ function page({ params }) {
                 <div>
                     <Box sx={{ minWidth: 500 }}>
                         <FormControl fullWidth>
-                            <InputLabel id="municipalidad-label">Seleccionar Ubicación</InputLabel>
+                            <InputLabel id="municipalidad-label"></InputLabel>
                             <Select
                                 labelId="municipalidad-label"
                                 value={municipalidad ? municipalidad.id : ''}
                                 onChange={handleChange}
-                                label="Seleccionar Ubicación"
+                                sx={{ width: '90%' }}
                             >
                                 {municipalidades.map((muni) => (
                                     <MenuItem key={muni.id} value={muni.id}>
@@ -186,8 +191,8 @@ function page({ params }) {
                         style={{ display: 'none' }} // Estilo para ocultar el input
                         id="upload-photo" // ID para asociarlo con el botón de la cámara
                     />
-                    {/* Botón de la cámara */}
-                    <label htmlFor="upload-photo" style={{ cursor: 'pointer' }}>
+                    
+                    <label htmlFor="upload-photo" style={{ cursor: 'pointer' }} >
                         <CameraIcon className='bg-gray-300 rounded-lg pl-3 pr-3' />
                     </label>
 
