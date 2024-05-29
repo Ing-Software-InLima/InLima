@@ -38,7 +38,7 @@ export default function RegisterPage() {
       dni: dni,
       numero:numero,
       sexo: sexo,
-      foto: null,
+      foto: " ",
       
     };
     try {
