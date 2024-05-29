@@ -34,9 +34,6 @@ function page({ params }) {
 
     const handleEnviarClick = async () => {
         try {
-            console.log(selectedImage)
-
-            console.log(municipalidad)
             const queja = {
                 asunto: asunto,
                 descripcion: descripcion,
@@ -75,7 +72,6 @@ function page({ params }) {
     };
 
     const handleEliminarFoto = () => {
-        //console.log(selectedImage)
         setSelectedImage('');
         setNombreFoto("");
         if (fileInputRef.current) {

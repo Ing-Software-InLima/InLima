@@ -2,7 +2,6 @@
 import Layout from "@/components/Layout";
 import Link from "next/link";
 import Image from 'next/image';
-import db_users from '@/api/usuario';
 
 export default function MenuPage() {
 

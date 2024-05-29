@@ -1,6 +1,5 @@
 import Link from "next/link"
 import { useEffect, useState } from 'react';
-//import { getUserRole } from '../utils/auth';
 import apirol from '@/api/usuario';
 
 export default function Navbar() {

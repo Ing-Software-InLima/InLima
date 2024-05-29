@@ -46,73 +46,68 @@ export default function GestionPage() {
             asuntos: asuntosSeleccionados.join(','),
             municipalidad: municipalidad ? municipalidad.id : ''
         }).toString();
-        console.log("Asuntos seleccionados:", asuntosSeleccionados);
-        console.log("Municipalidad seleccionada:", municipalidad);
-        console.log("Query Params:", queryParams);
         router.push(`/resultados?${queryParams}`);
     };
 
     return (
         <Layout>
-            <div className="flex flex-col w-[1088px] h-[510px] flex-shrink-0 bg-transparent">
-                <div className="border-b border-gray-300" id="titulo">
-                    <p className="pb-2">Busqueda</p>
-                </div>
-                <div className="py-4 px-4">
-                    <form className="flex" onSubmit={handleSearch}>
-                        <div className="mr-4 space-y-4 m-3">
-                            <div>
-                                <Autocomplete
-                                    multiple
-                                    id="asuntos-autocomplete"
-                                    options={["Seleccionar todos", "Veredas rotas", "Calles contaminadas", "Poste de luces apagadas",
-                                        "Construcción sin licencia", "Comercio ilegal", "Invasión no autorizada de lugares públicos",
-                                        "Árboles obstruyen la circulación", "Vehículo abandonado", "Mascota perdida", "Inmueble abandonado",
-                                        "Propiedad en mal estado"]}
-                                    onChange={(event, newValue) => {
-                                        if (newValue.includes("Seleccionar todos")) {
-                                            handleSeleccionarTodos();
-                                        } else {
-                                            setAsuntosSeleccionados(newValue.filter(option => option !== "Seleccionar todos"));
-                                        }
-                                    }}
-                                    value={asuntosSeleccionados}
-                                    renderInput={(params) => (
-                                        <TextField {...params} 
-                                        variant="outlined" 
+            <div className="border-b border-gray-300 flex flex-row min-w-full" id='titulo'>
+                <p className="py-2 text-xl font-medium">Busqueda</p>
+            </div>
+            <div className="py-4 px-4">
+                <form className="flex" onSubmit={handleSearch}>
+                    <div className="mr-4 space-y-4 m-3">
+                        <div>
+                            <Autocomplete
+                                multiple
+                                id="asuntos-autocomplete"
+                                options={["Seleccionar todos", "Veredas rotas", "Calles contaminadas", "Poste de luces apagadas",
+                                    "Construcción sin licencia", "Comercio ilegal", "Invasión no autorizada de lugares públicos",
+                                    "Árboles obstruyen la circulación", "Vehículo abandonado", "Mascota perdida", "Inmueble abandonado",
+                                    "Propiedad en mal estado"]}
+                                onChange={(event, newValue) => {
+                                    if (newValue.includes("Seleccionar todos")) {
+                                        handleSeleccionarTodos();
+                                    } else {
+                                        setAsuntosSeleccionados(newValue.filter(option => option !== "Seleccionar todos"));
+                                    }
+                                }}
+                                value={asuntosSeleccionados}
+                                renderInput={(params) => (
+                                    <TextField {...params}
+                                        variant="outlined"
                                         label="Seleccionar Asuntos"
-                                         placeholder="Asuntos" 
-                                         sx={{ '& .MuiOutlinedInput-root': { borderColor: 'inLima_red !important' } }} />
-                                    )}
-                                />
-                            </div>
-
-                            <div>
-                                <Box sx={{ minWidth: 500 }}>
-                                    <FormControl fullWidth>
-                                        <InputLabel id="municipalidad-label">Seleccionar Ubicación</InputLabel>
-                                        <Select
-                                            labelId="municipalidad-label"
-                                            value={municipalidad ? municipalidad.id : ''}
-                                            onChange={handleChange}
-                                            label="Seleccionar Ubicación"
-                                        >
-                                            {municipalidades.map((muni) => (
-                                                <MenuItem key={muni.id} value={muni.id}>
-                                                    {muni.nombre}
-                                                </MenuItem>
-                                            ))}
-                                        </Select>
-                                    </FormControl>
-                                </Box>
-                            </div>
-
-                            <div className="text-left space-x-2">
-                                <button type="submit" className="bg-inLima_beige px-4 py-2 hover:bg-inLima_red hover:text-white border rounded-full text-inLima_red">Buscar</button>
-                            </div>
+                                        placeholder="Asuntos"
+                                        sx={{ '& .MuiOutlinedInput-root': { borderColor: 'inLima_red !important' } }} />
+                                )}
+                            />
                         </div>
-                    </form>
-                </div>
+
+                        <div>
+                            <Box sx={{ minWidth: 500 }}>
+                                <FormControl fullWidth>
+                                    <InputLabel id="municipalidad-label">Seleccionar Ubicación</InputLabel>
+                                    <Select
+                                        labelId="municipalidad-label"
+                                        value={municipalidad ? municipalidad.id : ''}
+                                        onChange={handleChange}
+                                        label="Seleccionar Ubicación"
+                                    >
+                                        {municipalidades.map((muni) => (
+                                            <MenuItem key={muni.id} value={muni.id}>
+                                                {muni.nombre}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </Box>
+                        </div>
+
+                        <div className="text-left space-x-2">
+                            <button type="submit" className="bg-inLima_beige px-4 py-2 hover:bg-inLima_red hover:text-white border rounded-full text-inLima_red">Buscar</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </Layout>
     );

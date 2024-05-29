@@ -21,6 +21,7 @@ export default function Estado() {
         }
     }
 
+
     useEffect(() => {
         obtenerQuejas();
     }, [])
@@ -41,6 +42,7 @@ export default function Estado() {
                             id={queja.id}   
                             dni={queja.ciudadano.dni}   
                             estado={queja.estado}
+                            fecha={queja.fecha}
                         />
                     ))
                 )}

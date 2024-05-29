@@ -10,7 +10,7 @@ import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import apirol from '@/api/usuario';
 import apiestado from '@/api/estado';
 import Advise from '@/components/Advise';
-
+import StatusColor from '@/components/StatusColor';
 
 export default function DetallePage() {
     const router = useRouter();
@@ -118,34 +118,32 @@ export default function DetallePage() {
 
     return (
         <Layout>
-            <div className="border-b border-gray-300 flex justify-between items-center" id="titulo">
-                <p className="pb-2">Detalle de queja</p>
-                <div className="text-center">
-                    <button type="button" onClick={() => router.back()} className="bg-inLima_beige hover:bg-inLima_red hover:text-white border rounded-full text-inLima_red py-2 px-4 text-sm">Volver a buscar</button>
-                </div>
+            <div className="border-b mb-2 border-gray-300 flex justify-between items-center " id="titulo">
+                <p className="py-2 text-xl font-normal">Detalle de queja</p>
+                <button type="button" onClick={() => router.back()} className="bg-inLima_beige hover:bg-inLima_red hover:text-white border rounded-full text-inLima_red py-2 px-4 text-sm">Volver a buscar</button>
             </div>
-            <div className="flex flex-col w-[1088px] h-[510px] flex-shrink-0 bg-inLima_lightred px-5 py-5">
+            <div className="flex flex-col max-w-7xl flex-shrink-0 bg-inLima_lightred p-10 rounded-2xl">
                 <div className="flex flex-row">
                     <div className="flex-1 pr-5">
-                        <p className='pb-2'>Asunto: {queja.asunto}</p>
-                        <p className='pb-2'>Descripción: {queja.descripcion}</p>
-                        <p className='pb-2'>Ubicación: {queja.ubicacion_descripcion}</p>
-                        <p className='pb-2'>Latitud: {queja.latitud}</p>
-                        <p className='pb-2'>Longitud: {queja.longitud}</p>
+                        <p className='my-5 font-bold'>Asunto: {queja.asunto}</p>
+                        <p className='my-5'>Descripción: {queja.descripcion}</p>
+                        <p className='my-5'>Ubicación: {queja.ubicacion_descripcion}</p>
+                        <p className='my-5'>Latitud: {queja.latitud}</p>
+                        <p className='my-5'>Longitud: {queja.longitud}</p>
                         {queja.foto &&
                             <div className="flex-shrink-0">
                                 <img src={queja.foto} alt="Foto de la queja" className="w-88 h-56 object-cover" />
                             </div>
                         }
                     </div>
-                    <div className="flex-1 pr-5">
+                    <div className="flex-1 pl-10 ">
                         {role === 1 ? (
                             <>
-                                <p className='pb-5'>Estado: {estadoActual ? estadoActual.nombre : 'Cargando...'}</p>
+                                <p className='pb-5 max-w-fit'>Estado: {estadoActual ? (<StatusColor estado={estadoActual}/>) : 'Cargando...'}</p>
                             </>
                         ) : role === 2 ? (
                             <>
-                                <p className='pb-5'>Estado: {estadoActual ? estadoActual.nombre : 'Cargando...'}</p>
+                                <p className='pb-5'>Estado: {estadoActual ? (<StatusColor estado={estadoActual}/>) : 'Cargando...'}</p>
                                 <FormControl fullWidth variant="outlined" className="mb-4">
                                     <InputLabel id="estado-select-label">Estado</InputLabel>
                                     <Select
