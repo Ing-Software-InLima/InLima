@@ -97,7 +97,9 @@ export default function DetallePage() {
 
             const payload2 = {
                 email: ciudadano.email,
-                estado: estadoSeleccionado.nombre
+                estado: estadoSeleccionado.nombre,
+                ticket: queja.id,
+                nombre: ciudadano.nombre
             }
             await notificador.notificacion(payload2)
         } catch (error) {
