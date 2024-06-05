@@ -99,7 +99,9 @@ export default function DetallePage() {
                 email: ciudadano.email,
                 estado: estadoSeleccionado.nombre,
                 ticket: queja.id,
-                nombre: ciudadano.nombre
+                nombre: ciudadano.nombre,
+                asunto: queja.asunto,
+                fecha: queja.fecha
             }
             await notificador.notificacion(payload2)
         } catch (error) {
