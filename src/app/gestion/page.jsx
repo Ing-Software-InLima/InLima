@@ -31,7 +31,7 @@ export default function GestionPage() {
     }, []);
 
     const handleSeleccionarTodos = () => {
-        const todosLosAsuntos = ["Veredas rotas", "Calles contaminadas", "Poste de luces apagadas", "Construcción sin licencia", "Comercio ilegal", "Invasión no autorizada de lugares públicos", "Árboles obstruyen la circulación", "Vehículo abandonado", "Mascota perdida", "Inmueble abandonado", "Propiedad en mal estado"];
+        const todosLosAsuntos = ["Veredas rotas", "Calles contaminadas", "Poste de luces apagadas", "Construcción sin licencia", "Comercio ilegal", "Invasión no autorizada de lugares públicos", "Árboles obstruyen la circulación", "Vehículo abandonado", "Mascota perdida", "Inmueble abandonado", "Propiedad en mal estado", "Otros"];
         setAsuntosSeleccionados(todosLosAsuntos);
     };
 
@@ -64,7 +64,7 @@ export default function GestionPage() {
                                 options={["Seleccionar todos", "Veredas rotas", "Calles contaminadas", "Poste de luces apagadas",
                                     "Construcción sin licencia", "Comercio ilegal", "Invasión no autorizada de lugares públicos",
                                     "Árboles obstruyen la circulación", "Vehículo abandonado", "Mascota perdida", "Inmueble abandonado",
-                                    "Propiedad en mal estado"]}
+                                    "Propiedad en mal estado", "Otros"]}
                                 onChange={(event, newValue) => {
                                     if (newValue.includes("Seleccionar todos")) {
                                         handleSeleccionarTodos();
