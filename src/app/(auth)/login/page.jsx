@@ -55,6 +55,27 @@ export default function LoginPage() {
     }
   };
 
+  const handleGoogleLogin = async (credentialResponse) => {
+    const token = credentialResponse.credential;
+    localStorage.setItem('token', token);
+    try {
+      const decoded = jwtDecode(credentialResponse.credential);
+      const userEmail = decoded.email;
+
+      const user = { email: userEmail };
+      const response = await db_users.iniciarSesionGoogle(user);
+
+      if (response?.status === 200) {
+        router.push('/home');
+      } else {
+        router.push('/registerGoogle');
+      }
+    } catch (error) {
+      console.error('Google Login Error:', error.message);
+      alert('Error al conectar con Google');
+    }
+  };
+
   return (
     <div className="loquequieras bg-gradient-to-br from-[#BF2441] to-[#F2F2F2] h-screen m-0 p-0 font-montserrat">
       <form onSubmit={handleSubmit}>
@@ -90,9 +111,9 @@ export default function LoginPage() {
             <GoogleOAuthProvider clientId="118418831653-bk8f8eb2pjpjj0n3u2eri4kb76gutu8v.apps.googleusercontent.com">
               <GoogleLogin
                 onSuccess={credentialResponse => {
-                  console.log(credentialResponse)
                   var credentialResponseDecoded = jwtDecode(credentialResponse.credential)
                   console.log(credentialResponseDecoded)
+                  handleGoogleLogin(credentialResponse)
                 }}
                 onError={() => {
                   console.log('Login Failed')
