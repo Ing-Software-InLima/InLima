@@ -18,6 +18,7 @@ export default function RegisterPage() {
   const [email, setEmail] = useState('');
   const [nombre, setNombre] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordStrength, setPasswordStrength] = useState('');
   const [apellido_paterno, setApellidoP] = useState('');
   const [apellido_materno, setApellidoM] = useState('');
   const [dni, setDni] = useState('');
@@ -57,7 +58,26 @@ export default function RegisterPage() {
   };
 
   const isFormValid = () => {
-    return email && nombre && password && apellido_paterno && apellido_materno && dni && sexo && numero;
+    return email && nombre && password && apellido_paterno && apellido_materno && dni && sexo && numero && passwordStrength !== "Débil";
+  };
+
+  const validatePassword = (password) => {
+    let strength = "Débil";
+    const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[.!@#\$%\^&\*])(?=.{8,})");
+
+    if (strongRegex.test(password)) {
+      strength = "Fuerte";
+    } else if (password.length >= 6) {
+      strength = "Moderada";
+    }
+
+    return strength;
+  };
+
+  const handlePasswordChange = (event) => {
+    const newPassword = event.target.value;
+    setPassword(newPassword);
+    setPasswordStrength(validatePassword(newPassword));
   };
 
   return (
@@ -105,16 +125,28 @@ export default function RegisterPage() {
             noValidate
             autoComplete="off"
           >
-            <div className="text-center p-0 " ><TextField id="outlined-basic" label="Contraseña" variant="outlined" type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)} />
+            <div className="text-center p-0 " >
+
               <TextField id="outlined-basic" label="Número Telefonico" variant="outlined" type="int"
                 value={numero}
-                onChange={(e) => setNumero(e.target.value)} /></div>
-
-            <div className="text-center p-0 " ><TextField id="outlined-basic" label="Dni" variant="outlined" type="dni"
+                onChange={(e) => setNumero(e.target.value)} />
+                <TextField id="outlined-basic" label="Dni" variant="outlined" type="dni"
               value={dni}
               onChange={(e) => setDni(e.target.value)} /></div>
+
+            <div className="text-center p-0 " >   <TextField id="outlined-basic" label="Contraseña" variant="outlined" type="password"
+              value={password}
+              onChange={handlePasswordChange} />
+
+                {password && (
+                <div className="text-center p-0 " style={{ color: passwordStrength === "Fuerte" ? "green" : passwordStrength === "Moderada" ? "orange" : "red" }}>
+                  {passwordStrength === "Débil"
+                    ? "Una buena contraseña debe contener al menos 8 caracteres, y contener una letra mayúscula, minúscula y un símbolo (.*[.!@#\\$%\\^&\\*])"
+                    : `Fuerza de la contraseña: ${passwordStrength}`}
+                </div>
+              )}</div>
+
+           
 
             <FormControl style={{ marginLeft: '150px', marginTop: '10px' }}>
               <FormLabel id="demo-row-radio-buttons-group-label" >Sexo</FormLabel>
@@ -136,7 +168,7 @@ export default function RegisterPage() {
           <Button type='submit'
             sx={{
               width: '35ch',
-              ml: 15,
+              ml: 18,
               mt: 2,
               mb: 2,
               borderRadius: '26px',
