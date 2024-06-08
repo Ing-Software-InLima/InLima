@@ -4,9 +4,13 @@ import { jwtVerify } from "jose";
 export async function middleware(request) {
     const pass = new TextEncoder().encode("secret") // Formato que pide jose
     const token = request.cookies.get('myToken')
-    
+
     if (token === undefined) {
-        return NextResponse.redirect(new URL('/login', request.url))
+        if(request.nextUrl.pathname.includes('/login')){
+            return NextResponse.next();
+        }else{
+            return NextResponse.redirect(new URL('/login', request.url))
+        }
     }
     
     try {
@@ -20,6 +24,7 @@ export async function middleware(request) {
             console.log("Admin no puede entrar a esta página")
             return NextResponse.redirect(new URL('/gestion', request.url));
         }
+        console.log("pasa pasa nomas")
         return NextResponse.next();
     } catch (error) {
         console.error(error)
@@ -29,5 +34,5 @@ export async function middleware(request) {
 }
 
 export const config = {
-    matcher: ['/home', '/estado', '/complaint/:path*', '/gestion', '/perfil', '/resultados', '/detalle/:path*']
+    matcher: ['/home', '/estado', '/complaint/:path*', '/gestion', '/perfil', '/resultados', '/detalle/:path*', '/login']
 }
