@@ -11,6 +11,7 @@ import apirol from '@/api/usuario';
 import apiestado from '@/api/estado';
 import Advise from '@/components/Advise';
 import StatusColor from '@/components/StatusColor';
+import Calification from '@/components/Calification';
 
 export default function DetallePage() {
     const router = useRouter();
@@ -21,6 +22,7 @@ export default function DetallePage() {
     const [role, setRole] = useState(null);
     const [ciudadano, setCiudadano] = useState(null);
     const [showAdvise, setShowAdvise] = useState(false);
+    const [calificacion, setCalificacion] = useState(false)
 
     useEffect(() => {
         const fetchQueja = async () => {
@@ -73,6 +75,7 @@ export default function DetallePage() {
         };
         if (queja) {
             ciudadanoQueja();
+            (queja.calificacion == null && queja.estado_id == 4 || queja.estado_id == 5)? setCalificacion(true): null;
         }
 
     }, [queja]);
@@ -85,8 +88,7 @@ export default function DetallePage() {
     const handleGuardar = async () => {
         try {
             await api.updateEstado(id, { estado_id: estadoSeleccionado.id });
-            setShowAdvise(true);
-
+            setShowAdvise(true)
             const response = await api.findOne(id); // Obtener los datos más recientes de la queja
             setQueja(response.data);
             const payload = {
@@ -94,7 +96,6 @@ export default function DetallePage() {
                 estado_id: estadoSeleccionado.id
             };
             await regHistorial.registrarCambio(payload);
-
             const payload2 = {
                 email: ciudadano.email,
                 estado: estadoSeleccionado.nombre,
@@ -104,10 +105,15 @@ export default function DetallePage() {
                 fecha: queja.fecha
             }
             await notificador.notificacion(payload2)
+            
         } catch (error) {
             console.error('Error al actualizar el estado:', error);
         }
     };
+
+    const handleCalificar = async() => {
+        console.log("Enviando calificacion a la queja")
+    }
 
     if (!queja) {
         return (
@@ -176,6 +182,16 @@ export default function DetallePage() {
                     <Advise Mensaje="Se envió un correo confirmando cambio de estado" onClose={() => setShowAdvise(false)} />
                 </div>
             )}
+            {calificacion && (
+                <div className='fixed inset-0 flex justify-center items-center bg-black bg-opacity-50'>
+                    <Calification onClose={() => {
+                        handleCalificar()
+                        setCalificacion(false)
+                    }} />
+                </div>
+            )
+
+            }
         </Layout>
     );
 }
