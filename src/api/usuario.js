@@ -12,6 +12,12 @@ const obtenerRol = async () => await base.get('/usuario/getrol')
 
 const encontrarUsuario = async (payload) => await base.post('/usuario/encontrarCiudadano',payload)
 
-const api = { iniciarSesion, iniciarSesionGoogle, cerrarSesion , obtenerRol, encontrarUsuario}
+const findUserToken = async () => await base.get('/usuario/findUserToken')
+
+const actualizarCuenta = async (payload) => await base.post('/usuario/actualizarCuenta', payload)
+
+const findUserbyEmail = async (payload) => await base.post('/usuario/findUserbyEmail', payload)
+
+const api = { iniciarSesion, iniciarSesionGoogle, cerrarSesion , obtenerRol, encontrarUsuario, actualizarCuenta,findUserToken,findUserbyEmail}
 
 export default api;

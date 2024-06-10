@@ -1,45 +1,53 @@
 "use client";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Advise from '@/components/Advise';
 import React, { useState, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
 import { useRouter } from "next/navigation";
-import api_datos from "@/api/usuario"; // **Falta corroborar**
+import api_datos from "@/api/usuario";
 import db_users from "@/api/usuario";
+import Image from 'next/image';
 import Layout from "@/components/Layout";
 
 export default function LoginPage() {
-  const [correo, setCorreo] = useState("");
+  const [passVal, setPassVal] = useState(false);
+  const [samePass, setSamePass] = useState(false);
+  const [nuevaContraseña, setNuevaContraseña] = useState("");
+  const [passwordStrength, setPasswordStrength] = useState("");
+  const [showAdvise, setShowAdvise] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [contraseña, setContraseña] = useState("");
-  const [nombre, setNombre] = useState("Nombre");
+  const [nombre, setNombre] = useState("");
   const [imagen, setImagen] = useState("");
-  const [mostrarContraseña, setMostrarContraseña] = useState(false); // para lógica de mostrar contraseña
-  const router = useRouter();
+  const [mostrarContraseña, setMostrarContraseña] = useState(false);
   const fileInputRef = useRef(null);
 
   const obtenerDatos = async () => {
     try {
-      const response = await api_datos.ObtenerDatos();
-      setCorreo(response.data.email); // **Falta corroborar**
-      setContraseña(response.data.password); // **Falta corroborar**
-      setNombre(response.data.nombre); // **Falta corroborar**
-      setImagen(response.data.imagen); // **Falta corroborar**
+      const response = await api_datos.findUserToken();
+      console.log(response.data)
+      setContraseña(response.data.usuarioEncontrado.password);
+      setNombre(response.data.usuarioEncontrado.nombre);
+      setImagen(response.data.usuarioEncontrado.foto);
     } catch (error) {
       alert("Error al conectar");
+    } finally {
+      setLoading(true);
     }
   };
 
   useEffect(() => {
     obtenerDatos();
-  }, []);
+  }, [loading]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImagen(reader.result);
-    };
     if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setImagen(event.target.result);
+      };
       reader.readAsDataURL(file);
     }
   };
@@ -47,18 +55,17 @@ export default function LoginPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const User = {
-      email: correo,
-      password: contraseña,
-      imagen: imagen, // Añadimos la imagen aquí
+      contraseña: nuevaContraseña,
+      imagen: imagen,
     };
+    console.log(User);
     try {
-      const response = await db_users.actualizar(User);
+      const response = await db_users.actualizarCuenta(User);
       console.log("signin: ", response);
-      if (response.status == 200) {
-        alert("Se guardó satisfactoriamente");
-        // Puedes redirigir si es necesario, por ejemplo: router.push('/home');
+      if (response.status === 200) {
+        setShowAdvise(true);
       } else {
-        console.log("NO");
+        console.log("No se guardó, error...");
       }
     } catch (error) {
       console.error("Error:", error.message);
@@ -74,96 +81,106 @@ export default function LoginPage() {
     fileInputRef.current.click();
   };
 
+  const validatePassword = (password) => {
+    let strength = "Débil";
+    const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[.!@#\$%\^&\*])(?=.{8,})/;
+
+    if (strongRegex.test(password)) {
+      strength = "Fuerte";
+    } else if (password.length >= 6) {
+      strength = "Moderada";
+    }
+
+    return strength;
+  };
+
+  const passwordVerify = (event) => {
+    const password = event.target.value;
+    if (password === contraseña) {
+      setPassVal(true);
+    } else {
+      setPassVal(false);
+    }
+  };
+
+  const handlePasswordChange = (event) => {
+    const newPassword = event.target.value;
+    setNuevaContraseña(newPassword);
+    if (newPassword !== contraseña) {
+      setSamePass(true);
+    } else {
+      setSamePass(false);
+    }
+    setPasswordStrength(validatePassword(newPassword));
+  };
+
   return (
     <Layout>
-      <div className="bg-white h-screen m-0 p-0 font-montserrat flex flex-col lg:flex-row">
-        <div className="lg:w-1/4 w-full flex flex-col items-center justify-center p-6">
-          <img
-            src={imagen ? imagen : "/default-avatar.png"} // Default avatar si no hay imagen
-            alt="User photo"
-            className="rounded-full mb-4"
-            style={{ width: "150px", height: "150px" }}
-          />
-          <h1 className="mb-4">{nombre}</h1>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            ref={fileInputRef}
-            style={{ display: "none" }}
-          />
-          <Button
-            onClick={handleClickUpload}
-            sx={{
-              width: "100%",
-              backgroundColor: "#BF2441",
-              color: "white",
-              borderRadius: "26px",
-              "&:hover": {
-                backgroundColor: "#a52039",
-                color: "white",
-              },
-            }}
-          >
-            SUBIR UNA FOTO
-          </Button>
-        </div>
-        <form
-          className="lg:w-3/4 w-full flex flex-col justify-center items-center p-6"
-          onSubmit={handleSubmit}
-        >
-          <div className="w-full max-w-lg bg-white rounded-lg p-6 shadow-md">
-            <Box
-              sx={{
-                "& .MuiTextField-root": { m: 1, width: "100%" },
-              }}
-              noValidate
-              autoComplete="off"
-            >
-              <TextField
-                id="outlined-basic"
-                label="Correo electrónico"
-                variant="outlined"
-                value={correo}
-                onChange={(e) => setCorreo(e.target.value)}
+      {!loading ? (
+        <p>Cargando...</p>
+      ) : (
+        <>
+          <h1 className="mb-4 pl-9 text-first w-full uppercase">Bienvenido, <b>{nombre}!</b></h1>
+          <Image src="/divider.svg" alt="divider" width={500} height={10} className="mt-3" style={{ width: '100%', height: 'auto', display: 'block' }} />
+          <div className="m-0 p-16 font-montserrat flex flex-col lg:flex-row  bg-red-300 rounded-3xl ml-9 mr-9 mt-9">
+            <div className="lg:w-1/4 w-full flex flex-col items-center justify-center p-6 ">
+              <img
+                src={imagen !== " " ? imagen : '/userDefault.png'}
+                alt="User photo"
+                className="mb-4 p-3 border   border-red-500 border-solid rounded-3xl"
+                style={{ minWidth: "198px", minHeight: "198px" }}
               />
-              <TextField
-                id="outlined-basic"
-                label="Contraseña"
-                variant="outlined"
-                type={mostrarContraseña ? "text" : "password"}
-                value={contraseña}
-                onChange={(e) => setContraseña(e.target.value)}
-              />
-              <Button
-                variant="outlined"
-                onClick={toggleMostrarContraseña}
-                sx={{ mt: 1, width: "100%" }}
-              >
-                {mostrarContraseña
-                  ? "Ocultar Contraseña"
-                  : "Mostrar Contraseña"}
+              <input type="file" accept="image/*" onChange={handleImageChange} ref={fileInputRef} style={{ display: "none" }} />
+              <Button onClick={handleClickUpload} sx={{ width: "12rem", backgroundColor: "#BF2441", color: "white", borderRadius: "26px", "&:hover": { backgroundColor: "#a52039", color: "white", }, }}>
+                {imagen === " " ? "SUBIR UNA FOTO" : "ACTUALIZAR LA FOTO"}
               </Button>
-            </Box>
-            <Button
-              type="submit"
-              sx={{
-                width: "100%",
-                mt: 2,
-                backgroundColor: "#BF2441",
-                color: "white",
-                borderRadius: "26px",
-                "&:hover": {
-                  backgroundColor: "#a52039",
-                  color: "white",
-                },
-              }}
-            >
-              Guardar
-            </Button>
+            </div>
+            <form className="lg:w-3/4 w-full flex flex-col justify-center items-center p-6" onSubmit={handleSubmit}>
+              <div className="w-full max-w-lg bg-white rounded-lg p-6 shadow-md min-h-96 flex flex-col">
+                <Box sx={{ "& .MuiTextField-root": { m: 1, width: "100%" }, }} noValidate autoComplete="off">
+                  <TextField className="z-0" id="outlined-basic" label="Contraseña Actual" variant="outlined" type={mostrarContraseña ? "text" : "password"} onChange={passwordVerify} />
+                  <div className="text-center p-0 " style={{ color: passVal ? "green" : "red" }}>
+                    {passVal ? "La contraseña sí coincide" : "La contraseña no coincide"}
+                  </div>
+                  <TextField className="z-0" id="outlined-basic" label="Contraseña Nueva" variant="outlined" type={mostrarContraseña ? "text" : "password"} value={nuevaContraseña} onChange={handlePasswordChange} />
+                  <Button variant="outlined" onClick={toggleMostrarContraseña} sx={{ mt: 1, width: "100%" }}>
+                    {mostrarContraseña ? "Ocultar Contraseña" : "Mostrar Contraseña"}
+                  </Button>
+                  <div className="text-center p-0 " style={{ color: passwordStrength === "Fuerte" ? "green" : passwordStrength === "Moderada" ? "orange" : "red" }}>
+                    {!samePass ? "No puede repetir la misma contraseña" : (
+                      passwordStrength === "Débil"
+                        ? "Una buena contraseña debe contener al menos 8 caracteres, y contener una letra mayúscula, minúscula y un símbolo (.*[.!@#\\$%\\^&\\*])"
+                        : `Fuerza de la contraseña: ${passwordStrength}`)}
+                  </div>
+                </Box>
+                <Button
+                  type="submit"
+                  disabled={passwordStrength === "Débil"   || !samePass || !passVal}
+                  sx={{
+                    width: "100%",
+                    mt: 2,
+                    backgroundColor: passwordStrength === "Débil"  || !samePass || !passVal ? "#CCCCCC" : "#BF2441",
+                    color: "white",
+                    borderRadius: "26px",
+                    "&:hover": { backgroundColor: passwordStrength === "Débil"   || !samePass || !passVal ? "#CCCCCC" : "#a52039", color: "white" }
+                  }}
+                >
+                  Actualizar
+                </Button>
+              </div>
+            </form>
           </div>
-        </form>
-      </div>
-    </Layout>
-  );
-}
+          {
+            showAdvise && (
+              <div className='fixed inset-0 flex justify-center items-center bg-black bg-opacity-50'>
+                <Advise Mensaje="¡Datos actualizados con éxito! Saliendo..." URL="/login" />
+              </div>
+            )
+          }
+        </>
+      )
+      }
+    </Layout >
+  )
+};
+
