@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import TextField from '@mui/material/TextField';
 import NoSsr from '@mui/material/NoSsr';
 import CameraIcon from '@/icons/camera';
@@ -13,6 +13,8 @@ import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
+import MapComponent from '@/components/Map';
+import SearchBox from '@/components/SearchLocation';
 
 function page({ params }) {
 
@@ -29,6 +31,40 @@ function page({ params }) {
     const [municipalidades, setMunicipalidades] = useState([]);
     const [municipalidad, setMunicipalidad] = useState(0);
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+    const [markerPosition, setMarkerPosition] = useState({ lat: -12.084305021823578, lng: -76.97130634495585 });
+    const [address, setAddress] = useState("");
+
+    const mapRef = useRef();
+    //mapa
+    const onMapLoad = useCallback((map) => {
+        mapRef.current = map;
+    }, []);
+
+    const onPlaceSelected = (autocomplete) => {
+        const place = autocomplete.getPlace();
+        if (place.geometry) {
+            const location = place.geometry.location;
+            setMarkerPosition({ lat: location.lat(), lng: location.lng() });
+            mapRef.current.panTo(location);
+            mapRef.current.setZoom(15);
+            setAddress(place.formatted_address); // Actualiza la dirección en el search box
+        }
+    };
+
+    const onMarkerDragEnd = (event) => {
+        const lat = event.latLng.lat();
+        const lng = event.latLng.lng();
+        setMarkerPosition({ lat, lng });
+        // Usar Geocoder para obtener la dirección a partir de las coordenadas
+        const geocoder = new window.google.maps.Geocoder();
+        geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+            if (status === 'OK') {
+                if (results[0]) {
+                    setAddress(results[0].formatted_address);
+                }
+            }
+        });
+    };
 
     const fileInputRef = useRef(null);
 
@@ -89,6 +125,7 @@ function page({ params }) {
     };
 
     useEffect(() => {
+        console.log(address)
         const formattedType = removeBarraBaja(type);
         setAsunto(formattedType);
 
@@ -146,7 +183,7 @@ function page({ params }) {
                     <TextField
                         id="detalle"
                         multiline
-                        maxRows={4} // Puedes ajustar esto según lo que necesites
+                        maxRows={4}
                         fullWidth
                         variant="outlined"
                         value={descripcion}
@@ -157,36 +194,16 @@ function page({ params }) {
                 <div className='pt-4 pb-4'>
                     Elige el lugar donde se encuentra el inconveniente:
                 </div>
-                <div>
-                    <NoSsr>
-                        <TextField
-                            value={ubicacion}
-                            onChange={(e) => setUbicacion(e.target.value)}
-                            sx={{ width: '90%' }}
-                        />
-                    </NoSsr>
-                </div>
                 <div className='pt-4 pb-4'>
-                    Seleccione la municipalidad destino:
+                    <SearchBox onPlaceSelected={onPlaceSelected} address={address} setAddress={setAddress} />
                 </div>
-                <div>
-                    <Box sx={{ minWidth: 500 }}>
-                        <FormControl fullWidth>
-                            <InputLabel id="municipalidad-label"></InputLabel>
-                            <Select
-                                labelId="municipalidad-label"
-                                value={municipalidad ? municipalidad.id : ''}
-                                onChange={handleChange}
-                                sx={{ width: '90%' }}
-                            >
-                                {municipalidades.map((muni) => (
-                                    <MenuItem key={muni.id} value={muni.id}>
-                                        {muni.nombre}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </Box>
+                <div className='pt-4 pb-4' >
+                    <MapComponent
+                        onMapLoad={onMapLoad}
+                        mapRef={mapRef}
+                        markerPosition={markerPosition}
+                        onMarkerDragEnd={onMarkerDragEnd}
+                    />
                 </div>
                 <div className='pt-4 pb-4'>
                     Adjuntar fotos (No es obligatorio)
