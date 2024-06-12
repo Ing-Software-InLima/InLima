@@ -1,9 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { Autocomplete, useLoadScript } from '@react-google-maps/api';
-import NoSsr from '@mui/material/NoSsr';
-import InputLabel from '@mui/material/InputLabel';
-import { TextField } from '@mui/material';
-
+import TextField from '@mui/material/TextField';
 
 const libraries = ['places'];
 
@@ -15,10 +12,12 @@ const SearchBox = ({ onPlaceSelected, address, setAddress }) => {
     });
 
     const autocompleteRef = useRef();
-    const inputRef = useRef();
 
     const handleLoad = (autocomplete) => {
         autocompleteRef.current = autocomplete;
+        if (autocomplete.input) {
+            autocomplete.input.value = address;
+        }
     };
 
     const handlePlaceChanged = () => {
@@ -28,8 +27,8 @@ const SearchBox = ({ onPlaceSelected, address, setAddress }) => {
     };
 
     useEffect(() => {
-        if (inputRef.current) {
-            inputRef.current.value = address;
+        if (autocompleteRef.current && autocompleteRef.current.input) {
+            autocompleteRef.current.input.value = address;
         }
     }, [address]);
 
@@ -38,11 +37,18 @@ const SearchBox = ({ onPlaceSelected, address, setAddress }) => {
 
     return (
         <Autocomplete onLoad={handleLoad} onPlaceChanged={handlePlaceChanged}>
-            <input
-                ref={inputRef}
-                type="text"
-                placeholder="Search for places"
-                
+            <TextField
+                fullWidth
+                variant="outlined"
+                placeholder=""
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                inputRef={(input) => {
+                    if (autocompleteRef.current && input) {
+                        autocompleteRef.current.input = input;
+                    }
+                }}
+                sx={{ width: '90%' }}
             />
         </Autocomplete>
     );

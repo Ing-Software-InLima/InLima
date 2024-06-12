@@ -16,26 +16,25 @@ import Select from '@mui/material/Select';
 import MapComponent from '@/components/Map';
 import SearchBox from '@/components/SearchLocation';
 
-function page({ params }) {
-
+function Page({ params }) {
     const { type } = params;
     const [showAdvise, setShowAdvise] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
 
     const [asunto, setAsunto] = useState("");
     const [descripcion, setDescripcion] = useState("");
     const [nombreFoto, setNombreFoto] = useState("");
     const [selectedImage, setSelectedImage] = useState("");
-    const [ubicacion, setUbicacion] = useState("");
-    const [latitud, setLatutid] = useState(0.0);
+    const [latitud, setLatitud] = useState(0.0);
     const [longitud, setLongitud] = useState(0.0);
     const [municipalidades, setMunicipalidades] = useState([]);
-    const [municipalidad, setMunicipalidad] = useState(0);
+    const [municipalidad, setMunicipalidad] = useState('');
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
     const [markerPosition, setMarkerPosition] = useState({ lat: -12.084305021823578, lng: -76.97130634495585 });
     const [address, setAddress] = useState("");
 
     const mapRef = useRef();
-    //mapa
+
     const onMapLoad = useCallback((map) => {
         mapRef.current = map;
     }, []);
@@ -44,24 +43,26 @@ function page({ params }) {
         const place = autocomplete.getPlace();
         if (place.geometry) {
             const location = place.geometry.location;
+            setLatitud(location.lat());
+            setLongitud(location.lng());
             setMarkerPosition({ lat: location.lat(), lng: location.lng() });
             mapRef.current.panTo(location);
             mapRef.current.setZoom(15);
-            setAddress(place.formatted_address); // Actualiza la dirección en el search box
+            setAddress(place.formatted_address);
         }
     };
 
     const onMarkerDragEnd = (event) => {
         const lat = event.latLng.lat();
         const lng = event.latLng.lng();
+        setLatitud(lat);
+        setLongitud(lng);
         setMarkerPosition({ lat, lng });
-        // Usar Geocoder para obtener la dirección a partir de las coordenadas
+
         const geocoder = new window.google.maps.Geocoder();
         geocoder.geocode({ location: { lat, lng } }, (results, status) => {
-            if (status === 'OK') {
-                if (results[0]) {
-                    setAddress(results[0].formatted_address);
-                }
+            if (status === 'OK' && results[0]) {
+                setAddress(results[0].formatted_address);
             }
         });
     };
@@ -69,23 +70,32 @@ function page({ params }) {
     const fileInputRef = useRef(null);
 
     const handleEnviarClick = async () => {
-        try {
-            const queja = {
-                asunto: asunto,
-                descripcion: descripcion,
-                foto: selectedImage,
-                ubicacion_descripcion: ubicacion,
-                latitud: latitud,
-                longitud: longitud,
-                municipalidad: municipalidad?.id
-            };
-            const resp = await quejaApi.agregarQueja(queja);
-            console.log("Queja guardada.");
-            setShowAdvise(true);
-        } catch (error) {
-            alert("Error al guardar.");
-            console.error("Error en el registro de queja:", error);
+        if (asunto === '' || descripcion === '' || selectedImage === '' || address === '' || latitud === '' || longitud === '' || municipalidad === '') {
+            setShowAlert(true);
+        } else {
+            try {
+                const queja = {
+                    asunto: asunto,
+                    descripcion: descripcion,
+                    foto: selectedImage,
+                    ubicacion_descripcion: address,
+                    latitud: latitud,
+                    longitud: longitud,
+                    municipalidad: municipalidad,
+                };
+                const resp = await quejaApi.agregarQueja(queja);
+                console.log("Queja guardada.");
+                setShowAdvise(true);
+            } catch (error) {
+                alert("Error al guardar.");
+                console.error("Error en el registro de queja:", error);
+            }
         }
+    };
+
+    const handleChange = (e) => {
+        const selectedMunicipalidad = municipalidades.find(muni => muni.id === parseInt(e.target.value, 10));
+        setMunicipalidad(selectedMunicipalidad.id);
     };
 
     const handleSubirFoto = (e) => {
@@ -93,18 +103,11 @@ function page({ params }) {
         setNombreFoto(file.name);
         if (file) {
             const reader = new FileReader();
-            reader.onload =  (event) => {
+            reader.onload = (event) => {
                 setSelectedImage(event.target.result);
             };
             reader.readAsDataURL(file);
         }
-    };
-
-
-
-    const handleChange = (e) => {
-        const selectedMunicipalidad = municipalidades.find(muni => muni.id === parseInt(e.target.value, 10));
-        setMunicipalidad(selectedMunicipalidad);
     };
 
     const handleEliminarFoto = () => {
@@ -116,16 +119,15 @@ function page({ params }) {
     };
 
     const removeBarraBaja = (text) => {
-        var formattedText = text.replace(/_/g, ' ');
-        formattedText = formattedText.replace(/%C3%B3/g, 'ó')
-        formattedText = formattedText.replace(/%C3%BA/g, 'ú')
-        formattedText = formattedText.replace(/%C3%81/g, 'Á')
-        formattedText = formattedText.replace(/%C3%AD/g, 'í')
+        let formattedText = text.replace(/_/g, ' ');
+        formattedText = formattedText.replace(/%C3%B3/g, 'ó');
+        formattedText = formattedText.replace(/%C3%BA/g, 'ú');
+        formattedText = formattedText.replace(/%C3%81/g, 'Á');
+        formattedText = formattedText.replace(/%C3%AD/g, 'í');
         return formattedText;
     };
 
     useEffect(() => {
-        console.log(address)
         const formattedType = removeBarraBaja(type);
         setAsunto(formattedType);
 
@@ -142,12 +144,17 @@ function page({ params }) {
     }, [type]);
 
     useEffect(() => {
-        if (asunto && descripcion && municipalidad) {
-            setIsButtonDisabled(false);
-        } else {
-            setIsButtonDisabled(true);
+        setIsButtonDisabled(!(asunto && descripcion));
+    }, [asunto, descripcion]);
+
+    useEffect(() => {
+        for (let i = 0; i < municipalidades.length; i++) {
+            if (address.includes(municipalidades[i]?.nombre)) {
+                setMunicipalidad(parseInt(municipalidades[i].id, 10));
+                break;
+            }
         }
-    }, [asunto, descripcion, municipalidad]);
+    }, [markerPosition, address, municipalidades]);
 
     return (
         <Layout>
@@ -194,10 +201,10 @@ function page({ params }) {
                 <div className='pt-4 pb-4'>
                     Elige el lugar donde se encuentra el inconveniente:
                 </div>
-                <div className='pt-4 pb-4'>
+                <div>
                     <SearchBox onPlaceSelected={onPlaceSelected} address={address} setAddress={setAddress} />
                 </div>
-                <div className='pt-4 pb-4' >
+                <div className='pt-4 pb-4'>
                     <MapComponent
                         onMapLoad={onMapLoad}
                         mapRef={mapRef}
@@ -206,15 +213,37 @@ function page({ params }) {
                     />
                 </div>
                 <div className='pt-4 pb-4'>
+                    Seleccione la municipalidad destino:
+                </div>
+                <div>
+                    <Box sx={{ minWidth: 500 }}>
+                        <FormControl fullWidth>
+                            <InputLabel id="municipalidad-label"></InputLabel>
+                            <Select
+                                labelId="municipalidad-label"
+                                value={municipalidad}
+                                onChange={handleChange}
+                                sx={{ width: '90%' }}
+                            >
+                                {municipalidades.map((muni) => (
+                                    <MenuItem key={muni.id} value={muni.id}>
+                                        {muni.nombre}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Box>
+                </div>
+                <div className='pt-4 pb-4'>
                     Adjuntar fotos (No es obligatorio)
                 </div>
                 <div>
                     <input
                         type="file"
-                        accept="image/jpeg, image/png" // Acepta solo archivos JPEG y PNG
-                        onChange={handleSubirFoto} // Manejar el cambio del input
-                        style={{ display: 'none' }} // Estilo para ocultar el input
-                        id="upload-photo" // ID para asociarlo con el botón de la cámara
+                        accept="image/jpeg, image/png"
+                        onChange={handleSubirFoto}
+                        style={{ display: 'none' }}
+                        id="upload-photo"
                     />
                     
                     <label htmlFor="upload-photo" style={{ cursor: 'pointer' }} >
@@ -240,9 +269,13 @@ function page({ params }) {
                         <Advise Mensaje="Se envió satisfactoriamente" URL="/estado"/>
                     </div>
                 )}
+                {showAlert && (
+                    <div className='fixed inset-0 flex justify-center items-center bg-black bg-opacity-50'>
+                        <Advise Mensaje="Faltan datos a completar" onClose={() => setShowAlert(false)}/>
+                    </div>
+                )}
             </div>
         </Layout>
     )
-
 }
-export default page
+export default Page;

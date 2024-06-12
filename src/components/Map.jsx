@@ -29,7 +29,6 @@ const MapComponent = ({ onMapLoad, mapRef, markerPosition, onMarkerDragEnd }) =>
             zoom={15}
             center={markerPosition}
             onLoad={onMapLoad}
-            sx={{ width: '80%' }}
         >
             <Marker 
                 position={markerPosition} 
