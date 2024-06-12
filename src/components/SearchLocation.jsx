@@ -5,8 +5,9 @@ import TextField from '@mui/material/TextField';
 const libraries = ['places'];
 
 const SearchBox = ({ onPlaceSelected, address, setAddress }) => {
+    const apikey = process.env.NEXT_PUBLIC_MAP_API_KEY;
     const { isLoaded, loadError } = useLoadScript({
-        googleMapsApiKey: 'AIzaSyA9mQSlz1Us6immUBBq0adHUSn87_GyGt0',
+        googleMapsApiKey: apikey,
         libraries,
         version: "weekly",
     });

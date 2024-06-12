@@ -14,8 +14,9 @@ const center = {
 const libraries = ['places'];
 
 const MapComponent = ({ onMapLoad, mapRef, markerPosition, onMarkerDragEnd }) => {
+    const apikey = process.env.NEXT_PUBLIC_MAP_API_KEY;
     const { isLoaded, loadError } = useLoadScript({
-        googleMapsApiKey: 'AIzaSyA9mQSlz1Us6immUBBq0adHUSn87_GyGt0',
+        googleMapsApiKey: apikey,
         libraries,
         version: "weekly",
     });
