@@ -26,7 +26,7 @@ export default function LoginPage() {
   const [contraseña, setContraseña] = useState("");
   const router = useRouter();
 
-  const ClientId = "118418831653-bk8f8eb2pjpjj0n3u2eri4kb76gutu8v.apps.googleusercontent.com";
+  const ClientId = process.env.NEXT_PUBLIC_LOGIN_API;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -108,7 +108,7 @@ export default function LoginPage() {
               /></div>
           </Box>
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
-            <GoogleOAuthProvider clientId="118418831653-bk8f8eb2pjpjj0n3u2eri4kb76gutu8v.apps.googleusercontent.com">
+            <GoogleOAuthProvider clientId={ClientId}>
               <GoogleLogin
                 onSuccess={credentialResponse => {
                   var credentialResponseDecoded = jwtDecode(credentialResponse.credential)
