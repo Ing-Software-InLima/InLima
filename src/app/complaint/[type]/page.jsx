@@ -7,7 +7,7 @@ import Advise from '@/components/Advise';
 import Layout from '@/components/Layout';
 import municipalidadApi from '@/api/municipalidad';
 import quejaApi from '@/api/queja';
-
+import CircularProgress from '@mui/material/CircularProgress';
 import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
@@ -18,6 +18,8 @@ import SearchBox from '@/components/SearchLocation';
 
 function Page({ params }) {
     const { type } = params;
+    const [loading, setLoading] = useState(true); // Estado de carga inicial
+    const [sending, setSending] = useState(false); // Estado de carga al enviar
     const [showAdvise, setShowAdvise] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
 
@@ -70,9 +72,10 @@ function Page({ params }) {
     const fileInputRef = useRef(null);
 
     const handleEnviarClick = async () => {
-        if (asunto === '' || descripcion === '' || selectedImage === '' || address === '' || latitud === '' || longitud === '' || municipalidad === '') {
+        if (asunto === '' || descripcion === '' || address === '' || latitud === '' || longitud === '' || municipalidad === '') {
             setShowAlert(true);
         } else {
+            setSending(true); // Mostrar indicador de carga al enviar
             try {
                 const queja = {
                     asunto: asunto,
@@ -89,6 +92,8 @@ function Page({ params }) {
             } catch (error) {
                 alert("Error al guardar.");
                 console.error("Error en el registro de queja:", error);
+            } finally {
+                setSending(false); // Ocultar indicador de carga al enviar
             }
         }
     };
@@ -137,6 +142,8 @@ function Page({ params }) {
                 setMunicipalidades(response.data);
             } catch (error) {
                 console.error('Error al obtener las municipalidades:', error);
+            } finally {
+                setLoading(false); // Ocultar indicador de carga inicial
             }
         };
 
@@ -155,6 +162,14 @@ function Page({ params }) {
             }
         }
     }, [markerPosition, address, municipalidades]);
+
+    if (loading) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <CircularProgress />
+            </Box>
+        );
+    }
 
     return (
         <Layout>
@@ -261,7 +276,7 @@ function Page({ params }) {
                 </div>
                 <div className='mt-4'>
                     <button className='rounded-2xl text-white bg-inLima_red p-4 pl-8 pr-8' onClick={handleEnviarClick} disabled={isButtonDisabled} title={isButtonDisabled ? "Complete todos los datos" : ""}>
-                        Enviar
+                        {sending ? <CircularProgress size={24} /> : "Enviar"}
                     </button>
                 </div>
                 {showAdvise && (
