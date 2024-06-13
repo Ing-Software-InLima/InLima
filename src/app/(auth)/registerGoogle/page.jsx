@@ -102,7 +102,7 @@ export default function RegisterGooglePage() {
                 onChange={(e) => setDni(e.target.value)}
               />
             </div>
-            <FormControl style={{ marginLeft: '150px', marginTop: '10px' }}>
+            <FormControl style={{ display: 'flex', alignItems: 'center', marginTop: '10px' }}>
               <FormLabel id="demo-row-radio-buttons-group-label">Sexo</FormLabel>
               <RadioGroup
                 row
@@ -117,10 +117,10 @@ export default function RegisterGooglePage() {
               </RadioGroup>
             </FormControl>
           </Box>
+          <div style={{ display: 'flex', alignItems: 'center',justifyContent: 'center', marginTop: '10px' }}>
           <Button type='submit'
             sx={{
               width: '35ch',
-              ml: 18,
               mt: 2,
               mb: 2,
               borderRadius: '26px',
@@ -134,6 +134,7 @@ export default function RegisterGooglePage() {
             }}
             disabled={!isFormValid()}
           >Regístrate</Button>
+          </div>
           <div className="registrarse text-center my-5 text-lg text-black">¿Ya tienes una cuenta? <a href='/login' className="text-[#878ceb]">Inicia sesión</a></div>
         </div>
       </form>
