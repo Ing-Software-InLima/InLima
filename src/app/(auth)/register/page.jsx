@@ -12,6 +12,7 @@ import { useState } from "react"
 import db_users from '@/api/ciudadano'
 import { useRouter } from 'next/navigation';
 import Advise from '@/components/Advise';
+import { Divider } from '@mui/material';
 
 export default function RegisterPage() {
   const [showAdvise, setShowAdvise] = useState(false);
@@ -148,7 +149,7 @@ export default function RegisterPage() {
 
            
 
-            <FormControl style={{ marginLeft: '150px', marginTop: '10px' }}>
+            <FormControl className="text-center p-0" style={{display: 'flex', alignItems: 'center', marginTop: '10px' }}>
               <FormLabel id="demo-row-radio-buttons-group-label" >Sexo</FormLabel>
               <RadioGroup
                 row
@@ -164,11 +165,12 @@ export default function RegisterPage() {
             </FormControl>
 
           </Box>
-
-          <Button type='submit'
+          <div style={{display: 'flex', 
+              alignItems: 'center',
+              justifyContent: 'center'}}>
+          <Button type='submit' 
             sx={{
               width: '35ch',
-              ml: 18,
               mt: 2,
               mb: 2,
               borderRadius: '26px',
@@ -183,6 +185,7 @@ export default function RegisterPage() {
             disabled={!isFormValid()}
 
           >Regístrate</Button>
+          </div>
           <div className="registrarse text-center my-5 text-lg text-black">¿Ya tienes una cuenta? <a href='/login' className="text-[#878ceb]">Inicia sesión</a></div>
 
         </div>
