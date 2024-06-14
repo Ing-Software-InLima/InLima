@@ -12,6 +12,8 @@ const findOne = async (id) => await base.get(`/queja/id/${id}`);
 
 const updateEstado = async (id, payload) => await base.post(`${endpoint}/updateEstado/${id}`, payload);
 
-const api = { agregarQueja, quejasUsuario , obtenerQuejasFiltradas , findOne, updateEstado}
+const updateCalificacion = async(id,payload) => await base.post(`${endpoint}/puntuacionQueja/${id}`,payload);
+
+const api = { agregarQueja, quejasUsuario , obtenerQuejasFiltradas , findOne, updateEstado,updateCalificacion}
 
 export default api;

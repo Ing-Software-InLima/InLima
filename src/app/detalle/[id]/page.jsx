@@ -111,8 +111,22 @@ export default function DetallePage() {
         }
     };
 
-    const handleCalificar = async() => {
-        console.log("Enviando calificacion a la queja")
+    const handleCalificar = async(valor) => {
+        
+
+        const payload = {
+            calificacion : valor
+        }
+
+        try {
+            await api.updateCalificacion(id,payload)
+            console.log("Enviando calificacion a la queja")
+
+        } catch (error) {
+            console.error('Error al actualizar la calificación', error)
+            
+        }
+
     }
 
     if (!queja) {
@@ -184,9 +198,11 @@ export default function DetallePage() {
             )}
             {calificacion && (
                 <div className='fixed inset-0 flex justify-center items-center bg-black bg-opacity-50'>
-                    <Calification onClose={() => {
-                        handleCalificar()
+                    <Calification onClose={(valor) => {
+                        console.log("++++++++++++++++++++++++++++++++++++++++++++++", valor)
+                        handleCalificar(valor)
                         setCalificacion(false)
+                        
                     }} />
                 </div>
             )

@@ -9,8 +9,8 @@ export default function Advise(props) {
     const handleClick = () => {
         if (URL) {
             router.push(URL);
-        } else if (onClose) {
-            onClose();
+        } else if (calificacion) {
+            onClose(calificacion);
         } else {
             router.back();
         }
