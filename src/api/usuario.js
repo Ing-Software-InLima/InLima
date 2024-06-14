@@ -18,6 +18,8 @@ const actualizarCuenta = async (payload) => await base.post('/usuario/actualizar
 
 const findUserbyEmail = async (payload) => await base.post('/usuario/findUserbyEmail', payload)
 
-const api = { iniciarSesion, iniciarSesionGoogle, cerrarSesion , obtenerRol, encontrarUsuario, actualizarCuenta,findUserToken,findUserbyEmail}
+const resetps = async (payload) => await base.post('/usuario/resetps', payload)
+
+const api = { iniciarSesion, iniciarSesionGoogle, cerrarSesion , obtenerRol, encontrarUsuario, actualizarCuenta,findUserToken,findUserbyEmail, resetps}
 
 export default api;

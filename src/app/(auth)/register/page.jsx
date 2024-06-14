@@ -44,14 +44,12 @@ export default function RegisterPage() {
       foto: "",
     };
     try {
-      console.log('correo')
-      console.log(email);
       const response = await tokenApi.sendToken({email: email});
 
       if (response.status === 200) {
         Cookies.set('registrationData',JSON.stringify(User));
         setShowAdvise(true);
-        router.push('/verify');
+        //router.push('/verify');
       }
       else {
         console.log("NO")
@@ -59,7 +57,7 @@ export default function RegisterPage() {
 
     } catch (error) {
       console.error('Error:', error.message);
-      alert('Error al conectar');
+      //alert('Error al conectar');
     }
   };
 
