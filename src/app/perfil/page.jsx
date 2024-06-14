@@ -5,10 +5,10 @@ import Advise from '@/components/Advise';
 import React, { useState, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
 import { useRouter } from "next/navigation";
-import api_datos from "@/api/usuario";
 import db_users from "@/api/usuario";
 import Image from 'next/image';
 import Layout from "@/components/Layout";
+import apiciudadano from "@/api/ciudadano"
 
 export default function LoginPage() {
   const [passVal, setPassVal] = useState(false);
@@ -20,27 +20,58 @@ export default function LoginPage() {
   const [contraseña, setContraseña] = useState("");
   const [nombre, setNombre] = useState("");
   const [imagen, setImagen] = useState("");
+  const [id, setID] = useState(0);
   const [mostrarContraseña, setMostrarContraseña] = useState(false);
   const fileInputRef = useRef(null);
-
-  const obtenerDatos = async () => {
-    try {
-      const response = await api_datos.findUserToken();
-      console.log(response.data)
-      setContraseña(response.data.usuarioEncontrado.password);
-      setNombre(response.data.usuarioEncontrado.nombre);
-      setImagen(response.data.usuarioEncontrado.foto);
-    } catch (error) {
-      alert("Error al conectar");
-    } finally {
-      setLoading(true);
-    }
-  };
+  const [reputacion, setReputacion] = useState(0);
 
   useEffect(() => {
-    obtenerDatos();
-  }, [loading]);
+    const obtenerDatos = async () => {
+      try {
+        const response = await db_users.findUserToken();
+        console.log(response.data);
+        setContraseña(response.data.usuarioEncontrado.password);
+        setNombre(response.data.usuarioEncontrado.nombre);
+        setImagen(response.data.usuarioEncontrado.foto);
+        setID(response.data.usuarioEncontrado.id);
+      } catch (error) {
+        alert("Error al conectar");
+      } finally {
+        setLoading(true);
+      }
+    };
 
+    obtenerDatos();
+  }, []);
+
+  useEffect(() => {
+    const fetchReputation = async () => {
+      if (id !== 0) {
+        try {
+          const ciudadanoResponse = await apiciudadano.encontrarCiudadano({ id_usuario: id });
+          const ciudadano_id = ciudadanoResponse.data.ciudadano.id;
+          if (ciudadano_id && ciudadano_id !== 0) {
+            const reputationResponse = await apiciudadano.calcularReputacion({ id_ciudadano: ciudadano_id });
+            setReputacion(reputationResponse.data.ciudadano.reputacion);
+          } else {
+            console.warn('Ciudadano ID no es válido. Evitando llamada a calcularReputacion.');
+          }
+        } catch (error) {
+          console.error('Error fetching reputation:', error);
+        }
+      }
+    };
+
+    fetchReputation();
+  }, [id]);
+
+  /* PARA VER LA REPUTACION
+  useEffect(() => {
+    console.log('Reputation response:', reputacion);
+  }, [reputacion]);
+  */
+
+  
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -155,14 +186,14 @@ export default function LoginPage() {
                 </Box>
                 <Button
                   type="submit"
-                  disabled={passwordStrength === "Débil"   || !samePass || !passVal}
+                  disabled={passwordStrength === "Débil" || !samePass || !passVal}
                   sx={{
                     width: "100%",
                     mt: 2,
-                    backgroundColor: passwordStrength === "Débil"  || !samePass || !passVal ? "#CCCCCC" : "#BF2441",
+                    backgroundColor: passwordStrength === "Débil" || !samePass || !passVal ? "#CCCCCC" : "#BF2441",
                     color: "white",
                     borderRadius: "26px",
-                    "&:hover": { backgroundColor: passwordStrength === "Débil"   || !samePass || !passVal ? "#CCCCCC" : "#a52039", color: "white" }
+                    "&:hover": { backgroundColor: passwordStrength === "Débil" || !samePass || !passVal ? "#CCCCCC" : "#a52039", color: "white" }
                   }}
                 >
                   Actualizar
