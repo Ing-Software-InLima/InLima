@@ -75,7 +75,7 @@ export default function DetallePage() {
         };
         if (queja) {
             ciudadanoQueja();
-            (queja.calificacion == null && queja.estado_id == 4 || queja.estado_id == 5)? setCalificacion(true): null;
+            ( (queja.calificacion == null && queja.estado_id == 4) || (queja.calificacion == null && queja.estado_id == 5))? setCalificacion(true): null;
         }
 
     }, [queja]);
@@ -120,6 +120,7 @@ export default function DetallePage() {
 
         try {
             await api.updateCalificacion(id,payload)
+            setCerrar(1)
             console.log("Enviando calificacion a la queja")
 
         } catch (error) {
