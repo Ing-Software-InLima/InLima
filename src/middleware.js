@@ -17,14 +17,14 @@ export async function middleware(request) {
         const { payload } = await jwtVerify(token?.value, pass);
         const rol = payload?.rol;
         if (rol === 1 && !['/home', '/estado', '/complaint', '/perfil', '/detalle'].some(path => request.url.includes(path))) {
-            console.log("Usuario no puede entrar a esta página")
+
             return NextResponse.redirect(new URL('/home', request.url));
         }
         else if (rol === 2 && !['/gestion', '/resultados', '/detalle', '/perfil'].some(path => request.url.includes(path))) {
-            console.log("Admin no puede entrar a esta página")
+
             return NextResponse.redirect(new URL('/gestion', request.url));
         }
-        console.log("pasa pasa nomas")
+        
         return NextResponse.next();
     } catch (error) {
         console.error(error)

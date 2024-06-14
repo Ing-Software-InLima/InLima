@@ -24,7 +24,8 @@ export default function DetallePage() {
     const [role, setRole] = useState(null);
     const [ciudadano, setCiudadano] = useState(null);
     const [showAdvise, setShowAdvise] = useState(false);
-    const [calificacion, setCalificacion] = useState(false)
+    const [calificacion, setCalificacion] = useState(false);
+    const [reputacion, setReputacion] = useState(0)
 
     useEffect(() => {
         const fetchQueja = async () => {
@@ -67,6 +68,9 @@ export default function DetallePage() {
             try {
                 const response = await apiciudadano.calcularReputacion({ id_ciudadano: queja.ciudadano_id });
                 console.log('Reputation response:', response.data);
+                setReputacion(response.data.ciudadano.reputacion);
+                console.log(response.data.ciudadano.reputacion);
+                console.log('la reputacion es: ', reputacion);
             } catch (error) {
                 console.error('Error fetching reputation:', error);
             }
@@ -126,7 +130,6 @@ export default function DetallePage() {
             console.error('Error al actualizar el estado:', error);
         }
     };
-
 
     const handleCalificar = async (valor) => {
 
@@ -209,9 +212,9 @@ export default function DetallePage() {
                                 </div>
                                 <div className="pt-4"></div>
                                 <p className="text-left font-bold mb-2">Reputación del ciudadano</p>
-                                <div className="bg-white px-4 py-2 rounded-full bg-center" style={{ width: '190px' }}>
-                                    <Reputacion calificacion={calificacionPromedio}/>
-                                </div>
+                                    <div className="bg-white px-4 py-2 rounded-full bg-center" style={{ width: '190px' }}>
+                                        <Reputacion calificacion={reputacion}/>
+                                    </div>
                             </>
                         ) : null}
                     </div>
