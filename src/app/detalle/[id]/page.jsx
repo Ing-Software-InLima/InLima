@@ -13,6 +13,7 @@ import apiestado from '@/api/estado';
 import Advise from '@/components/Advise';
 import StatusColor from '@/components/StatusColor';
 import Calification from '@/components/Calification';
+import Reputacion from '@/components/Reputacion';
 
 export default function DetallePage() {
     const router = useRouter();
@@ -126,6 +127,7 @@ export default function DetallePage() {
         }
     };
 
+
     const handleCalificar = async (valor) => {
 
         try {
@@ -204,6 +206,11 @@ export default function DetallePage() {
                                 </FormControl>
                                 <div className="text-left space-x-2 pt-5">
                                     <button type="button" onClick={handleGuardar} className="bg-inLima_red px-4 py-2 hover:bg-white hover:text-inLima_red border rounded-full text-white">Guardar</button>
+                                </div>
+                                <div className="pt-4"></div>
+                                <p className="text-left font-bold mb-2">Reputación del ciudadano</p>
+                                <div className="bg-white px-4 py-2 rounded-full bg-center" style={{ width: '190px' }}>
+                                    <Reputacion calificacion={calificacionPromedio}/>
                                 </div>
                             </>
                         ) : null}
