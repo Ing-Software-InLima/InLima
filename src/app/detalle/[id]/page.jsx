@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import api from '@/api/queja';
+import apiciudadano from '@/api/ciudadano'
 import notificador from '@/api/notificador';
 import regHistorial from '@/api/historial';
 import Layout from '@/components/Layout';
@@ -61,6 +62,20 @@ export default function DetallePage() {
     }, [id]);
 
     useEffect(() => {
+        const fetchReputation = async () => {
+            try {
+                const response = await apiciudadano.calcularReputacion({ id_ciudadano: queja.ciudadano_id });
+                console.log('Reputation response:', response.data);
+            } catch (error) {
+                console.error('Error fetching reputation:', error);
+            }
+        };
+        if (ciudadano) {
+            fetchReputation();
+        }
+    }, [ciudadano]);
+
+    useEffect(() => {
         const ciudadanoQueja = async () => {
             try {
                 const ciudadanoid = {
@@ -75,7 +90,7 @@ export default function DetallePage() {
         };
         if (queja) {
             ciudadanoQueja();
-            ( (queja.calificacion == null && queja.estado_id == 4) || (queja.calificacion == null && queja.estado_id == 5))? setCalificacion(true): null;
+            ((queja.calificacion == null && queja.estado_id == 4) || (queja.calificacion == null && queja.estado_id == 5)) ? setCalificacion(true) : null;
         }
 
     }, [queja]);
@@ -105,27 +120,26 @@ export default function DetallePage() {
                 fecha: queja.fecha
             }
             await notificador.notificacion(payload2)
-            
+
         } catch (error) {
             console.error('Error al actualizar el estado:', error);
         }
     };
 
-    const handleCalificar = async(valor) => {
-        
-
-        const payload = {
-            calificacion : valor
-        }
+    const handleCalificar = async (valor) => {
 
         try {
-            await api.updateCalificacion(id,payload)
-            setCerrar(1)
+            const payload = {
+                calificacion: valor
+            }
+            await api.updateCalificacion(id, payload)
+            const response = await apiciudadano.calcularReputacion({ id_ciudadano: queja.ciudadano_id });
+            console.log('Reputation response:', response.data);
             console.log("Enviando calificacion a la queja")
 
         } catch (error) {
             console.error('Error al actualizar la calificación', error)
-            
+
         }
 
     }
@@ -140,6 +154,10 @@ export default function DetallePage() {
 
     // Obtener el nombre del estado actual de la queja
     const estadoActual = estados.find(estado => estado.id === queja.estado_id);
+
+    // Para saber el ID del ciudadano
+    // ciudadano.id
+
 
     return (
         <Layout>
@@ -203,7 +221,7 @@ export default function DetallePage() {
                         console.log("++++++++++++++++++++++++++++++++++++++++++++++", valor)
                         handleCalificar(valor)
                         setCalificacion(false)
-                        
+
                     }} />
                 </div>
             )

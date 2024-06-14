@@ -8,6 +8,8 @@ const create = async (payload) => await base.post('/ciudadano/signin', payload);
 
 const createGoogle = async (payload) => await base.post('/ciudadano/signinGoogle', payload);
 
-const api = { findAll, create, createGoogle }
+const calcularReputacion = async(payload) => await base.post('/ciudadano/calcularReputacion',payload);
+
+const api = { findAll, create, createGoogle,calcularReputacion }
 
 export default api;
