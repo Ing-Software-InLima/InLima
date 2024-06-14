@@ -10,8 +10,9 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { useRouter } from 'next/navigation';
 import db_users from '@/api/ciudadano';
+import tokenApi from '@/api/token';
 import { jwtDecode } from "jwt-decode";
-
+import Cookies from 'js-cookie';
 
 export default function VerifyPage() {
     const [showAdvise, setShowAdvise] = useState(false);
@@ -25,22 +26,63 @@ export default function VerifyPage() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const User = {
-            num1: num1,
-            num2: num2,
-            num3: num3,
-            num4: num4,
-            num5: num5,
-            num6: num6,
+        const aux = `${num1}${num2}${num3}${num4}${num5}${num6}`;
 
-        };
         try {
-            console.log(num1 + num2 + num3 + num4 + num5 + num6)
+            const registrationData = JSON.parse(Cookies.get('registrationData'));
+            if (!registrationData) {
+                throw new Error('No registration data found');
+            }
+
+            const token = {
+                email: registrationData.email,
+                token: aux
+            };
+            const response = await tokenApi.verifyToken(token);
+
+            if(response.status === 200) {
+                const registro = await db_users.create(registrationData);
+                Cookies.remove('registrationData');
+                alert('Usuario creado con exito')
+                router.push('/login');
+            }else{
+                if(response.status === 300){
+                    alert('Token incorrecto')
+                }else if(response.status === 400){
+                    alert('Token expirado. Vuelva a generarlo')
+                }else{
+                    alert('Error al verificar.')
+                }
+            }
+
         } catch (error) {
             console.error('Error:', error.message);
             alert('Error al conectar');
         }
     };
+
+    const handleVolverEnviar = async (event) => {
+        event.preventDefault();
+        try {
+            const registrationData = JSON.parse(localStorage.getItem('registrationData'));
+            if (!registrationData) {
+                throw new Error('No registration data found');
+            }
+
+            const response = await tokenApi.sendToken(registrationData.email);
+
+            if(response.status === 200) {
+                const registro = await db_users.create(registrationData);
+                alert('Token enviado con exito');
+            }else{
+                alert('Error al enviar');
+            }
+
+        } catch (error) {
+            console.error('Error:', error.message);
+            alert('Error al conectar');
+        }
+    } 
 
     const isFormValid = () => {
         return num1 && num2 && num3 && num4 && num5 && num6;
