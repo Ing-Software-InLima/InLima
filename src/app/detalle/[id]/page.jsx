@@ -70,10 +70,10 @@ export default function DetallePage() {
                 console.error('Error fetching reputation:', error);
             }
         };
-        if (ciudadano) {
+        if (queja) {
             fetchReputation();
         }
-    }, [ciudadano]);
+    }, [queja]);
 
     useEffect(() => {
         const ciudadanoQueja = async () => {
