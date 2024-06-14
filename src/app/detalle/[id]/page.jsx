@@ -140,6 +140,7 @@ export default function DetallePage() {
             await api.updateCalificacion(id, payload)
             const response = await apiciudadano.calcularReputacion({ id_ciudadano: queja.ciudadano_id });
             console.log('Reputation response:', response.data);
+            setReputacion(response.data.ciudadano.reputacion);
             console.log("Enviando calificacion a la queja")
 
         } catch (error) {
