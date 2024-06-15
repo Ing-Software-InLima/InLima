@@ -9,6 +9,7 @@ import db_users from "@/api/usuario";
 import Image from 'next/image';
 import Layout from "@/components/Layout";
 import apiciudadano from "@/api/ciudadano"
+import Reputacion from "@/components/Reputacion";
 
 export default function LoginPage() {
   const [passVal, setPassVal] = useState(false);
@@ -24,6 +25,7 @@ export default function LoginPage() {
   const [mostrarContraseña, setMostrarContraseña] = useState(false);
   const fileInputRef = useRef(null);
   const [reputacion, setReputacion] = useState(0);
+  const [role, setRole] = useState(null);
 
   useEffect(() => {
     const obtenerDatos = async () => {
@@ -50,9 +52,11 @@ export default function LoginPage() {
         try {
           const ciudadanoResponse = await apiciudadano.encontrarCiudadano({ id_usuario: id });
           const ciudadano_id = ciudadanoResponse.data.ciudadano.id;
+          console.log(ciudadano_id);
           if (ciudadano_id && ciudadano_id !== 0) {
             const reputationResponse = await apiciudadano.calcularReputacion({ id_ciudadano: ciudadano_id });
             setReputacion(reputationResponse.data.ciudadano.reputacion);
+
           } else {
             console.warn('Ciudadano ID no es válido. Evitando llamada a calcularReputacion.');
           }
@@ -65,13 +69,28 @@ export default function LoginPage() {
     fetchReputation();
   }, [id]);
 
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      try {
+        const response = await db_users.obtenerRol();
+        setRole(response.data.rol);
+      } catch (error) {
+        console.error('Error obteniendo el rol del usuario:', error);
+      }
+    };
+
+    if (id) {
+      fetchUserRole();
+    }
+  }, [id]);
+
   /* PARA VER LA REPUTACION
   useEffect(() => {
     console.log('Reputation response:', reputacion);
   }, [reputacion]);
   */
 
-  
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -155,6 +174,20 @@ export default function LoginPage() {
           <Image src="/divider.svg" alt="divider" width={500} height={10} className="mt-3" style={{ width: '100%', height: 'auto', display: 'block' }} />
           <div className="m-0 p-16 font-montserrat flex flex-col lg:flex-row  bg-red-300 rounded-3xl ml-9 mr-9 mt-9">
             <div className="lg:w-1/4 w-full flex flex-col items-center justify-center p-6 ">
+              <div className="pt-4 pb-4">
+                {role === 1 ? (
+                  <>
+                    <div className="pt-4"></div>
+                    <p className="text-center font-bold mb-2">Reputación</p>
+                    <div className="bg-white px-4 py-2 rounded-full bg-center" style={{ width: '190px' }}>
+                      <Reputacion calificacion={reputacion} />
+                    </div>
+                  </>
+                ) : role === 2 ? (
+                  <>
+                  </>
+                ) : null}
+              </div>
               <img
                 src={imagen !== " " ? imagen : '/userDefault.png'}
                 alt="User photo"

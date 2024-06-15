@@ -25,7 +25,8 @@ export default function DetallePage() {
     const [ciudadano, setCiudadano] = useState(null);
     const [showAdvise, setShowAdvise] = useState(false);
     const [calificacion, setCalificacion] = useState(false);
-    const [reputacion, setReputacion] = useState(0)
+    const [reputacion, setReputacion] = useState(0);
+    const [nombre, setNombre] = useState(null);
 
     useEffect(() => {
         const fetchQueja = async () => {
@@ -87,7 +88,8 @@ export default function DetallePage() {
                     id_ciudadano: queja.ciudadano_id
                 }
                 const response = await apirol.encontrarUsuario(ciudadanoid);
-                setCiudadano(response.data.usuarioEncontrado)
+                setCiudadano(response.data.usuarioEncontrado);
+                setNombre(response.data.usuarioEncontrado.nombre);
 
             } catch (error) {
                 console.error('Error obteniendo al ciudadano de la queja:', error);
@@ -212,7 +214,7 @@ export default function DetallePage() {
                                     <button type="button" onClick={handleGuardar} className="bg-inLima_red px-4 py-2 hover:bg-white hover:text-inLima_red border rounded-full text-white">Guardar</button>
                                 </div>
                                 <div className="pt-4"></div>
-                                <p className="text-left font-bold mb-2">Reputación del ciudadano</p>
+                                <p className="text-left font-bold mb-2">Reputación de <b>{nombre}!</b></p>
                                     <div className="bg-white px-4 py-2 rounded-full bg-center" style={{ width: '190px' }}>
                                         <Reputacion calificacion={reputacion}/>
                                     </div>
