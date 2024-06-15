@@ -4,6 +4,13 @@ import TextField from '@mui/material/TextField';
 
 const libraries = ['places'];
 
+const limaBounds = {
+    north: -11.771511,
+    south: -12.354219,
+    east: -76.804709,
+    west: -77.263798,
+};
+
 const SearchBox = ({ onPlaceSelected, address, setAddress }) => {
     const apikey = process.env.NEXT_PUBLIC_MAP_API_KEY;
     const { isLoaded, loadError } = useLoadScript({
@@ -16,6 +23,7 @@ const SearchBox = ({ onPlaceSelected, address, setAddress }) => {
 
     const handleLoad = (autocomplete) => {
         autocompleteRef.current = autocomplete;
+        autocomplete.setBounds(limaBounds); // Establece los límites geográficos aquí
         if (autocomplete.input) {
             autocomplete.input.value = address;
         }

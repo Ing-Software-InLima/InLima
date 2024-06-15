@@ -9,10 +9,13 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { useState } from "react"
-import db_users from '@/api/ciudadano'
+import tokenApi from '@/api/token'
 import { useRouter } from 'next/navigation';
 import Advise from '@/components/Advise';
 import { Divider } from '@mui/material';
+import Cookies from 'js-cookie';
+
+
 
 export default function RegisterPage() {
   const [showAdvise, setShowAdvise] = useState(false);
@@ -24,7 +27,6 @@ export default function RegisterPage() {
   const [apellido_materno, setApellidoM] = useState('');
   const [dni, setDni] = useState('');
   const [sexo, setSexo] = useState('');
-  const [foto, setFoto] = useState('');
   const [numero, setNumero] = useState('');
   const router = useRouter();
 
@@ -39,14 +41,15 @@ export default function RegisterPage() {
       dni: dni,
       numero: numero,
       sexo: sexo,
-      foto: " ",
-
+      foto: "",
     };
     try {
-      const response = await db_users.create(User);
-      if (response.status == 200) {
-        //window.location.href='/login'
+      const response = await tokenApi.sendToken({email: email});
+
+      if (response.status === 200) {
+        Cookies.set('registrationData',JSON.stringify(User));
         setShowAdvise(true);
+        //router.push('/verify');
       }
       else {
         console.log("NO")
@@ -54,7 +57,7 @@ export default function RegisterPage() {
 
     } catch (error) {
       console.error('Error:', error.message);
-      alert('Error al conectar');
+      //alert('Error al conectar');
     }
   };
 
@@ -192,7 +195,7 @@ export default function RegisterPage() {
       </form>
       {showAdvise && (
         <div className='fixed inset-0 flex justify-center items-center bg-black bg-opacity-50'>
-          <Advise Mensaje="¡Usuario creado con exito!" URL="/login" />
+          <Advise Mensaje="Ha llegado un codigo de confirmación a tu correo" URL="/verify" />
         </div>
       )}
     </div>
