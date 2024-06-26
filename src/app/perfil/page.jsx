@@ -10,7 +10,7 @@ import Image from 'next/image';
 import Layout from "@/components/Layout";
 import apiciudadano from "@/api/ciudadano"
 import Reputacion from "@/components/Reputacion";
-
+import "./page.css"
 export default function LoginPage() {
   const [passVal, setPassVal] = useState(false);
   const [samePass, setSamePass] = useState(false);
@@ -21,6 +21,8 @@ export default function LoginPage() {
   const [contraseña, setContraseña] = useState("");
   const [nombre, setNombre] = useState("");
   const [imagen, setImagen] = useState("");
+  const [imagenAux, setImagenAux] = useState("");
+  const [isGmail, setIsGmail] = useState(false);
   const [id, setID] = useState(0);
   const [mostrarContraseña, setMostrarContraseña] = useState(false);
   const fileInputRef = useRef(null);
@@ -35,7 +37,9 @@ export default function LoginPage() {
         setContraseña(response.data.usuarioEncontrado.password);
         setNombre(response.data.usuarioEncontrado.nombre);
         setImagen(response.data.usuarioEncontrado.foto);
+        setImagenAux(response.data.usuarioEncontrado.foto);
         setID(response.data.usuarioEncontrado.id);
+        setIsGmail(response.data.usuarioEncontrado.email.includes("@gmail.com"));
       } catch (error) {
         alert("Error al conectar");
       } finally {
@@ -102,11 +106,29 @@ export default function LoginPage() {
     }
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmitPhoto = async (event) => {
+    event.preventDefault();
+    const User = {
+      imagen: imagen,
+    };
+    console.log(User);
+    try {
+      const response = await db_users.actualizarCuenta(User);
+      console.log("signin: ", response);
+      if (response.status === 200) {
+        setShowAdvise(true);
+      } else {
+        console.log("No se guardó, error...");
+      }
+    } catch (error) {
+      console.error("Error:", error.message);
+      alert("Error al conectar");
+    }
+  };
+  const handleSubmitPass = async (event) => {
     event.preventDefault();
     const User = {
       contraseña: nuevaContraseña,
-      imagen: imagen,
     };
     console.log(User);
     try {
@@ -173,7 +195,7 @@ export default function LoginPage() {
           <h1 className="mb-4 pl-9 text-first w-full uppercase">Bienvenido, <b>{nombre}!</b></h1>
           <Image src="/divider.svg" alt="divider" width={500} height={10} className="mt-3" style={{ width: '100%', height: 'auto', display: 'block' }} />
           <div className="m-0 p-16 font-montserrat flex flex-col lg:flex-row  bg-red-300 rounded-3xl ml-9 mr-9 mt-9">
-            <div className="lg:w-1/4 w-full flex flex-col items-center justify-center p-6 ">
+            <div className="lg:w-1/4 w-full flex flex-col items-center justify-center p-6 -mt-9 ">
               <div className="pt-4 pb-4">
                 {role === 1 ? (
                   <>
@@ -188,38 +210,43 @@ export default function LoginPage() {
                   </>
                 ) : null}
               </div>
-              <img
-                src={imagen !== " " ? imagen : '/userDefault.png'}
-                alt="User photo"
-                className="mb-4 p-3 border   border-red-500 border-solid rounded-3xl"
-                style={{ minWidth: "198px", minHeight: "198px" }}
-              />
+              <div className="animacionjeje-container">
+                <p className="animacionjeje-text font-bold">Si quiere cambiar la foto, haga clic en esta :)</p>
+              </div>
+              <a onClick={handleClickUpload} className="cursor-pointer ">
+                <img
+                  src={imagen !== " " ? imagen : '/userDefault.png'}
+                  alt="User photo"
+                  className="mb-4 p-3 border   border-red-500 border-solid rounded-3xl"
+                  style={{ minWidth: "198px", minHeight: "198px" }}
+                /></a>
               <input type="file" accept="image/*" onChange={handleImageChange} ref={fileInputRef} style={{ display: "none" }} />
-              <Button onClick={handleClickUpload} sx={{ width: "12rem", backgroundColor: "#BF2441", color: "white", borderRadius: "26px", "&:hover": { backgroundColor: "#a52039", color: "white", }, }}>
-                {imagen === " " ? "SUBIR UNA FOTO" : "ACTUALIZAR LA FOTO"}
+              <Button onClick={handleSubmitPhoto} disabled={imagen === imagenAux} sx={{ width: "12rem", backgroundColor: "#BF2441", color: "white", borderRadius: "26px", "&:hover": { backgroundColor: "#a52039", color: "white", }, }}>
+                ACTUALIZAR LA FOTO
               </Button>
             </div>
-            <form className="lg:w-3/4 w-full flex flex-col justify-center items-center p-6" onSubmit={handleSubmit}>
+            <form className="lg:w-3/4 w-full flex flex-col justify-center items-center p-6" onSubmit={handleSubmitPass}>
               <div className="w-full max-w-lg bg-white rounded-lg p-6 shadow-md min-h-96 flex flex-col">
                 <Box sx={{ "& .MuiTextField-root": { m: 1, width: "100%" }, }} noValidate autoComplete="off">
-                  <TextField className="z-0" id="outlined-basic" label="Contraseña Actual" variant="outlined" type={mostrarContraseña ? "text" : "password"} onChange={passwordVerify} />
+                  <TextField className="z-0" id="outlined-basic" label="Contraseña Actual" variant="outlined" disabled={isGmail} type={mostrarContraseña ? "text" : "password"} onChange={passwordVerify} />
                   <div className="text-center p-0 " style={{ color: passVal ? "green" : "red" }}>
-                    {passVal ? "La contraseña sí coincide" : "La contraseña no coincide"}
+                    {isGmail ? "" : (
+                      passVal ? "La contraseña sí coincide" : "La contraseña no coincide")}
                   </div>
-                  <TextField className="z-0" id="outlined-basic" label="Contraseña Nueva" variant="outlined" type={mostrarContraseña ? "text" : "password"} value={nuevaContraseña} onChange={handlePasswordChange} />
-                  <Button variant="outlined" onClick={toggleMostrarContraseña} sx={{ mt: 1, width: "100%" }}>
+                  <TextField className="z-0" id="outlined-basic" label="Contraseña Nueva" disabled={isGmail} variant="outlined" type={mostrarContraseña ? "text" : "password"} value={nuevaContraseña} onChange={handlePasswordChange} />
+                  <Button variant="outlined" onClick={toggleMostrarContraseña} disabled={isGmail} sx={{ mt: 1, width: "100%" }}>
                     {mostrarContraseña ? "Ocultar Contraseña" : "Mostrar Contraseña"}
                   </Button>
                   <div className="text-center p-0 " style={{ color: passwordStrength === "Fuerte" ? "green" : passwordStrength === "Moderada" ? "orange" : "red" }}>
-                    {!samePass ? "No puede repetir la misma contraseña" : (
+                    {isGmail ? "Sección deshabilitada para usuarios registrados en Google" : (!samePass ? "No puede repetir la misma contraseña" : (
                       passwordStrength === "Débil"
                         ? "Una buena contraseña debe contener al menos 8 caracteres, y contener una letra mayúscula, minúscula y un símbolo (.*[.!@#\\$%\\^&\\*])"
-                        : `Fuerza de la contraseña: ${passwordStrength}`)}
+                        : `Fuerza de la contraseña: ${passwordStrength}`))}
                   </div>
                 </Box>
                 <Button
                   type="submit"
-                  disabled={passwordStrength === "Débil" || !samePass || !passVal}
+                  disabled={passwordStrength === "Débil" || !samePass || !passVal || isGmail}
                   sx={{
                     width: "100%",
                     mt: 2,
@@ -237,7 +264,7 @@ export default function LoginPage() {
           {
             showAdvise && (
               <div className='fixed inset-0 flex justify-center items-center bg-black bg-opacity-50'>
-                <Advise Mensaje="¡Datos actualizados con éxito! Saliendo..." URL="/login" />
+                <Advise Mensaje="¡Datos actualizados con éxito! Volviendo al menú..."  URL="/home"/>
               </div>
             )
           }
