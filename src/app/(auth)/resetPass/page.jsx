@@ -78,11 +78,11 @@ export default function NuevaContraPage() {
 
     return <div className="Cuerpo m-0 p-0 font-montserrat bg-gradient-to-br from-[#BF2441] to-[#F2F2F2] h-screen">
         <div className="logo absolute pt-5 pl-24"><img src="/inlima2.png" alt="InLima " style={{ width: "110px", height: "auto" }} /></div>
-        <div className="formulario absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 bg-white rounded-lg">
+        <div className="formulario relative top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 bg-white rounded-lg">
             <img src="/candado.png" className="relative left-1/2 transform -translate-x-1/2 translate-y-2.5" alt="InLima " style={{ width: "110px", height: "auto", marginBottom: "20px" }} />
 
-            <div className="textito text-center text-[#BF2441] pt-5 font-bold">¿Tienes problemas para iniciar sesión?</div>
-            <div className="textito2 text-center text-black py-5 px-8 border-b border-silver">Ingresa tu correo electrónico y te enviaremos un enlace para que recuperes el acceso a tu cuenta.</div>
+            <div className="textito text-center text-[#BF2441] pt-5 font-bold">Restablece tu Contraseña</div>
+            <div className="textito2 text-center text-black py-5 px-8 border-b border-silver">Ingresa tu nueva contaseña y el código enviado a tu correo.</div>
 
             <Box
                 component="form"
@@ -100,7 +100,7 @@ export default function NuevaContraPage() {
 
             <Box
                 sx={{
-                    '& .MuiTextField-root': { m: 1, width: '5ch' },
+                    '& .MuiTextField-root': { m: 1, width: '4ch' },
                     ml: 0,
                     mt: 2,
                 }}
@@ -111,32 +111,38 @@ export default function NuevaContraPage() {
                     <TextField id="outlined-basic" variant="outlined"
                         value={num1}
                         onChange={handleNumberChange(setNum1)}
-                        inputProps={{ maxLength: 1 }}
+                        inputProps={{ maxLength: 1 , style:{textAlign: 'center'}}}
+                        size='small'
                     />
                     <TextField id="outlined-basic" variant="outlined"
                         value={num2}
                         onChange={handleNumberChange(setNum2)}
-                        inputProps={{ maxLength: 1 }}
+                        inputProps={{ maxLength: 1 , style:{textAlign: 'center'}}}
+                        size='small'
                     />
                     <TextField id="outlined-basic" variant="outlined"
                         value={num3}
                         onChange={handleNumberChange(setNum3)}
-                        inputProps={{ maxLength: 1 }}
+                        inputProps={{ maxLength: 1 , style:{textAlign: 'center'}}}
+                        size='small'
                     />
                     <TextField id="outlined-basic" variant="outlined"
                         value={num4}
                         onChange={handleNumberChange(setNum4)}
-                        inputProps={{ maxLength: 1 }}
+                        inputProps={{ maxLength: 1 , style:{textAlign: 'center'}}}
+                        size='small'
                     />
                     <TextField id="outlined-basic" variant="outlined"
                         value={num5}
                         onChange={handleNumberChange(setNum5)}
-                        inputProps={{ maxLength: 1 }}
+                        inputProps={{ maxLength: 1 , style:{textAlign: 'center'}}}
+                        size='small'
                     />
                     <TextField id="outlined-basic" variant="outlined"
                         value={num6}
                         onChange={handleNumberChange(setNum6)}
-                        inputProps={{ maxLength: 1 }}
+                        inputProps={{ maxLength: 1 , style:{textAlign: 'center'}}}
+                        size='small'
                     />
 
                 </div>
@@ -163,7 +169,7 @@ export default function NuevaContraPage() {
             </div>
 
             <div className="textito3 relative text-center text-black py-5 border-l border-r border-silver">o</div>
-            <div className="centrado text-center text-[#BF2441] font-bold py-1.5 border-b border-silver"><a href="/register">Crea una cuenta nueva </a></div>
+            <div className="centrado text-center text-[#BF2441] font-bold py-1.5 border-b border-silver">Reenviar codigo</div>
             <div className="centradoo text-center font-bold mx-2.5 my-2.5"><a href="/login">Volver a inicio de sesión </a></div>
 
         </div>
