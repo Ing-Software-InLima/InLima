@@ -77,7 +77,13 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="loquequieras bg-gradient-to-br from-[#BF2441] to-[#F2F2F2] h-screen m-0 p-0 font-montserrat">
+    <div className="loquequieras h-screen m-0 p-0 font-montserrat" 
+  style={{ 
+    backgroundImage: "url('/fondo_login.jpg')",
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center center"
+  }}>
       <form onSubmit={handleSubmit}>
         <div className="formulario absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 bg-white rounded-lg"  >
 

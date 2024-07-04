@@ -95,7 +95,13 @@ export default function VerifyPage() {
     };
 
     return (
-        <div className="General bg-gradient-to-br from-[#BF2441] to-[#F2F2F2] w-screen h-screen m-0 p-0">
+        <div className="loquequieras h-screen m-0 p-0 font-montserrat" 
+        style={{ 
+          backgroundImage: "url('/fondo_login.jpg')",
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center center"
+        }}>
             <form onSubmit={handleSubmit}>
                 <div className="formulario absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 bg-white rounded-lg">
                     <img src="/inlima.png" className="relative left-1/2 transform -translate-x-1/2 translate-y-2.5" alt="InLima " style={{ width: "110px", height: "auto" }} />

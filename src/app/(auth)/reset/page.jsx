@@ -32,7 +32,13 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="Cuerpo m-0 p-0 font-montserrat bg-gradient-to-br from-[#BF2441] to-[#F2F2F2] h-screen">
+        <div className="loquequieras h-screen m-0 p-0 font-montserrat" 
+        style={{ 
+          backgroundImage: "url('/fondo_login.jpg')",
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center center"
+        }}>
             <div className="logo absolute pt-5 pl-24">
                 <img src="/inlima2.png" alt="InLima" style={{ width: "110px", height: "auto" }} />
             </div>
