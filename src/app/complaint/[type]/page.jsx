@@ -261,8 +261,8 @@ function Page({ params }) {
                         id="upload-photo"
                     />
                     
-                    <label htmlFor="upload-photo" style={{ cursor: 'pointer' }} >
-                        <CameraIcon className='bg-gray-300 rounded-lg pl-3 pr-3' />
+                    <label htmlFor="upload-photo" style={{ cursor: 'pointer' }}>
+                        <CameraIcon className='bg-gray-300 rounded-lg pl-3 pr-3'/>
                     </label>
 
                     {nombreFoto !== "" ? (

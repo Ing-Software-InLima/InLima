@@ -17,6 +17,7 @@ export default function GestionPage() {
     const [municipalidades, setMunicipalidades] = useState([]);
     const router = useRouter();
 
+    /*
     useEffect(() => {
         const fetchMunicipalidades = async () => {
             try {
@@ -28,23 +29,24 @@ export default function GestionPage() {
         };
 
         fetchMunicipalidades();
-    }, []);
+    }, []);*/
 
     const handleSeleccionarTodos = () => {
         const todosLosAsuntos = ["Veredas rotas", "Calles contaminadas", "Poste de luces apagadas", "Construcción sin licencia", "Comercio ilegal", "Invasión no autorizada de lugares públicos", "Árboles obstruyen la circulación", "Vehículo abandonado", "Mascota perdida", "Inmueble abandonado", "Propiedad en mal estado", "Otros"];
         setAsuntosSeleccionados(todosLosAsuntos);
     };
 
+    /*
     const handleChange = (e) => {
         const selectedMunicipalidad = municipalidades.find(muni => muni.id === parseInt(e.target.value, 10));
         setMunicipalidad(selectedMunicipalidad);
-    };
+    };*/
 
     const handleSearch = (e) => {
         e.preventDefault();
         const queryParams = new URLSearchParams({
             asuntos: asuntosSeleccionados.join(','),
-            municipalidad: municipalidad ? municipalidad.id : ''
+            //municipalidad: municipalidad ? municipalidad.id : ''
         }).toString();
         router.push(`/resultados?${queryParams}`);
     };
@@ -58,31 +60,34 @@ export default function GestionPage() {
                 <form className="flex" onSubmit={handleSearch}>
                     <div className="mr-4 space-y-4 m-3">
                         <div>
-                            <Autocomplete
-                                multiple
-                                id="asuntos-autocomplete"
-                                options={["Seleccionar todos", "Veredas rotas", "Calles contaminadas", "Poste de luces apagadas",
-                                    "Construcción sin licencia", "Comercio ilegal", "Invasión no autorizada de lugares públicos",
-                                    "Árboles obstruyen la circulación", "Vehículo abandonado", "Mascota perdida", "Inmueble abandonado",
-                                    "Propiedad en mal estado", "Otros"]}
-                                onChange={(event, newValue) => {
-                                    if (newValue.includes("Seleccionar todos")) {
-                                        handleSeleccionarTodos();
-                                    } else {
-                                        setAsuntosSeleccionados(newValue.filter(option => option !== "Seleccionar todos"));
-                                    }
-                                }}
-                                value={asuntosSeleccionados}
-                                renderInput={(params) => (
-                                    <TextField {...params}
-                                        variant="outlined"
-                                        label="Seleccionar Asuntos"
-                                        placeholder="Asuntos"
-                                        sx={{ '& .MuiOutlinedInput-root': { borderColor: 'inLima_red !important' } }} />
-                                )}
-                            />
+                            <Box sx={{ minWidth: 500 }}>
+                                <Autocomplete
+                                    multiple
+                                    id="asuntos-autocomplete"
+                                    options={["Seleccionar todos", "Veredas rotas", "Calles contaminadas", "Poste de luces apagadas",
+                                        "Construcción sin licencia", "Comercio ilegal", "Invasión no autorizada de lugares públicos",
+                                        "Árboles obstruyen la circulación", "Vehículo abandonado", "Mascota perdida", "Inmueble abandonado",
+                                        "Propiedad en mal estado", "Otros"]}
+                                    onChange={(event, newValue) => {
+                                        if (newValue.includes("Seleccionar todos")) {
+                                            handleSeleccionarTodos();
+                                        } else {
+                                            setAsuntosSeleccionados(newValue.filter(option => option !== "Seleccionar todos"));
+                                        }
+                                    }}
+                                    value={asuntosSeleccionados}
+                                    renderInput={(params) => (
+                                        <TextField {...params}
+                                            variant="outlined"
+                                            label="Seleccionar Asuntos"
+                                            placeholder="Asuntos"
+                                            sx={{ '& .MuiOutlinedInput-root': { borderColor: 'inLima_red !important' } }} />
+                                    )}
+                                />
+                            </Box>
                         </div>
-
+                        
+                        {/*
                         <div>
                             <Box sx={{ minWidth: 500 }}>
                                 <FormControl fullWidth>
@@ -101,8 +106,8 @@ export default function GestionPage() {
                                     </Select>
                                 </FormControl>
                             </Box>
-                        </div>
-
+                        </div>*/}
+                        
                         <div className="text-left space-x-2">
                             <button type="submit" className="bg-inLima_beige px-4 py-2 hover:bg-inLima_red hover:text-white border rounded-full text-inLima_red">Buscar</button>
                         </div>

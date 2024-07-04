@@ -16,10 +16,8 @@ export default function ResultadosPage() {
         const fetchQuejas = async () => {
             const params = new URLSearchParams(searchParams.toString());
             const asuntos = params.get('asuntos') ? params.get('asuntos').split(',') : [];
-            const municipalidad = params.get('municipalidad') || '';
             const payload = {
-                asuntos: asuntos,
-                municipalidad: municipalidad
+                asuntos: asuntos
             }
             try {
                 const response = await api.obtenerQuejasFiltradas(payload);
