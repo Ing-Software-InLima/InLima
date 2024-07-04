@@ -174,24 +174,34 @@ export default function DetallePage() {
                 <button type="button" onClick={() => router.back()} className="bg-inLima_beige hover:bg-inLima_red hover:text-white border rounded-full text-inLima_red py-2 px-4 text-sm">Volver a buscar</button>
             </div>
             <div className="flex flex-col max-w-7xl flex-shrink-0 bg-inLima_lightred p-10 rounded-2xl">
-                <div className="flex flex-row">
+                {/* Primera Fila */}
+                <div className="flex flex-row mb-10">
+                    {/* Primera Columna */}
                     <div className="flex-1 pr-5">
-                        <p className='my-5 font-bold'>Asunto: {queja.asunto}</p>
-                        <p className='my-5'>Descripción: {queja.descripcion}</p>
-                        <p className='my-5'>Ubicación: {queja.ubicacion_descripcion}</p>
-                        <p className='my-5'>Latitud: {queja.latitud}</p>
-                        <p className='my-5'>Longitud: {queja.longitud}</p>
-                        {queja.foto &&
-                            <div className="flex-shrink-0">
-                                <img src={queja.foto} alt="Foto de la queja" className="w-88 h-56 object-cover" />
-                            </div>
-                        }
+                        <p className='mb-5 font-bold'>Asunto: {queja.asunto}</p>
+                        <div className="bg-white rounded-lg p-3">
+                            <p className='my-2'>{queja.descripcion}</p>
+                        </div>
                     </div>
-                    <div className="flex-1 pl-10 ">
+                    {/* Segunda Columna */}
+                    <div className="flex-1 pl-5 pr-5">
+                        <div className="flex items-center mb-5">
+                            <img src="/ubi.png" alt="Ubicación" className="w-6 h-8 mr-2" />
+                            <p>{queja.ubicacion_descripcion}</p>
+                        </div>
+                        <p className='mt-3 mb-2 font-bold'>Latitud:</p>
+                        <div className="bg-white rounded-lg p-2">
+                            <p>{queja.latitud}</p>
+                        </div>
+                        <p className='mt-3 mb-2 font-bold'>Longitud:</p>
+                        <div className="bg-white rounded-lg p-2">
+                            <p>{queja.longitud}</p>
+                        </div>
+                    </div>
+                    {/* Tercera Columna */}
+                    <div className="flex-1 pl-5">
                         {role === 1 ? (
-                            <>
-                                <div className='pb-5 max-w-fit'>Estado: {estadoActual ? (<StatusColor estado={estadoActual} />) : 'Cargando...'}</div>
-                            </>
+                            <div className='pb-5 max-w-fit'>Estado: {estadoActual ? (<StatusColor estado={estadoActual} />) : 'Cargando...'}</div>
                         ) : role === 2 ? (
                             <>
                                 <div className='pb-5'>Estado: {estadoActual ? (<StatusColor estado={estadoActual} />) : 'Cargando...'}</div>
@@ -213,16 +223,33 @@ export default function DetallePage() {
                                 <div className="text-left space-x-2 pt-5">
                                     <button type="button" onClick={handleGuardar} className="bg-inLima_red px-4 py-2 hover:bg-white hover:text-inLima_red border rounded-full text-white">Guardar</button>
                                 </div>
-                                <div className="pt-4"></div>
-                                <p className="text-left font-bold mb-2">Reputación de <b>{nombre}!</b></p>
-                                    <div className="bg-white px-4 py-2 rounded-full bg-center" style={{ width: '190px' }}>
-                                        <Reputacion calificacion={reputacion}/>
-                                    </div>
                             </>
                         ) : null}
                     </div>
                 </div>
+
+                {/* Segunda Fila */}
+                <div className="flex flex-row">
+                    {/* Imagen de la queja (2/3 de la fila) */}
+                    <div className="flex-2 pr-5">
+                        {queja.foto &&
+                            <div className="flex-shrink-0">
+                                <img src={queja.foto} alt="Foto de la queja" className="w-full h-56 object-cover rounded-lg" />
+                            </div>
+                        }
+                    </div>
+                    {/* Reputación del ciudadano (1/3 de la fila) */}
+                    {role === 2 && (
+                        <div className="flex-1 pl-5">
+                            <p className="text-left font-bold mb-2">Reputación de <b>{ciudadano ? ciudadano.nombre : 'el ciudadano'}</b>!</p>
+                            <div className="bg-white px-4 py-2 rounded-full bg-center" style={{ width: '190px' }}>
+                                <Reputacion calificacion={reputacion} />
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
+
             {showAdvise && (
                 <div className='fixed inset-0 flex justify-center items-center bg-black bg-opacity-50'>
                     <Advise Mensaje="Se envió un correo confirmando cambio de estado" onClose={() => setShowAdvise(false)} />
