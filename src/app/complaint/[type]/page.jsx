@@ -44,7 +44,7 @@ function Page({ params }) {
     const onPlaceSelected = (autocomplete) => {
         const place = autocomplete.getPlace();
         if (place.geometry) {
-            const location = place.geometry.location;
+            const location = place.geometry?.location;
             setLatitud(location.lat());
             setLongitud(location.lng());
             setMarkerPosition({ lat: location.lat(), lng: location.lng() });
@@ -175,12 +175,12 @@ function Page({ params }) {
         <Layout>
             <div>
                 {type !== "Otros" ? (
-                    <div className='p-4 mb-4 border-b border-black'>
+                    <div className='p-4 mb-4 border-b border-black font-semibold text-2xl'>
                         {removeBarraBaja(type)}
                     </div>
                 ) : (
                     <>
-                        <div className='p-4 mb-4 border-b border-black'>
+                        <div className='p-4 mb-4 border-b border-black font-semibold text-2xl'>
                             Otro inconveniente
                         </div>
                         <div className='pt-4 pb-4'>
