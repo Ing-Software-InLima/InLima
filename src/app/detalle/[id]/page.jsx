@@ -21,6 +21,7 @@ export default function DetallePage() {
     const [queja, setQueja] = useState(null);
     const [estados, setEstados] = useState([]);
     const [estadoSeleccionado, setEstadoSeleccionado] = useState(null);
+    const [prioridad, setPrioridad] = useState(null);
     const [role, setRole] = useState(null);
     const [ciudadano, setCiudadano] = useState(null);
     const [showAdvise, setShowAdvise] = useState(false);
@@ -33,7 +34,8 @@ export default function DetallePage() {
             try {
                 const response = await api.findOne(id);
                 setQueja(response.data);
-                setEstadoSeleccionado(response.data.estado); // Asume que el estado de la queja está en `response.data.estado`
+                setEstadoSeleccionado(response.data.estado);
+                setPrioridad(response.data.prioridad); // Asume que el estado de la queja está en `response.data.estado`
             } catch (error) {
                 console.error('Error al obtener la queja:', error);
             }
@@ -152,6 +154,18 @@ export default function DetallePage() {
 
     }
 
+    const handlePrioridad = async () => {
+        try {
+            const payload = {
+                prioridad: prioridad
+            }
+            await api.updatePrioridad(id, payload)
+            alert("Prioridad asignada correctamente")
+        } catch (error) {
+            console.error("Error al modificar la prioridad", error)
+        }
+    }
+
     if (!queja) {
         return (
             <Layout>
@@ -221,7 +235,7 @@ export default function DetallePage() {
                                     </Select>
                                 </FormControl>
                                 <div className="text-left space-x-2 pt-5">
-                                    <button type="button" onClick={handleGuardar} className="bg-inLima_red px-4 py-2 hover:bg-white hover:text-inLima_red border rounded-full text-white">Guardar</button>
+                                    <button type="button" onClick={handleGuardar} className="bg-inLima_red px-4 py-2 hover:bg-red-800 border rounded-full text-white">Guardar</button>
                                 </div>
                             </>
                         ) : null}
@@ -240,10 +254,33 @@ export default function DetallePage() {
                     </div>
                     {/* Reputación del ciudadano (1/3 de la fila) */}
                     {role === 2 && (
-                        <div className="flex-1 pl-5">
+                        <div className="flex-col pl-5">
                             <p className="text-left font-bold mb-2">Reputación de <b>{ciudadano ? ciudadano.nombre : 'el ciudadano'}</b>!</p>
                             <div className="bg-white px-4 py-2 rounded-full bg-center" style={{ width: '190px' }}>
                                 <Reputacion calificacion={reputacion} />
+                            </div>
+                            <p className="text-left font-bold mb-2 pt-10"> Asigna una prioridad {prioridad}</p>
+                            <FormControl fullWidth variant="outlined" className="mb-4">
+                                <InputLabel id="prioridad-select-label">Prioridad</InputLabel>
+                                <Select
+                                    labelId="prioridad-select-label"
+                                    value={prioridad ? prioridad : ''}
+                                    onChange={(event) => setPrioridad(event.target.value)}
+                                    label="Prioridad"
+                                >
+                                    <MenuItem key={1} value={1}>
+                                        {"Baja"}
+                                    </MenuItem>
+                                    <MenuItem key={2} value={2}>
+                                        {"Media"}
+                                    </MenuItem>
+                                    <MenuItem key={3} value={3}>
+                                        {"Alta"}
+                                    </MenuItem>
+                                </Select>
+                            </FormControl>
+                            <div className="text-left space-x-2 pt-5">
+                                <button type="button" onClick={handlePrioridad} className="bg-inLima_red text-white px-4 py-2 hover:bg-red-800 border rounded-full ">Guardar</button>
                             </div>
                         </div>
                     )}
