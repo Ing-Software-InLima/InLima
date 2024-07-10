@@ -29,6 +29,7 @@ export default function RegisterPage() {
   const [sexo, setSexo] = useState('');
   const [numero, setNumero] = useState('');
   const router = useRouter();
+  const [correoExiste, setCorreoExiste] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -45,18 +46,22 @@ export default function RegisterPage() {
     };
     try {
       const response = await tokenApi.sendToken({email: email});
+      console.log(response)
+
 
       if (response.status === 200) {
         Cookies.set('registrationData',JSON.stringify(User));
         setShowAdvise(true);
         //router.push('/verify');
-      }
-      else {
-        console.log("NO")
-      }
+      }else if(response.status === 204){
+        setCorreoExiste(true);
+       
+      } else {
+        console.log("Unexpected response status:");
 
-    } catch (error) {
-      console.error('Error:', error.message);
+      }
+    }catch (error) {
+      //console.error('Error:', error.message);
       //alert('Error al conectar');
     }
   };
@@ -204,8 +209,11 @@ export default function RegisterPage() {
           <Advise Mensaje="Ha llegado un codigo de confirmación a tu correo" URL="/verify" />
         </div>
       )}
+      {correoExiste && (
+        <div className='fixed inset-0 flex justify-center items-center bg-black bg-opacity-50'>
+          <Advise Mensaje="El correo ya se encuentra registrado en la base de datos" onClose={() => setCorreoExiste(false)} />
+        </div>
+      )}
     </div>
   )
-
-
 }

@@ -8,9 +8,14 @@ export async function middleware(request) {
     const registrationData = request.cookies.get('registrationData'); 
     const aux = request.cookies.get('aux'); 
 
-    if (request.nextUrl.pathname === '/verify' && !registrationData) {
-        console.log("Redirigiendo a /login desde /verify por falta de registrationData");
-        return NextResponse.redirect(new URL('/login', request.url));
+    if (request.nextUrl.pathname === '/verify') {
+        if (!registrationData) {
+            console.log("Redirigiendo a /login desde /verify por falta de registrationData");
+            return NextResponse.redirect(new URL('/login', request.url));
+        } else {
+            console.log("Acceso permitido a /verify");
+            return NextResponse.next();
+        }
     }
 
     if (request.nextUrl.pathname === '/resetPass' && aux) {
