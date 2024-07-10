@@ -14,7 +14,7 @@ export default function LoginPage() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await tokenApi.sendToken({ email: email });
+            const response = await tokenApi.sendTokenRs({ email: email });
             if (response.status === 200) {
                 Cookies.set('aux', JSON.stringify({ email: email }));
                 setShowAdvise(true);

@@ -100,8 +100,8 @@ export default function NuevaContraPage() {
                 noValidate
                 autoComplete="off"
             >
-                <div className="text-center p-0 "><TextField id="outlined-basic" label="Contraseña" variant="outlined" value={password} onChange={(e) => setPassword(e.target.value)} /></div>
-                <div className="text-center p-0 "><TextField id="outlined-basic" label="Repetir Contraseña" variant="outlined" value={passwordx2} onChange={(e) => setPasswordx2(e.target.value)} /></div>
+                <div className="text-center p-0 "><TextField id="outlined-basic" label="Contraseña" type='password' variant="outlined" value={password} onChange={(e) => setPassword(e.target.value)} /></div>
+                <div className="text-center p-0 "><TextField id="outlined-basic" label="Repetir Contraseña" type='password' variant="outlined" value={passwordx2} onChange={(e) => setPasswordx2(e.target.value)} /></div>
             </Box>
 
             <Box

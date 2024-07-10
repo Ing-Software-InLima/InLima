@@ -102,10 +102,12 @@ export default function RegisterGooglePage() {
               <TextField id="outlined-basic" label="Número Telefónico" variant="outlined" type="tel"
                 value={numero}
                 onChange={(e) => setNumero(e.target.value)}
+                inputProps={{ maxLength: 9 }}
               />
               <TextField id="outlined-basic" label="DNI" variant="outlined" type="dni"
                 value={dni}
                 onChange={(e) => setDni(e.target.value)}
+                inputProps={{ maxLength: 8 }}
               />
             </div>
             <FormControl style={{ display: 'flex', alignItems: 'center', marginTop: '10px' }}>
@@ -141,7 +143,6 @@ export default function RegisterGooglePage() {
             disabled={!isFormValid()}
           >Regístrate</Button>
           </div>
-          <div className="registrarse text-center my-5 text-lg text-black">¿Ya tienes una cuenta? <a href='/login' className="text-[#878ceb]">Inicia sesión</a></div>
         </div>
       </form>
     </div>

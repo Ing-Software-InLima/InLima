@@ -114,7 +114,8 @@ export default function RegisterPage() {
             <div className="text-center p-0 "><TextField id="outlined-basic" label="Nombre" variant="outlined" value={nombre}
               onChange={(e) => setNombre(e.target.value)} />
               <TextField id="outlined-basic" label="Correo electrónico" variant="outlined" value={email}
-                onChange={(e) => setEmail(e.target.value)} /></div>
+                onChange={(e) => setEmail(e.target.value)}
+                type='email' /></div>
           </Box>
 
           <Box
@@ -144,10 +145,12 @@ export default function RegisterPage() {
 
               <TextField id="outlined-basic" label="Número Telefonico" variant="outlined" type="int"
                 value={numero}
-                onChange={(e) => setNumero(e.target.value)} />
+                onChange={(e) => setNumero(e.target.value)} 
+                inputProps={{ maxLength: 9 }}/>
                 <TextField id="outlined-basic" label="Dni" variant="outlined" type="dni"
               value={dni}
-              onChange={(e) => setDni(e.target.value)} /></div>
+              onChange={(e) => setDni(e.target.value)}
+              inputProps={{ maxLength: 8 }} /></div>
 
             <div className="text-center p-0 " >   <TextField id="outlined-basic" label="Contraseña" variant="outlined" type="password"
               value={password}
