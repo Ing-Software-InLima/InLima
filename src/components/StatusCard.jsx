@@ -1,9 +1,10 @@
 "use client";
 import Image from "next/image"
 import StatusColor from "./StatusColor"
+import PrioridadColor from "./PrioridadColor";
 import { useRouter } from 'next/navigation';
 
-export default function StatusCard({ asunto, id, dni, estado, fecha= null }) {
+export default function StatusCard({ asunto, id, dni, estado, fecha= null, prioridad }) {
 
     const router = useRouter();
 
@@ -25,7 +26,11 @@ export default function StatusCard({ asunto, id, dni, estado, fecha= null }) {
                     </div>
                     <p className="font-semibold">{asunto}</p>
                 </div>
-                <p className="font-mono">ID: {id}</p>
+                <div className="flex-col">
+                    <PrioridadColor estado={prioridad}></PrioridadColor>
+                    <p className="font-mono">ID: {id}</p>
+                </div>
+                
             </div>
 
             <p className="mb-3">DNI de ciudadano: {dni}</p>

@@ -53,6 +53,7 @@ export default function ResultadosPage() {
                             dni={queja.ciudadano.dni}
                             estado={queja.estado}
                             fecha={queja.fecha}
+                            prioridad={queja.prioridad}
                         />
                     ))
                 )}
