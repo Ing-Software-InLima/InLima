@@ -255,11 +255,8 @@ export default function DetallePage() {
                     {/* Reputación del ciudadano (1/3 de la fila) */}
                     {role === 2 && (
                         <div className="flex-col pl-5">
-                            <p className="text-left font-bold mb-2">Reputación de <b>{ciudadano ? ciudadano.nombre : 'el ciudadano'}</b>!</p>
-                            <div className="bg-white px-4 py-2 rounded-full bg-center" style={{ width: '190px' }}>
-                                <Reputacion calificacion={reputacion} />
-                            </div>
-                            <p className="text-left font-bold mb-2 pt-10"> Asigna una prioridad {prioridad}</p>
+
+                            <p className="text-left font-bold mb-2 pt-10"> Asigna una prioridad</p>
                             <FormControl fullWidth variant="outlined" className="mb-4">
                                 <InputLabel id="prioridad-select-label">Prioridad</InputLabel>
                                 <Select
