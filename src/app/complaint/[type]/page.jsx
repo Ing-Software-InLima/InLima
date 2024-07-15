@@ -2,8 +2,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import TextField from '@mui/material/TextField';
 import NoSsr from '@mui/material/NoSsr';
-import CameraIcon from '@/icons/camera';
 import Advise from '@/components/Advise';
+import Description from '@/components/Description'
 import Layout from '@/components/Layout';
 import municipalidadApi from '@/api/municipalidad';
 import quejaApi from '@/api/queja';
@@ -15,8 +15,6 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MapComponent from '@/components/Map';
 import SearchBox from '@/components/SearchLocation';
-import Button from '@mui/material/Button';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 function Page({ params }) {
     const { type } = params;
@@ -26,9 +24,6 @@ function Page({ params }) {
     const [showAlert, setShowAlert] = useState(false);
 
     const [asunto, setAsunto] = useState("");
-    const [descripcion, setDescripcion] = useState("");
-    const [nombreFoto, setNombreFoto] = useState("");
-    const [selectedImage, setSelectedImage] = useState("");
     const [latitud, setLatitud] = useState(0.0);
     const [longitud, setLongitud] = useState(0.0);
     const [municipalidades, setMunicipalidades] = useState([]);
@@ -36,6 +31,10 @@ function Page({ params }) {
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
     const [markerPosition, setMarkerPosition] = useState({ lat: -12.084305021823578, lng: -76.97130634495585 });
     const [address, setAddress] = useState("");
+
+    const [informacion, setInformacion] = useState({});
+    
+    const [popupds,setPopupds] = useState(false);
 
     const mapRef = useRef();
 
@@ -71,8 +70,29 @@ function Page({ params }) {
         });
     };
 
-    const fileInputRef = useRef(null);
+    //const fileInputRef = useRef(null);
 
+    const handleContinueClick = async () => {
+        if (asunto === '' || address === '' || latitud === '' || longitud === '' || municipalidad === '') {
+            setShowAlert(true);
+        } else {
+            setInformacion({
+                asunto: asunto,
+                ubicacion_descripcion: address,
+                latitud: latitud,
+                longitud: longitud,
+                municipalidad: municipalidad,
+            });
+            console.log("Mostrando Pop up.");
+            setPopupds(true);
+        }
+    }
+
+    const handleEnviado = () => {
+        setPopupds(false);
+        setShowAdvise(true);
+    }
+/*
     const handleEnviarClick = async () => {
         if (asunto === '' || descripcion === '' || address === '' || latitud === '' || longitud === '' || municipalidad === '') {
             setShowAlert(true);
@@ -98,31 +118,11 @@ function Page({ params }) {
                 setSending(false); // Ocultar indicador de carga al enviar
             }
         }
-    };
+    };*/
 
     const handleChange = (e) => {
         const selectedMunicipalidad = municipalidades.find(muni => muni.id === parseInt(e.target.value, 10));
         setMunicipalidad(selectedMunicipalidad.id);
-    };
-
-    const handleSubirFoto = (e) => {
-        const file = e.target.files[0];
-        setNombreFoto(file.name);
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                setSelectedImage(event.target.result);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-
-    const handleEliminarFoto = () => {
-        setSelectedImage('');
-        setNombreFoto("");
-        if (fileInputRef.current) {
-            fileInputRef.current.value = '';
-        }
     };
 
     const removeBarraBaja = (text) => {
@@ -153,8 +153,8 @@ function Page({ params }) {
     }, [type]);
 
     useEffect(() => {
-        setIsButtonDisabled(!(asunto && descripcion));
-    }, [asunto, descripcion]);
+        setIsButtonDisabled(!(asunto,latitud,longitud,municipalidad));
+    }, [asunto,latitud,longitud,municipalidad]);
 
     useEffect(() => {
         for (let i = 0; i < municipalidades.length; i++) {
@@ -199,22 +199,6 @@ function Page({ params }) {
                         </div>
                     </>
                 )}
-
-                <div className='pt-4 pb-4'>
-                    Detalle de su inquietud en este apartado:
-                </div>
-                <NoSsr>
-                    <TextField
-                        id="detalle"
-                        multiline
-                        maxRows={4}
-                        fullWidth
-                        variant="outlined"
-                        value={descripcion}
-                        onChange={(e) => setDescripcion(e.target.value)}
-                        sx={{ width: '90%' }}
-                    />
-                </NoSsr>
                 <div className='pt-4 pb-4'>
                     Elige el lugar donde se encuentra el inconveniente:
                 </div>
@@ -251,40 +235,8 @@ function Page({ params }) {
                         </FormControl>
                     </Box>
                 </div>
-                <div className='pt-4 pb-4'>
-                    Adjuntar fotos (No es obligatorio)
-                </div>
-                <div>
-                    <input
-                        type="file"
-                        accept="image/jpeg, image/png"
-                        onChange={handleSubirFoto}
-                        style={{ display: 'none' }}
-                        id="upload-photo"
-                    />
-                    <Button
-                        htmlFor='upload-photo'
-                        component="label"
-                        role={undefined}
-                        variant="contained"
-                        tabIndex={-1}
-                        className='bg-gray-300 hover:bg-inLima_red'
-                        startIcon={<CloudUploadIcon />}
-                        >
-                        Subir foto
-                    </Button>
-
-                    {nombreFoto !== "" ? (
-                        <div className='center'>
-                            {nombreFoto}
-                            <button className='rounded-2xl bg-gray-300 ml-2 mr-2 p-2' onClick={handleEliminarFoto} style={{ cursor: 'pointer' }}>
-                                No adjuntar
-                            </button>
-                        </div>
-                    ) : (<></>)}
-                </div>
                 <div className='mt-4'>
-                    <button className='rounded-2xl text-white bg-inLima_red p-4 pl-8 pr-8' onClick={handleEnviarClick} disabled={isButtonDisabled} title={isButtonDisabled ? "Complete todos los datos" : ""}>
+                    <button className='rounded-2xl text-white bg-inLima_red p-4 pl-8 pr-8' onClick={handleContinueClick} disabled={isButtonDisabled} title={isButtonDisabled ? "Complete todos los datos" : ""}>
                         {sending ? <CircularProgress size={24} /> : "Enviar"}
                     </button>
                 </div>
@@ -296,6 +248,11 @@ function Page({ params }) {
                 {showAlert && (
                     <div className='fixed inset-0 flex justify-center items-center bg-black bg-opacity-50'>
                         <Advise Mensaje="Faltan datos a completar" onClose={() => setShowAlert(false)}/>
+                    </div>
+                )}
+                {popupds && (
+                    <div className='fixed inset-0 flex justify-center items-center bg-black bg-opacity-50'>
+                        <Description informacion={informacion} onClose={() => setPopupds(false)} enviado={() => handleEnviado()}/>
                     </div>
                 )}
             </div>
