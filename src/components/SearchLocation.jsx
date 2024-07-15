@@ -1,6 +1,10 @@
 import React, { useRef, useEffect } from 'react';
 import { Autocomplete, useLoadScript } from '@react-google-maps/api';
 import TextField from '@mui/material/TextField';
+import dotenv from 'dotenv';
+
+
+dotenv.config();
 
 const libraries = ['places'];
 
