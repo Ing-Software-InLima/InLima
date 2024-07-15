@@ -13,8 +13,8 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { useEffect } from 'react';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
-
-
+import dotenv from 'dotenv';
+dotenv.config();
 
 export default function LoginPage() {
 
