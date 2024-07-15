@@ -126,8 +126,6 @@ export default function LoginPage() {
             </GoogleOAuthProvider>
           </div>
 
-
-
           <div className="recordar text-center text-[#BF2441] cursor-pointer"> <a href="/reset">¿Olvidaste tu contraseña?</a></div>
 
           <Button type='submit'
