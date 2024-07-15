@@ -15,6 +15,8 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MapComponent from '@/components/Map';
 import SearchBox from '@/components/SearchLocation';
+import Button from '@mui/material/Button';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 function Page({ params }) {
     const { type } = params;
@@ -260,10 +262,17 @@ function Page({ params }) {
                         style={{ display: 'none' }}
                         id="upload-photo"
                     />
-                    
-                    <label htmlFor="upload-photo" style={{ cursor: 'pointer' }}>
-                        <CameraIcon className='bg-gray-300 rounded-lg pl-3 pr-3'/>
-                    </label>
+                    <Button
+                        htmlFor='upload-photo'
+                        component="label"
+                        role={undefined}
+                        variant="contained"
+                        tabIndex={-1}
+                        className='bg-gray-300 hover:bg-inLima_red'
+                        startIcon={<CloudUploadIcon />}
+                        >
+                        Subir foto
+                    </Button>
 
                     {nombreFoto !== "" ? (
                         <div className='center'>

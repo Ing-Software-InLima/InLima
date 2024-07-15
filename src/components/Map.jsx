@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const mapContainerStyle = {
-    width: '100%',
+    width: '90%',
     height: '400px',
 };
 
