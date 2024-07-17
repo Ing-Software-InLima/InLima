@@ -43,6 +43,7 @@ export default function Estado() {
                             dni={queja.ciudadano.dni}   
                             estado={queja.estado}
                             fecha={queja.fecha}
+                            prioridad= {queja.prioridad}
                         />
                     ))
                 )}
