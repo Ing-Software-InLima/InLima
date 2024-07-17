@@ -14,6 +14,7 @@ import Advise from '@/components/Advise';
 import StatusColor from '@/components/StatusColor';
 import Calification from '@/components/Calification';
 import Reputacion from '@/components/Reputacion';
+import PrioridadColor from '@/components/PrioridadColor';
 
 export default function DetallePage() {
     const router = useRouter();
@@ -21,6 +22,7 @@ export default function DetallePage() {
     const [queja, setQueja] = useState(null);
     const [estados, setEstados] = useState([]);
     const [estadoSeleccionado, setEstadoSeleccionado] = useState(null);
+    const [prioridadSeleccionado, setPrioridadSeleccionado] = useState();
     const [prioridad, setPrioridad] = useState(null);
     const [role, setRole] = useState(null);
     const [ciudadano, setCiudadano] = useState(null);
@@ -157,10 +159,11 @@ export default function DetallePage() {
     const handlePrioridad = async () => {
         try {
             const payload = {
-                prioridad: prioridad
+                prioridad: prioridadSeleccionado
             }
             await api.updatePrioridad(id, payload)
             alert("Prioridad asignada correctamente")
+            setPrioridad(prioridadSeleccionado)
         } catch (error) {
             console.error("Error al modificar la prioridad", error)
         }
@@ -183,34 +186,41 @@ export default function DetallePage() {
 
     return (
         <Layout>
-            <div className="border-b mb-2 border-gray-300 flex justify-between items-center " id="titulo">
+            <div className="border-b mb-2 pb-2 border-gray-300 flex justify-between items-center " id="titulo">
                 <p className="py-2 text-xl font-normal">Detalle de queja</p>
                 <button type="button" onClick={() => router.back()} className="bg-inLima_beige hover:bg-inLima_red hover:text-white border rounded-full text-inLima_red py-2 px-4 text-sm">Volver a buscar</button>
             </div>
-            <div className="flex flex-col max-w-7xl flex-shrink-0 bg-inLima_lightred p-10 rounded-2xl">
-                {/* Primera Fila */}
-                <div className="flex flex-row mb-10">
+            <div className="flex flex-col max-w-7xl flex-shrink-0 bg-gray-200 p-10 rounded-2xl">
+                <div className='flex items-center justify-between pb-3 mb-3 border-b border-gray-500'>
+                    <p className='font-bold text-3xl'>{queja.asunto}</p>
+                    <p className='text-2xl'>#{queja.id}</p>
+                </div>
+                <div className="flex flex-row">
                     {/* Primera Columna */}
                     <div className="flex-1 pr-5">
-                        <p className='mb-5 font-bold'>Asunto: {queja.asunto}</p>
                         <div className="bg-white rounded-lg p-3">
+                            <p className='text-gray-400 font-semibold'>Descripción:</p>
                             <p className='my-2'>{queja.descripcion}</p>
                         </div>
                     </div>
                     {/* Segunda Columna */}
                     <div className="flex-1 pl-5 pr-5">
+                        {queja.foto &&
+                            <div className="flex-shrink-1 mt-3 mb-5">
+                                <img src={queja.foto || '/inlima.png'} alt="Foto de la queja" className="w-full max-h-fit object-cover rounded-lg" />
+                            </div>
+                        }
                         <div className="flex items-center mb-5">
                             <img src="/ubi.png" alt="Ubicación" className="w-6 h-8 mr-2" />
-                            <p>{queja.ubicacion_descripcion}</p>
+                            <p className='bg-neutral-300 py-1 px-2 rounded-xl'>{queja.ubicacion_descripcion}</p>
                         </div>
-                        <p className='mt-3 mb-2 font-bold'>Latitud:</p>
-                        <div className="bg-white rounded-lg p-2">
-                            <p>{queja.latitud}</p>
-                        </div>
-                        <p className='mt-3 mb-2 font-bold'>Longitud:</p>
-                        <div className="bg-white rounded-lg p-2">
-                            <p>{queja.longitud}</p>
-                        </div>
+                        <button type="button" className="bg-inLima_red px-4 py-2 hover:bg-red-800 border rounded-full text-white"
+                            onClick={() => {
+                                const url = `https://www.google.com/maps?q=${queja.latitud},${queja.longitud}`;
+                                //const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(queja.ubicacion_descripcion)}`;
+                                window.open(url, '_blank');
+                            }}>Abrir en Maps
+                        </button>
                     </div>
                     {/* Tercera Columna */}
                     <div className="flex-1 pl-5">
@@ -239,48 +249,34 @@ export default function DetallePage() {
                                 </div>
                             </>
                         ) : null}
-                    </div>
-                </div>
-
-                {/* Segunda Fila */}
-                <div className="flex flex-row">
-                    {/* Imagen de la queja (2/3 de la fila) */}
-                    <div className="flex-2 pr-5">
-                        {queja.foto &&
-                            <div className="flex-shrink-0">
-                                <img src={queja.foto} alt="Foto de la queja" className="w-full h-56 object-cover rounded-lg" />
+                        <div className='pb-5 max-w-fit mt-6'>Prioridad: {prioridad ? (<PrioridadColor estado={prioridad} />) : 'Cargando...'}</div>
+                        {role === 2 && (
+                            <div className="flex-col">
+                                <FormControl fullWidth variant="outlined" className="mb-4">
+                                    <InputLabel id="prioridad-select-label">Prioridad</InputLabel>
+                                    <Select
+                                        labelId="prioridad-select-label"
+                                        value={prioridadSeleccionado ? prioridadSeleccionado : ''}
+                                        onChange={(event) => setPrioridadSeleccionado(event.target.value)}
+                                        label="Prioridad"
+                                    >
+                                        <MenuItem key={1} value={1}>
+                                            {"Baja"}
+                                        </MenuItem>
+                                        <MenuItem key={2} value={2}>
+                                            {"Media"}
+                                        </MenuItem>
+                                        <MenuItem key={3} value={3}>
+                                            {"Alta"}
+                                        </MenuItem>
+                                    </Select>
+                                </FormControl>
+                                <div className="text-left space-x-2 pt-5">
+                                    <button type="button" onClick={handlePrioridad} className="bg-inLima_red text-white px-4 py-2 hover:bg-red-800 border rounded-full ">Guardar</button>
+                                </div>
                             </div>
-                        }
+                        )}
                     </div>
-                    {/* Reputación del ciudadano (1/3 de la fila) */}
-                    {role === 2 && (
-                        <div className="flex-col pl-5">
-
-                            <p className="text-left font-bold mb-2 pt-10"> Asigna una prioridad</p>
-                            <FormControl fullWidth variant="outlined" className="mb-4">
-                                <InputLabel id="prioridad-select-label">Prioridad</InputLabel>
-                                <Select
-                                    labelId="prioridad-select-label"
-                                    value={prioridad ? prioridad : ''}
-                                    onChange={(event) => setPrioridad(event.target.value)}
-                                    label="Prioridad"
-                                >
-                                    <MenuItem key={1} value={1}>
-                                        {"Baja"}
-                                    </MenuItem>
-                                    <MenuItem key={2} value={2}>
-                                        {"Media"}
-                                    </MenuItem>
-                                    <MenuItem key={3} value={3}>
-                                        {"Alta"}
-                                    </MenuItem>
-                                </Select>
-                            </FormControl>
-                            <div className="text-left space-x-2 pt-5">
-                                <button type="button" onClick={handlePrioridad} className="bg-inLima_red text-white px-4 py-2 hover:bg-red-800 border rounded-full ">Guardar</button>
-                            </div>
-                        </div>
-                    )}
                 </div>
             </div>
 

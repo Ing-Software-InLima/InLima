@@ -194,7 +194,7 @@ export default function LoginPage() {
         <>
           <h1 className="mb-4 pl-9 text-first w-full uppercase">Bienvenido, <b>{nombre}!</b></h1>
           <Image src="/divider.svg" alt="divider" width={500} height={10} className="mt-3" style={{ width: '100%', height: 'auto', display: 'block' }} />
-          <div className="m-0 p-16 font-montserrat flex flex-col lg:flex-row  bg-red-300 rounded-3xl ml-9 mr-9 mt-9">
+          <div className="m-0 p-16 font-montserrat flex flex-col lg:flex-row  bg-gray-200 rounded-3xl ml-9 mr-9 mt-9">
             <div className="lg:w-1/4 w-full flex flex-col items-center justify-center p-6 -mt-9 ">
               <div className="pt-4 pb-4">
                 {role === 1 ? (
@@ -215,7 +215,7 @@ export default function LoginPage() {
               </div>
               <a onClick={handleClickUpload} className="cursor-pointer ">
                 <img
-                  src={imagen !== " " ? imagen : '/userDefault.png'}
+                  src={imagen && imagen.length > 2? imagen : '/userDefault.png'}
                   alt="User photo"
                   className="mb-4 p-3 border   border-red-500 border-solid rounded-3xl"
                   style={{ minWidth: "198px", minHeight: "198px" }}

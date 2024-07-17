@@ -8,7 +8,7 @@ export default function PrioridadColor({estado}){
     const nombre =
     estado == 1 ? ("Baja") : 
     estado == 2 ? ("Media") : 
-    estado == 3 ? ("Alta") : ("No asignado")
+    estado == 3 ? ("Alta") : ("N/A")
 
     return(
         <div className={`bg-gree w-auto h-auto py-1 px-2 rounded-lg text-center text-white ${color}`}>

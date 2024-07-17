@@ -15,7 +15,7 @@ export default function HeaderInLima({ toggleNav, Nav, role, mun }) {
                 <button onClick={() => {
                     api_usuario.cerrarSesion()
                     window.location.href = '/login';
-                }}>Exit</button>
+                }}>Salir</button>
             </div>
         </div>
     )
